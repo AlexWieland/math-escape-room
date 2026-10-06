@@ -2,7 +2,12 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f0a1e" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Mathe-Zimmer" />
   <title>Das Mathe-Zimmer – Rationale Zahlen</title>
   <meta name="description" content="Finde die 5 versteckten Rätsel zu rationalen Zahlen im geheimnisvollen Zimmer und öffne die Tür!" />
 
@@ -40,35 +45,35 @@
 <body class="min-h-screen bg-night-900 text-slate-100 font-body antialiased">
   <div class="stars" aria-hidden="true"></div>
 
-  <main class="relative max-w-6xl mx-auto px-4 py-6 sm:py-10">
+  <main class="page relative max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-10">
 
     <!-- Kopfbereich -->
-    <header class="text-center mb-6 sm:mb-8">
-      <p class="uppercase tracking-[0.3em] text-xs sm:text-sm text-gold-400 mb-2">Escape-Rätsel · Rationale Zahlen</p>
-      <h1 class="font-display text-3xl sm:text-5xl font-bold bg-gradient-to-r from-gold-300 via-pink-300 to-violet-300 bg-clip-text text-transparent">
+    <header class="text-center mb-4 sm:mb-8">
+      <p class="uppercase tracking-[0.2em] sm:tracking-[0.3em] text-[0.7rem] sm:text-sm text-gold-400 mb-1 sm:mb-2">Escape-Rätsel · Rationale Zahlen</p>
+      <h1 class="font-display text-[1.7rem] leading-tight sm:text-5xl font-bold bg-gradient-to-r from-gold-300 via-pink-300 to-violet-300 bg-clip-text text-transparent">
         Das geheimnisvolle Mathe-Zimmer
       </h1>
-      <p class="mt-3 text-slate-300 max-w-2xl mx-auto text-sm sm:text-base">
+      <p class="mt-2 sm:mt-3 text-slate-300 max-w-2xl mx-auto text-sm sm:text-base">
         Die Tür ist verschlossen! Im Zimmer sind <strong class="text-gold-300">5 Rätsel zu Brüchen, Dezimalzahlen und negativen Zahlen</strong> versteckt.
-        Klicke auf verdächtige Gegenstände, löse alle Aufgaben – und du kommst frei.
+        <span class="pointer-fine">Klicke</span><span class="pointer-coarse">Tippe</span> auf verdächtige Gegenstände, löse alle Aufgaben – und du kommst frei.
       </p>
     </header>
 
     <!-- Fortschritt -->
-    <section class="mb-5 sm:mb-6 bg-night-800/80 backdrop-blur rounded-2xl p-4 sm:p-5 ring-1 ring-white/10 shadow-xl" aria-label="Fortschritt">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+    <section class="mb-4 sm:mb-6 bg-night-800/80 backdrop-blur rounded-2xl p-3 sm:p-5 ring-1 ring-white/10 shadow-xl" aria-label="Fortschritt">
+      <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3 mb-3">
         <div class="flex items-center gap-2">
           <span class="text-2xl" aria-hidden="true">🔑</span>
           <span class="font-display text-lg">Gelöst: <span id="progress-count">0</span> / 5</span>
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 w-full sm:w-auto [&>button]:flex-1 sm:[&>button]:flex-none">
           <button id="hint-toggle" type="button"
-            class="px-3 py-1.5 rounded-lg text-sm bg-white/10 hover:bg-white/20 transition ring-1 ring-white/10"
+            class="min-h-[44px] sm:min-h-0 px-3 py-2 sm:py-1.5 rounded-lg text-sm bg-white/10 hover:bg-white/20 transition ring-1 ring-white/10"
             aria-pressed="false">
             ✨ Verstecke zeigen
           </button>
           <button id="reset-btn" type="button"
-            class="px-3 py-1.5 rounded-lg text-sm bg-white/10 hover:bg-rose-500/40 transition ring-1 ring-white/10">
+            class="min-h-[44px] sm:min-h-0 px-3 py-2 sm:py-1.5 rounded-lg text-sm bg-white/10 hover:bg-rose-500/40 transition ring-1 ring-white/10">
             ↺ Neu starten
           </button>
         </div>
@@ -81,7 +86,7 @@
     </section>
 
     <!-- Interaktives Zimmer -->
-    <section class="room-wrapper relative rounded-3xl overflow-hidden ring-1 ring-white/10 shadow-2xl" aria-label="Das Zimmer">
+    <section class="room-wrapper relative -mx-3 sm:mx-0 rounded-none sm:rounded-3xl overflow-hidden ring-1 ring-white/10 shadow-2xl" aria-label="Das Zimmer">
       <div class="room-scroll">
       <svg id="room" viewBox="0 0 1000 600" class="block w-full h-auto select-none" role="img"
            aria-labelledby="room-title">
@@ -272,53 +277,55 @@
 
       <!-- Erfolgsbanner -->
       <div id="win-banner" class="win-banner hidden" role="status" aria-live="polite">
-        <div class="text-center px-6 py-6 sm:px-10 sm:py-8 rounded-3xl bg-night-800/95 ring-2 ring-gold-400 shadow-2xl max-w-md mx-4">
-          <div class="text-5xl sm:text-6xl mb-2" aria-hidden="true">🏆</div>
-          <h2 class="font-display text-2xl sm:text-3xl font-bold text-gold-300">Geschafft – die Tür ist offen!</h2>
-          <p class="mt-2 text-slate-300">Du hast alle 5 Rätsel gelöst. Ein echtes Mathe-Genie!</p>
+        <div class="text-center px-5 py-5 sm:px-10 sm:py-8 rounded-3xl bg-night-800/95 ring-2 ring-gold-400 shadow-2xl max-w-md mx-4">
+          <div class="text-4xl sm:text-6xl mb-1 sm:mb-2" aria-hidden="true">🏆</div>
+          <h2 class="font-display text-xl sm:text-3xl font-bold text-gold-300">Geschafft – die Tür ist offen!</h2>
+          <p class="mt-2 text-sm sm:text-base text-slate-300">Du hast alle 5 Rätsel gelöst. Ein echtes Mathe-Genie!</p>
           <button id="play-again" type="button"
-            class="mt-5 px-5 py-2.5 rounded-xl font-semibold bg-gradient-to-r from-gold-400 to-pink-400 text-night-900 hover:scale-105 active:scale-95 transition">
+            class="mt-4 sm:mt-5 min-h-[44px] px-5 py-2.5 rounded-xl font-semibold bg-gradient-to-r from-gold-400 to-pink-400 text-night-900 hover:scale-105 active:scale-95 transition">
             Nochmal spielen
           </button>
         </div>
       </div>
     </section>
 
-    <p class="sm:hidden mt-2 text-center text-xs text-gold-300">⇆ Wische, um das ganze Zimmer zu sehen</p>
-    <p class="mt-4 text-center text-xs sm:text-sm text-slate-400">
-      Tipp: Gegenstände reagieren, wenn du mit der Maus darüberfährst. Auf dem Handy einfach antippen.
+    <p class="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-slate-400">
+      <span class="pointer-fine">Tipp: Gegenstände leuchten auf, wenn du mit der Maus darüberfährst.</span>
+      <span class="pointer-coarse">Tipp: Tippe auf Fenster, Regal, Bild, Uhr oder Truhe. Findest du nichts? Nutze „Verstecke zeigen“.</span>
     </p>
 
-    <footer class="mt-10 text-center text-xs text-slate-500">
+    <footer class="mt-6 sm:mt-10 text-center text-xs text-slate-500">
       Gemacht mit ❤️, SVG &amp; Tailwind CSS · gehostet auf GitHub Pages
     </footer>
   </main>
 
   <!-- Modal -->
-  <div id="modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4" aria-hidden="true">
+  <div id="modal" class="modal fixed inset-0 z-50 hidden items-end sm:items-center justify-center sm:p-4" aria-hidden="true">
     <div class="modal-backdrop absolute inset-0 bg-black/70 backdrop-blur-sm" data-close></div>
 
-    <div class="modal-card relative w-full max-w-lg rounded-3xl bg-gradient-to-b from-night-700 to-night-800 ring-1 ring-white/15 shadow-2xl overflow-hidden"
-         role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <div class="h-1.5 bg-gradient-to-r from-gold-400 via-pink-400 to-violet-400"></div>
-      <button type="button" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-xl leading-none transition"
+    <div class="modal-card relative w-full max-w-lg flex flex-col rounded-t-3xl sm:rounded-3xl bg-gradient-to-b from-night-700 to-night-800 ring-1 ring-white/15 shadow-2xl overflow-hidden"
+         role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+      <div class="h-1.5 shrink-0 bg-gradient-to-r from-gold-400 via-pink-400 to-violet-400"></div>
+      <div class="sm:hidden mx-auto mt-2 h-1.5 w-12 shrink-0 rounded-full bg-white/25" aria-hidden="true"></div>
+      <button type="button" class="absolute top-3 right-3 z-10 w-11 h-11 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 text-xl leading-none transition"
               aria-label="Schließen" data-close>&times;</button>
 
-      <div class="p-6 sm:p-8">
-        <div class="flex items-center gap-3 mb-4 pr-8">
-          <span id="modal-icon" class="text-4xl" aria-hidden="true"></span>
+      <div class="modal-body overflow-y-auto overscroll-contain px-5 pt-3 pb-5 sm:p-8">
+        <div class="flex items-center gap-3 mb-4 pr-12 sm:pr-8">
+          <span id="modal-icon" class="text-3xl sm:text-4xl" aria-hidden="true"></span>
           <div>
             <p id="modal-category" class="text-xs uppercase tracking-widest text-gold-400"></p>
-            <h2 id="modal-title" class="font-display text-2xl font-semibold"></h2>
+            <h2 id="modal-title" class="font-display text-xl sm:text-2xl font-semibold leading-tight"></h2>
           </div>
         </div>
 
         <div id="modal-question" class="text-slate-200 leading-relaxed space-y-3"></div>
 
-        <form id="answer-form" class="mt-6" autocomplete="off" novalidate>
+        <form id="answer-form" class="mt-5 sm:mt-6" autocomplete="off" novalidate>
           <label for="answer-input" class="block text-sm text-slate-400 mb-1.5">Deine Antwort</label>
           <div class="flex gap-2">
-            <input id="answer-input" type="text" inputmode="text"
+            <input id="answer-input" type="text" inputmode="text" enterkeyhint="go"
+              autocapitalize="off" autocorrect="off" spellcheck="false"
               class="answer-input flex-1 min-w-0 rounded-xl bg-night-900/80 px-4 py-3 text-lg ring-2 ring-white/10 focus:ring-gold-400 outline-none transition"
               placeholder="z. B. -3/4 oder 0,75" />
             <button type="submit"
@@ -326,12 +333,19 @@
               Prüfen
             </button>
           </div>
+          <div class="symbol-keys mt-2 flex gap-2" aria-label="Sonderzeichen einfügen">
+            <button type="button" data-insert="-" aria-label="Minus einfügen">−</button>
+            <button type="button" data-insert="/" aria-label="Bruchstrich einfügen">/</button>
+            <button type="button" data-insert="," aria-label="Komma einfügen">,</button>
+            <button type="button" data-insert=" " aria-label="Leerzeichen einfügen">␣</button>
+            <button type="button" data-insert="backspace" aria-label="Letztes Zeichen löschen">⌫</button>
+          </div>
           <p class="mt-1.5 text-xs text-slate-400">Erlaubt: Brüche (3/4), Dezimalzahlen (0,75), gemischte Zahlen (1 3/4) und negative Zahlen (-2/3).</p>
           <p id="feedback" class="feedback mt-3 min-h-[1.5rem] font-semibold" aria-live="polite"></p>
         </form>
 
         <details id="hint-box" class="mt-2 group">
-          <summary class="cursor-pointer text-sm text-violet-300 hover:text-violet-200 select-none">💡 Tipp anzeigen</summary>
+          <summary class="cursor-pointer py-2 text-sm text-violet-300 hover:text-violet-200 select-none">💡 Tipp anzeigen</summary>
           <p id="modal-hint" class="mt-2 text-sm text-slate-300 bg-white/5 rounded-xl p-3"></p>
         </details>
       </div>
