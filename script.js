@@ -141,6 +141,12 @@
   const dotsEl      = $('#progress-dots');
   const winBanner   = $('#win-banner');
   const hintToggle  = $('#hint-toggle');
+  const modalCard   = modal.querySelector('.modal-card');
+  const symbolKeys  = [...modal.querySelectorAll('[data-insert]')];
+
+  // Touch-Gerät (Handy/Tablet)? Dann z. B. die Tastatur nicht sofort öffnen.
+  const isTouch = () =>
+    window.matchMedia('(hover: none), (pointer: coarse)').matches || navigator.maxTouchPoints > 0;
 
   let currentId = null;
   let lastFocused = null;
@@ -202,8 +208,8 @@
     if (Math.abs(value - PUZZLES[currentId].answer) < 1e-9 && Number.isFinite(value)) {
       setFeedback('correct', randomItem(['Richtig! 🎉', 'Super gemacht! ✅', 'Genau! Weiter so! 🌟']));
       markSolved(currentId);
-      input.disabled = true;
-      submitBtn.disabled = true;
+      setInputEnabled(false);
+      input.blur(); // Handy-Tastatur schließen
       closeTimer = setTimeout(closeModal, 1300);
     } else {
       setFeedback('wrong', randomItem(['Leider falsch – versuch es nochmal! ❌', 'Nicht ganz… 🤔 Schau dir den Tipp an.', 'Fast! Probier es noch einmal. 🔁']));
@@ -252,17 +258,19 @@
     room.querySelectorAll('#door-locks circle').forEach((c, i) => c.classList.toggle('on', i < count));
   }
 
-  // Grünes Häkchen an der Stelle des Hotspots
+  // Grünes Häkchen an der oberen rechten Ecke des Details
   function addBadge(hotspot) {
-    const marker = hotspot.querySelector('.hint-marker');
+    const area = hotspot.querySelector('.hotspot-area');
+    const x = Number(area.getAttribute('x')) + Number(area.getAttribute('width'));
+    const y = Number(area.getAttribute('y'));
     const NS = 'http://www.w3.org/2000/svg';
     const wrap = document.createElementNS(NS, 'g');
     wrap.setAttribute('class', 'badge-wrap');
-    wrap.setAttribute('transform', marker.getAttribute('transform'));
+    wrap.setAttribute('transform', `translate(${x} ${y})`);
     wrap.innerHTML = `
       <g class="solved-badge">
-        <circle r="15" fill="#22c55e" stroke="#fff" stroke-width="3"/>
-        <path d="M-7 0 L-2 6 L8 -6" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle r="11" fill="#22c55e" stroke="#fff" stroke-width="2.5"/>
+        <path d="M-5 0 L-1.5 4.5 L5.5 -4.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
       </g>`;
     hotspot.appendChild(wrap);
   }
@@ -290,15 +298,50 @@
 
     const isSolved = solved.has(id);
     input.value = isSolved ? p.answer : '';
-    input.disabled = isSolved;
-    submitBtn.disabled = isSolved;
+    setInputEnabled(!isSolved);
     if (isSolved) setFeedback('correct', 'Dieses Rätsel hast du schon gelöst! ✅');
 
     modal.classList.remove('closing');
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    setTimeout(() => (isSolved ? modal.querySelector('[data-close].rounded-full') : input).focus(), 50);
+    fitModalToViewport();
+    modal.querySelector('.modal-body').scrollTop = 0;
+
+    // Auf Touch-Geräten nicht sofort die Tastatur öffnen – sie würde die Aufgabe verdecken.
+    const target = isSolved || isTouch() ? modalCard : input;
+    setTimeout(() => target.focus({ preventScroll: true }), 50);
+  }
+
+  function setInputEnabled(enabled) {
+    input.disabled = !enabled;
+    submitBtn.disabled = !enabled;
+    symbolKeys.forEach((b) => (b.disabled = !enabled));
+  }
+
+  // Das Modal an den sichtbaren Bereich anpassen (wichtig, wenn die
+  // Bildschirmtastatur auf iOS/Android einen Teil des Bildschirms verdeckt).
+  function fitModalToViewport() {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    modal.style.top = `${vv.offsetTop}px`;
+    modal.style.height = `${vv.height}px`;
+    modal.style.bottom = 'auto';
+  }
+
+  // Sonderzeichen an der Cursor-Position einfügen (− und / sind auf Handy-Tastaturen versteckt)
+  function insertSymbol(sym) {
+    if (input.disabled) return;
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? input.value.length;
+    if (sym === 'backspace') {
+      if (start !== end) input.setRangeText('', start, end, 'end');
+      else if (start > 0) input.setRangeText('', start - 1, start, 'end');
+    } else {
+      input.setRangeText(sym, start, end, 'end');
+    }
+    input.classList.remove('correct', 'wrong');
+    input.focus({ preventScroll: true });
   }
 
   function closeModal() {
@@ -329,6 +372,8 @@
   // ---------------------------------------------------------------
   function celebrate() {
     closeModal();
+    // Auf dem Handy das Zimmer ins Bild holen, damit man die Tür aufgehen sieht
+    if (window.innerWidth < 640) room.scrollIntoView({ behavior: 'smooth', block: 'start' });
     room.classList.add('door-open');
     winBanner.classList.remove('hidden');
     fireConfetti();
@@ -359,12 +404,33 @@
   // ---------------------------------------------------------------
   room.querySelectorAll('.hotspot').forEach((el) => {
     el.addEventListener('click', () => openModal(el.dataset.puzzle));
+    // Sichtbares Feedback beim Antippen
+    el.addEventListener('pointerdown', () => el.classList.add('tapped'));
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach((type) =>
+      el.addEventListener(type, () => setTimeout(() => el.classList.remove('tapped'), 150)));
     el.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(el.dataset.puzzle); }
     });
   });
 
   form.addEventListener('submit', checkAnswer);
+
+  symbolKeys.forEach((btn) => {
+    // pointerdown verhindern, damit das Eingabefeld den Fokus (und die Tastatur) behält
+    btn.addEventListener('pointerdown', (e) => e.preventDefault());
+    btn.addEventListener('click', () => insertSymbol(btn.dataset.insert));
+  });
+
+  // Eingabefeld sichtbar halten, wenn die Tastatur aufgeht
+  input.addEventListener('focus', () => {
+    if (!isTouch()) return;
+    setTimeout(() => input.scrollIntoView({ block: 'center', behavior: 'smooth' }), 300);
+  });
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', () => modal.classList.contains('open') && fitModalToViewport());
+    window.visualViewport.addEventListener('scroll', () => modal.classList.contains('open') && fitModalToViewport());
+  }
   modal.querySelectorAll('[data-close]').forEach((el) => el.addEventListener('click', closeModal));
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();

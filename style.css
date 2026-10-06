@@ -3,7 +3,35 @@
    (Tailwind übernimmt das Layout, hier stehen Animationen & SVG-Styles)
    ================================================================ */
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Kein Doppeltipp-Zoom / keine Klickverzögerung auf Touch-Geräten */
+button, summary, input, .hotspot { touch-action: manipulation; }
+
+/* Abstand zu Notch / abgerundeten Ecken (iPhone, Android) */
+.page {
+  padding-left: max(0.75rem, env(safe-area-inset-left));
+  padding-right: max(0.75rem, env(safe-area-inset-right));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+@media (min-width: 640px) {
+  .page {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+/* Texte je nach Eingabegerät (Maus vs. Finger) */
+.pointer-coarse { display: none; }
+@media (hover: none), (pointer: coarse) {
+  .pointer-fine   { display: none; }
+  .pointer-coarse { display: inline; }
+}
 
 /* ---------- Funkelnder Sternenhimmel im Hintergrund ---------- */
 .stars {
@@ -41,12 +69,6 @@ html { scroll-behavior: smooth; }
   box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.5);
 }
 
-/* ---------- Zimmer: auf kleinen Bildschirmen seitlich wischbar ---------- */
-.room-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
-@media (max-width: 639px) {
-  .room-scroll > svg { width: 760px; max-width: none; }
-}
-
 /* ---------- Hotspots im SVG ---------- */
 .hotspot {
   cursor: pointer;
@@ -55,23 +77,41 @@ html { scroll-behavior: smooth; }
   transform-box: fill-box;
   transform-origin: center;
 }
+/* Kleine, sichtbare Markierung um das Detail (Schloss, Buch, …) */
 .hotspot-area {
-  fill: transparent;           /* unsichtbar, vergrößert aber die Klickfläche */
+  fill: transparent;
   stroke: transparent;
-  stroke-width: 3;
-  stroke-dasharray: 8 6;
+  stroke-width: 2.5;
+  stroke-dasharray: 6 4;
   transition: stroke 0.25s ease, fill 0.25s ease;
 }
-.hotspot:hover,
+/* Unsichtbare, größere Tippfläche – nur auf Touch-Geräten aktiv,
+   damit man die kleinen Details auch mit dem Finger trifft */
+.hotspot-hit { fill: transparent; pointer-events: none; }
+@media (hover: none), (pointer: coarse) {
+  .hotspot-hit { pointer-events: all; }
+}
+
+/* Hover nur auf Geräten mit Maus – sonst "kleben" die Effekte nach dem Antippen */
+@media (hover: hover) {
+  .hotspot:hover {
+    filter: drop-shadow(0 0 10px rgba(253, 230, 138, 0.75));
+  }
+  .hotspot:hover .hotspot-area {
+    stroke: rgba(253, 230, 138, 0.7);
+    fill: rgba(253, 230, 138, 0.06);
+  }
+}
 .hotspot:focus-visible {
   filter: drop-shadow(0 0 10px rgba(253, 230, 138, 0.75));
 }
-.hotspot:hover .hotspot-area,
-.hotspot:focus-visible .hotspot-area {
+.hotspot:focus-visible .hotspot-area,
+.hotspot.tapped .hotspot-area {
   stroke: rgba(253, 230, 138, 0.7);
-  fill: rgba(253, 230, 138, 0.06);
+  fill: rgba(253, 230, 138, 0.12);
 }
-.hotspot:active { transform: scale(0.98); }
+.hotspot:active,
+.hotspot.tapped { filter: drop-shadow(0 0 12px rgba(253, 230, 138, 0.85)); }
 
 /* Pulsierende Markierung – nur sichtbar, wenn "Verstecke zeigen" aktiv ist */
 .hint-marker circle {
@@ -137,6 +177,46 @@ html { scroll-behavior: smooth; }
   to   { opacity: 0; transform: scale(0.92) translateY(10px); }
 }
 
+/* Modal: Höhe begrenzen, Inhalt scrollt */
+.modal-card { max-height: calc(100% - 2rem); outline: none; }
+.modal-body { -webkit-overflow-scrolling: touch; }
+
+/* Auf dem Handy: Bottom-Sheet, das von unten hereinfährt */
+@media (max-width: 639px) {
+  .modal-card {
+    max-height: calc(100% - 0.75rem - env(safe-area-inset-top));
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .modal .modal-card         { animation: sheetIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  .modal.closing .modal-card { animation: sheetOut 0.2s ease-in forwards; }
+}
+@keyframes sheetIn  { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes sheetOut { from { transform: translateY(0); }    to { transform: translateY(100%); } }
+
+/* Smartphone quer: wenig Höhe, also Grafiken kleiner */
+@media (max-height: 500px) {
+  .modal-card { max-height: calc(100% - 0.5rem); }
+  .puzzle-figure { max-height: 28vh; }
+}
+
+/* Sonderzeichen-Tasten (Minus und Bruchstrich sind auf Handy-Tastaturen versteckt) */
+.symbol-keys button {
+  flex: 1 1 0;
+  min-height: 44px;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  font-family: "Fredoka", system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.symbol-keys button:active { background: rgba(251, 191, 36, 0.35); transform: scale(0.95); }
+@media (hover: hover) {
+  .symbol-keys button:hover { background: rgba(255, 255, 255, 0.16); }
+}
+.symbol-keys button:disabled { opacity: 0.4; }
+
 /* Feedback-Zustände des Eingabefelds */
 .answer-input.correct { --tw-ring-color: #22c55e; background: rgba(34, 197, 94, 0.15); }
 .answer-input.wrong   { --tw-ring-color: #ef4444; background: rgba(239, 68, 68, 0.15); animation: shake 0.45s ease; }
@@ -165,6 +245,16 @@ html { scroll-behavior: smooth; }
   animation: fadeIn 0.6s ease;
 }
 .win-banner.hidden { display: none; }
+/* Auf kleinen Bildschirmen ist das Zimmer zu niedrig für das Banner → über die ganze Seite legen */
+@media (max-width: 639px) {
+  .win-banner {
+    position: fixed;
+    z-index: 40;
+    align-items: flex-end;
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    background: rgba(15, 10, 30, 0.6);
+  }
+}
 .win-banner > div { animation: modalIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
 /* Respektiere "Bewegung reduzieren" */
