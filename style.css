@@ -77,13 +77,21 @@ button, summary, input, .hotspot { touch-action: manipulation; }
   transform-box: fill-box;
   transform-origin: center;
 }
+/* Kleine, sichtbare Markierung um das Detail (Schloss, Buch, …) */
 .hotspot-area {
-  fill: transparent;           /* unsichtbar, vergrößert aber die Klickfläche */
+  fill: transparent;
   stroke: transparent;
-  stroke-width: 3;
-  stroke-dasharray: 8 6;
+  stroke-width: 2.5;
+  stroke-dasharray: 6 4;
   transition: stroke 0.25s ease, fill 0.25s ease;
 }
+/* Unsichtbare, größere Tippfläche – nur auf Touch-Geräten aktiv,
+   damit man die kleinen Details auch mit dem Finger trifft */
+.hotspot-hit { fill: transparent; pointer-events: none; }
+@media (hover: none), (pointer: coarse) {
+  .hotspot-hit { pointer-events: all; }
+}
+
 /* Hover nur auf Geräten mit Maus – sonst "kleben" die Effekte nach dem Antippen */
 @media (hover: hover) {
   .hotspot:hover {
@@ -103,7 +111,7 @@ button, summary, input, .hotspot { touch-action: manipulation; }
   fill: rgba(253, 230, 138, 0.12);
 }
 .hotspot:active,
-.hotspot.tapped { transform: scale(0.97); filter: drop-shadow(0 0 12px rgba(253, 230, 138, 0.85)); }
+.hotspot.tapped { filter: drop-shadow(0 0 12px rgba(253, 230, 138, 0.85)); }
 
 /* Pulsierende Markierung – nur sichtbar, wenn "Verstecke zeigen" aktiv ist */
 .hint-marker circle {

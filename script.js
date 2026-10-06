@@ -258,17 +258,19 @@
     room.querySelectorAll('#door-locks circle').forEach((c, i) => c.classList.toggle('on', i < count));
   }
 
-  // Grünes Häkchen an der Stelle des Hotspots
+  // Grünes Häkchen an der oberen rechten Ecke des Details
   function addBadge(hotspot) {
-    const marker = hotspot.querySelector('.hint-marker');
+    const area = hotspot.querySelector('.hotspot-area');
+    const x = Number(area.getAttribute('x')) + Number(area.getAttribute('width'));
+    const y = Number(area.getAttribute('y'));
     const NS = 'http://www.w3.org/2000/svg';
     const wrap = document.createElementNS(NS, 'g');
     wrap.setAttribute('class', 'badge-wrap');
-    wrap.setAttribute('transform', marker.getAttribute('transform'));
+    wrap.setAttribute('transform', `translate(${x} ${y})`);
     wrap.innerHTML = `
       <g class="solved-badge">
-        <circle r="15" fill="#22c55e" stroke="#fff" stroke-width="3"/>
-        <path d="M-7 0 L-2 6 L8 -6" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle r="11" fill="#22c55e" stroke="#fff" stroke-width="2.5"/>
+        <path d="M-5 0 L-1.5 4.5 L5.5 -4.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
       </g>`;
     hotspot.appendChild(wrap);
   }
