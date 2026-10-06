@@ -17,18 +17,18 @@ Tailwind CSS, die Schriften und die Konfetti-Bibliothek kommen per CDN, es muss 
 
 ## Die 8 Rätsel (Thema: rationale Zahlen)
 
-Jedes Rätsel steckt hinter einem kleinen Detail im Zimmer:
+Jedes Rätsel steckt hinter einem kleinen Detail im Zimmer. Die Fortschrittsanzeige nennt nur das Thema der Aufgabe, nicht das Versteck.
 
 | # | Detail im Zimmer             | Thema                  | Aufgabe                                          | Lösung          |
 |---|------------------------------|------------------------|--------------------------------------------------|-----------------|
-| 1 | 🕯️ Kerze (Tisch)              | Bruchteile             | 20-cm-Kerze, 2,5 cm/h – Anteil nach 3 h          | 3/8 (0,375)     |
-| 2 | 🌙 Mond (Fenster)             | Zahlen vergleichen     | Größte von −2/3, −0,6, −5/8, −0,65               | −0,6 (−3/5)     |
-| 3 | 🐌 Schnecke (Fensterbank)     | Zahlengerade           | Von 0,8 nach −1 1/5 – Veränderung                | −2              |
-| 4 | ❓ Fragezeichen-Buch (Regal)  | Zahlenfolge            | 81, −54, 36, −24, 16, ?                          | −32/3 (−10 2/3) |
+| 1 | 🕯️ Kerze (Tisch)              | Bruchteil berechnen    | 20-cm-Kerze, 2,5 cm/h – Anteil nach 3 h          | 3/8 (0,375)     |
+| 2 | 🌙 Mond (Fenster)             | Negative Zahlen vergleichen | Größte von −2/3, −0,6, −5/8, −0,65               | −0,6 (−3/5)     |
+| 3 | 🐌 Schnecke (Fensterbank)     | Zahlengerade: Veränderung | Von 0,8 nach −1 1/5 – Veränderung                | −2              |
+| 4 | ❓ Fragezeichen-Buch (Regal)  | Zahlenfolge mit Brüchen | 81, −54, 36, −24, 16, ?                          | −32/3 (−10 2/3) |
 | 5 | 🟪 Lila Rechteck (Gemälde)    | Brüche dividieren      | Fläche 3/4 m², Länge 1 1/4 m – Breite?           | 3/5 (0,6)       |
-| 6 | 🌡️ Thermometer (Wand)         | Rechnen mit Vorzeichen | −4,5 °C + 7 1/4 − 5,5                            | −2,75 (−11/4)   |
-| 7 | 🕒 Uhrzeiger (Wanduhr)        | Multiplizieren         | 21 Tage · (−2/5) Minute                          | −8,4 (−42/5)    |
-| 8 | 🔒 Truhenschloss              | Mittelwert             | Mittelwert von −3/4, 1/2, −1 1/4, 2,5            | 1/4 (0,25)      |
+| 6 | 🌡️ Thermometer (Wand)         | Addieren mit Vorzeichen | −4,5 °C + 7 1/4 − 5,5                            | −2,75 (−11/4)   |
+| 7 | 🕒 Uhrzeiger (Wanduhr)        | Multiplizieren mit Minus | 21 Tage · (−2/5) Minute                          | −8,4 (−42/5)    |
+| 8 | 🔒 Truhenschloss              | Mittelwert berechnen   | Mittelwert von −3/4, 1/2, −1 1/4, 2,5            | 1/4 (0,25)      |
 
 Antworten dürfen als Bruch (`-3/8`), Dezimalzahl (`-0,375`) oder gemischte Zahl (`1 3/4`) eingegeben werden. Gleichwertige Brüche (z. B. `14/8`) werden ebenfalls als richtig erkannt.
 

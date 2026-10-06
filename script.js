@@ -6,7 +6,8 @@
 
   // ---------------------------------------------------------------
   // 1. Die Rätsel
-  //    name/short: Name in der Fortschrittsanzeige (short = Kurzform fürs Handy)
+  //    name: Name des Verstecks im Zimmer
+  //    category: kurze Beschreibung der Aufgabe (erscheint in der Fortschrittsanzeige)
   //    answer: die richtige Zahl
   //    question: HTML (darf kleine SVG-Grafiken enthalten)
   // ---------------------------------------------------------------
@@ -15,7 +16,7 @@
       order: 1,
       icon: '🕯️',
       name: 'Kerze',
-      category: 'Bruchteile',
+      category: 'Bruchteil berechnen',
       title: 'Die brennende Kerze',
       question: `
         <p>Die Kerze auf dem Tisch war am Anfang <strong>20 cm</strong> lang. Pro Stunde brennen <strong>2,5 cm</strong> ab.</p>
@@ -29,7 +30,7 @@
       order: 2,
       icon: '🌙',
       name: 'Mond',
-      category: 'Zahlen vergleichen',
+      category: 'Negative Zahlen vergleichen',
       title: 'Der Mond und die negativen Zahlen',
       question: `
         <p>Neben dem Mond leuchten vier Sterne mit Zahlen. Nur der Stern mit der <strong>größten</strong> Zahl zeigt den Weg:</p>
@@ -43,7 +44,7 @@
       order: 3,
       icon: '🐌',
       name: 'Schnecke',
-      category: 'Zahlengerade',
+      category: 'Zahlengerade: Veränderung',
       title: 'Die Schnecke auf der Fensterbank',
       question: `
         <p>Auf die Fensterbank ist eine Zahlengerade gemalt. Am Morgen sitzt die Schnecke bei <strong>0,8</strong>, am Abend bei <strong>−1 1/5</strong>.</p>
@@ -72,8 +73,7 @@
       order: 4,
       icon: '❓',
       name: 'Fragezeichen-Buch',
-      short: '?-Buch',
-      category: 'Zahlenfolge',
+      category: 'Zahlenfolge mit Brüchen',
       title: 'Das Buch mit dem Fragezeichen',
       question: `
         <p>Im Regal stehen Bücher mit Zahlen auf dem Rücken – auf dem letzten steht nur ein <strong>?</strong>:</p>
@@ -87,7 +87,6 @@
       order: 5,
       icon: '🟪',
       name: 'Lila Rechteck',
-      short: 'Rechteck',
       category: 'Brüche dividieren',
       title: 'Das lila Rechteck im Gemälde',
       question: `
@@ -107,8 +106,7 @@
       order: 6,
       icon: '🌡️',
       name: 'Thermometer',
-      short: 'Thermo',
-      category: 'Rechnen mit Vorzeichen',
+      category: 'Addieren mit Vorzeichen',
       title: 'Das Thermometer an der Wand',
       question: `
         <p>Das Thermometer zeigt den Temperaturverlauf eines Wintertages:</p>
@@ -126,8 +124,7 @@
       order: 7,
       icon: '🕒',
       name: 'Uhrzeiger',
-      short: 'Zeiger',
-      category: 'Multiplizieren',
+      category: 'Multiplizieren mit Minus',
       title: 'Die ungenaue Wanduhr',
       question: `
         <p>Die Wanduhr geht jeden Tag <strong>2/5 Minute nach</strong> (sie ist zu langsam). Eine Abweichung nach hinten zählt <strong>negativ</strong>.</p>
@@ -149,8 +146,7 @@
       order: 8,
       icon: '🔒',
       name: 'Truhenschloss',
-      short: 'Schloss',
-      category: 'Mittelwert',
+      category: 'Mittelwert berechnen',
       title: 'Das Schloss der Schatztruhe',
       question: `
         <p>Das letzte Schloss! Auf vier Rädchen stehen diese Zahlen:</p>
@@ -219,14 +215,13 @@
   IDS.forEach((id) => {
     const li = document.createElement('li');
     const p = PUZZLES[id];
-    li.className = 'progress-dot flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 rounded-lg bg-white/5 py-1.5 px-0.5 sm:px-1 min-w-0';
+    li.className = 'progress-dot flex items-center gap-2 rounded-lg bg-white/5 py-1.5 px-2 min-w-0 text-left';
     li.dataset.id = id;
+    // Beschreibung der Mathe-Aufgabe – verrät nicht, wo das Rätsel versteckt ist
     li.innerHTML = `
-      <span class="dot-icon" aria-hidden="true">${p.icon}</span>
-      <span class="truncate max-w-full text-[0.7rem] sm:text-xs lg:text-sm leading-tight">
-        ${p.short || p.name}
-      </span>`;
-    li.title = `${p.name} – ${p.category}`;
+      <span class="dot-num" aria-hidden="true">${p.order}</span>
+      <span class="min-w-0 text-[0.7rem] sm:text-xs lg:text-sm leading-tight">${p.category}</span>`;
+    li.title = `Rätsel ${p.order}: ${p.category}`;
     dotsEl.appendChild(li);
   });
 
@@ -311,8 +306,10 @@
 
     dotsEl.querySelectorAll('.progress-dot').forEach((li) => {
       const isSolved = solved.has(li.dataset.id);
+      const p = PUZZLES[li.dataset.id];
       li.classList.toggle('solved', isSolved);
-      li.setAttribute('aria-label', `${PUZZLES[li.dataset.id].name}: ${isSolved ? 'gelöst' : 'noch offen'}`);
+      li.querySelector('.dot-num').textContent = isSolved ? '✓' : p.order;
+      li.setAttribute('aria-label', `Rätsel ${p.order}, ${p.category}: ${isSolved ? 'gelöst' : 'noch offen'}`);
     });
 
     room.querySelectorAll('.hotspot').forEach((el) => {
