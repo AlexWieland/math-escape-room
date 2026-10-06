@@ -17,39 +17,36 @@
       title: 'Die Bücher-Reihe',
       question: `
         <p>Auf den Buchrücken im Regal stehen Zahlen – nur das letzte Buch ist unleserlich:</p>
-        <p class="text-center font-display text-2xl tracking-wide text-gold-300">2 · 6 · 12 · 20 · 30 · <span class="text-pink-300">?</span></p>
-        <p>Welche Zahl gehört auf das letzte Buch?</p>`,
-      hint: 'Schau dir die Abstände zwischen den Zahlen an: +4, +6, +8 … Oder: 1·2, 2·3, 3·4 …',
-      answer: 42,
+        <p class="text-center font-display text-2xl tracking-wide text-gold-300">12 · −6 · 3 · −1,5 · 0,75 · <span class="text-pink-300">?</span></p>
+        <p>Welche Zahl gehört auf das letzte Buch? <span class="text-slate-400">(als Bruch oder Dezimalzahl)</span></p>`,
+      hint: 'Von Buch zu Buch wird immer mit derselben Zahl multipliziert. 12 · ? = −6. Achte auf das Vorzeichen!',
+      answer: -0.375, // −3/8
     },
 
     painting: {
       order: 2,
       icon: '🖼️',
-      category: 'Geometrie',
+      category: 'Bruchrechnen',
       title: 'Das Rechteck im Bild',
       question: `
-        <p>Im Gemälde ist ein lila Rechteck versteckt. Auf der Rückseite steht:</p>
-        <blockquote class="border-l-4 border-violet-400 pl-3 italic text-slate-300">
-          „Mein Umfang beträgt <strong>30 cm</strong>. Ich bin doppelt so lang wie breit.“
-        </blockquote>
-        <svg class="puzzle-figure" viewBox="0 0 260 120" aria-hidden="true">
-          <rect x="40" y="20" width="180" height="80" fill="rgba(167,139,250,.2)" stroke="#a78bfa" stroke-width="3"/>
-          <text x="130" y="14" fill="#e2e8f0" font-size="14" text-anchor="middle">2·b</text>
-          <text x="28" y="65" fill="#e2e8f0" font-size="14" text-anchor="middle">b</text>
+        <p>Im Gemälde ist ein lila Rechteck versteckt. Auf der Rückseite steht, wie groß es in Wirklichkeit ist:</p>
+        <svg class="puzzle-figure" viewBox="0 0 260 130" aria-hidden="true">
+          <rect x="50" y="25" width="170" height="80" fill="rgba(167,139,250,.2)" stroke="#a78bfa" stroke-width="3"/>
+          <text x="135" y="17" fill="#e2e8f0" font-size="15" text-anchor="middle">5/4 m</text>
+          <text x="25" y="70" fill="#e2e8f0" font-size="15" text-anchor="middle">2/5 m</text>
         </svg>
-        <p>Wie groß ist der <strong>Flächeninhalt</strong> des Rechtecks (in cm²)?</p>`,
-      hint: 'Umfang = 2·Länge + 2·Breite = 2·(2b) + 2·b = 6b. Wenn 6b = 30 ist, wie groß ist b?',
-      answer: 50,
+        <p>Wie groß ist der <strong>Flächeninhalt</strong> des Rechtecks (in m²)? Gib das Ergebnis gekürzt oder als Dezimalzahl an.</p>`,
+      hint: 'Fläche = Länge · Breite. Brüche multiplizieren: Zähler mal Zähler, Nenner mal Nenner – und dann kürzen.',
+      answer: 0.5, // 1/2
     },
 
     clock: {
       order: 3,
       icon: '🕰️',
-      category: 'Winkel',
+      category: 'Zeit als Bruch',
       title: 'Die stehengebliebene Uhr',
       question: `
-        <p>Die Wanduhr ist um genau <strong>15:30 Uhr</strong> stehen geblieben.</p>
+        <p>Die Wanduhr ist um <strong>15:30 Uhr</strong> stehen geblieben. Der letzte Bus fährt um <strong>17:15 Uhr</strong>.</p>
         <svg class="puzzle-figure" viewBox="0 0 120 120" style="max-width:140px" aria-hidden="true">
           <circle cx="60" cy="60" r="54" fill="#fffbeb" stroke="#7c4a24" stroke-width="6"/>
           <g fill="#1f2937" font-size="12" text-anchor="middle" font-weight="700">
@@ -59,45 +56,55 @@
           <line x1="60" y1="60" x2="89" y2="68" stroke="#b91c1c" stroke-width="5" stroke-linecap="round"/>
           <circle cx="60" cy="60" r="4" fill="#1f2937"/>
         </svg>
-        <p>Wie groß ist der <strong>kleinere Winkel</strong> zwischen Stunden- und Minutenzeiger (in Grad)?</p>`,
-      hint: 'Achtung: Der Stundenzeiger steht nicht genau auf der 3! In 60 Minuten wandert er 30°, in 30 Minuten also 15°.',
-      answer: 75,
+        <p>Wie viele <strong>Stunden</strong> bleiben bis zur Abfahrt? Gib die Antwort als Bruch oder Dezimalzahl an (nicht in Minuten!).</p>`,
+      hint: 'Von 15:30 bis 17:15 sind es 1 Stunde und 45 Minuten. Welcher Bruchteil einer Stunde sind 45 Minuten?',
+      answer: 1.75, // 7/4
     },
 
     snail: {
       order: 4,
       icon: '🐌',
-      category: 'Logik',
-      title: 'Die fleißige Schnecke',
+      category: 'Zahlengerade',
+      title: 'Die Schnecke auf der Zahlengeraden',
       question: `
-        <p>Eine Schnecke sitzt am Boden eines <strong>10 m</strong> tiefen Brunnens.</p>
-        <p>Jeden Tag kriecht sie <strong>3 m</strong> nach oben, jede Nacht rutscht sie im Schlaf <strong>2 m</strong> wieder hinunter.</p>
-        <p>An welchem <strong>Tag</strong> erreicht sie zum ersten Mal den oberen Rand?</p>`,
-      hint: 'Pro Tag-Nacht-Runde schafft sie nur 1 m. Aber: Wenn sie tagsüber oben ankommt, rutscht sie nicht mehr zurück!',
-      answer: 8,
+        <p>Auf die Fensterbank ist eine Zahlengerade gemalt. Die Schnecke sitzt bei <strong>−2,5</strong>.</p>
+        <svg class="puzzle-figure" viewBox="0 0 260 70" aria-hidden="true">
+          <line x1="10" y1="40" x2="250" y2="40" stroke="#e2e8f0" stroke-width="2"/>
+          <path d="M250 40 l-8 -5 v10 z" fill="#e2e8f0"/>
+          <g stroke="#e2e8f0" stroke-width="2">
+            <line x1="20" y1="34" x2="20" y2="46"/><line x1="64" y1="34" x2="64" y2="46"/><line x1="108" y1="34" x2="108" y2="46"/>
+            <line x1="152" y1="34" x2="152" y2="46"/><line x1="196" y1="34" x2="196" y2="46"/><line x1="240" y1="34" x2="240" y2="46"/>
+          </g>
+          <g fill="#e2e8f0" font-size="12" text-anchor="middle">
+            <text x="20" y="62">−3</text><text x="64" y="62">−2</text><text x="108" y="62">−1</text>
+            <text x="152" y="62">0</text><text x="196" y="62">1</text><text x="240" y="62">2</text>
+          </g>
+          <circle cx="42" cy="40" r="6" fill="#f97316" stroke="#fff" stroke-width="2"/>
+          <text x="42" y="22" fill="#fdba74" font-size="16" text-anchor="middle">🐌</text>
+        </svg>
+        <p>Sie kriecht zuerst <strong>3 3/4</strong> Einheiten nach rechts und danach <strong>1/2</strong> Einheit nach links.</p>
+        <p>Bei welcher Zahl sitzt sie jetzt?</p>`,
+      hint: 'Nach rechts heißt plus, nach links heißt minus: −2,5 + 3,75 − 0,5.',
+      answer: 0.75, // 3/4
     },
 
     chest: {
       order: 5,
       icon: '💰',
-      category: 'Logik-Code',
+      category: 'Vorzeichenregeln',
       title: 'Das Zahlenschloss',
       question: `
-        <p>Die Truhe hat ein Schloss mit einem <strong>dreistelligen Code</strong>. Ein Zettel verrät:</p>
-        <ul class="list-disc pl-5 space-y-1 text-slate-300">
-          <li>Die erste Ziffer ist <strong>doppelt so groß</strong> wie die letzte.</li>
-          <li>Die mittlere Ziffer ist um <strong>1 größer</strong> als die erste.</li>
-          <li>Die Quersumme (Summe aller Ziffern) ist <strong>16</strong>.</li>
-        </ul>
+        <p>Die Truhe öffnet sich nur mit dem Ergebnis dieser Rechnung:</p>
+        <p class="text-center font-display text-2xl text-gold-300">( −1/2 − 1/4 ) : ( −3/8 )</p>
         <p>Wie lautet der Code?</p>`,
-      hint: 'Nenne die letzte Ziffer x. Dann ist die erste 2x und die mittlere 2x + 1. Zusammen: 5x + 1 = 16.',
-      answer: 673,
+      hint: 'Zuerst die Klammer: −1/2 − 1/4 = −3/4. Durch einen Bruch teilt man, indem man mit dem Kehrwert multipliziert. Und: minus mal minus ergibt plus!',
+      answer: 2,
     },
   };
 
   const IDS = Object.keys(PUZZLES).sort((a, b) => PUZZLES[a].order - PUZZLES[b].order);
   const TOTAL = IDS.length;
-  const STORAGE_KEY = 'mathe-zimmer-progress-v1';
+  const STORAGE_KEY = 'mathe-zimmer-rational-v1';
 
   // ---------------------------------------------------------------
   // 2. Zustand (wird im Browser gespeichert, falls möglich)
@@ -151,11 +158,31 @@
 
   // ---------------------------------------------------------------
   // 4. Antwort prüfen
-  //    Akzeptiert z. B. "75", "75°", "75 Grad", "50 cm²", "Tag 8", "6,0"
+  //    Akzeptiert Brüche ("-3/8"), Dezimalzahlen ("-0,375"),
+  //    gemischte Zahlen ("1 3/4") und Einheiten ("0,5 m²").
   // ---------------------------------------------------------------
   function parseAnswer(text) {
-    const match = String(text).replace(',', '.').match(/-?\d+(\.\d+)?/);
-    return match ? parseFloat(match[0]) : NaN;
+    const t = String(text)
+      .replace(/[−–]/g, '-')     // typografische Minuszeichen
+      .replace(/,/g, '.')
+      .replace(/[:÷]/g, '/');
+    const num = '(\\d+(?:\\.\\d+)?)';
+
+    // gemischte Zahl, z. B. "-1 3/4"
+    let m = t.match(new RegExp(`(-?)\\s*(\\d+)\\s+${num}\\s*/\\s*${num}`));
+    if (m) {
+      const value = parseInt(m[2], 10) + parseFloat(m[3]) / parseFloat(m[4]);
+      return m[1] ? -value : value;
+    }
+    // Bruch, z. B. "-3/8" oder "3/-8"
+    m = t.match(new RegExp(`(-?)\\s*${num}\\s*/\\s*(-?)\\s*${num}`));
+    if (m) {
+      const value = parseFloat(m[2]) / parseFloat(m[4]);
+      return (m[1] ? -1 : 1) * (m[3] ? -1 : 1) * value;
+    }
+    // Dezimalzahl oder ganze Zahl
+    m = t.match(/-?\s*\d+(\.\d+)?/);
+    return m ? parseFloat(m[0].replace(/\s/g, '')) : NaN;
   }
 
   function checkAnswer(e) {
@@ -172,7 +199,7 @@
       return;
     }
 
-    if (Math.abs(value - PUZZLES[currentId].answer) < 1e-9) {
+    if (Math.abs(value - PUZZLES[currentId].answer) < 1e-9 && Number.isFinite(value)) {
       setFeedback('correct', randomItem(['Richtig! 🎉', 'Super gemacht! ✅', 'Genau! Weiter so! 🌟']));
       markSolved(currentId);
       input.disabled = true;

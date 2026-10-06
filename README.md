@@ -1,4 +1,4 @@
-# 🔑 Das geheimnisvolle Mathe-Zimmer
+# 🔑 Das geheimnisvolle Mathe-Zimmer – Rationale Zahlen
 
 Ein interaktives Mathe-Escape-Rätsel als Single-Page-Website, die ohne Build-Schritt direkt auf **GitHub Pages** läuft.
 
@@ -15,17 +15,17 @@ Im gezeichneten Zimmer (SVG) sind 5 Rätsel versteckt. Wer auf die richtigen Geg
 
 Tailwind CSS, die Schriften und die Konfetti-Bibliothek kommen per CDN, es muss also nichts installiert werden.
 
-## Die 5 Rätsel
+## Die 5 Rätsel (Thema: rationale Zahlen)
 
-| Gegenstand    | Thema       | Lösung |
-|---------------|-------------|--------|
-| 📚 Bücherregal | Zahlenfolge | 42     |
-| 🖼️ Gemälde     | Geometrie (Fläche) | 50 |
-| 🕰️ Wanduhr     | Winkel      | 75     |
-| 🐌 Fenster     | Logik       | 8      |
-| 💰 Schatztruhe | Logik-Code  | 673    |
+| Gegenstand    | Thema                         | Aufgabe                               | Lösung          |
+|---------------|-------------------------------|---------------------------------------|-----------------|
+| 📚 Bücherregal | Zahlenfolge                   | 12, −6, 3, −1,5, 0,75, ?              | −3/8 (−0,375)   |
+| 🖼️ Gemälde     | Brüche multiplizieren         | Fläche eines Rechtecks 5/4 m × 2/5 m  | 1/2 (0,5)       |
+| 🕰️ Wanduhr     | Zeit als Bruch                | 15:30 bis 17:15 in Stunden            | 7/4 (1,75)      |
+| 🐌 Fenster     | Zahlengerade                  | −2,5 + 3 3/4 − 1/2                    | 3/4 (0,75)      |
+| 💰 Schatztruhe | Vorzeichenregeln, Division    | (−1/2 − 1/4) : (−3/8)                 | 2               |
 
-Eingaben wie `75°`, `50 cm²` oder `Tag 8` werden ebenfalls als richtig erkannt.
+Antworten dürfen als Bruch (`-3/8`), Dezimalzahl (`-0,375`) oder gemischte Zahl (`1 3/4`) eingegeben werden. Gleichwertige Brüche (z. B. `14/8`) werden ebenfalls als richtig erkannt.
 
 ## Auf GitHub Pages veröffentlichen
 
