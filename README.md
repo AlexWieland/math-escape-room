@@ -2,7 +2,7 @@
 
 Ein interaktives Mathe-Escape-Rätsel als Single-Page-Website, die ohne Build-Schritt direkt auf **GitHub Pages** läuft.
 
-Im gezeichneten Zimmer (SVG) sind 5 Rätsel versteckt. Wer auf die richtigen Gegenstände klickt und alle Aufgaben löst, öffnet die Tür – mit Konfetti. 🎉
+Im gezeichneten Zimmer (SVG) sind 5 Rätsel versteckt. Wer die richtigen Details im Zimmer findet und alle Aufgaben löst, öffnet die Tür – mit Konfetti. 🎉
 
 ## Dateien
 
@@ -17,13 +17,15 @@ Tailwind CSS, die Schriften und die Konfetti-Bibliothek kommen per CDN, es muss 
 
 ## Die 5 Rätsel (Thema: rationale Zahlen)
 
-| Gegenstand    | Thema                         | Aufgabe                               | Lösung          |
-|---------------|-------------------------------|---------------------------------------|-----------------|
-| 📚 Bücherregal | Zahlenfolge                   | 12, −6, 3, −1,5, 0,75, ?              | −3/8 (−0,375)   |
-| 🖼️ Gemälde     | Brüche multiplizieren         | Fläche eines Rechtecks 5/4 m × 2/5 m  | 1/2 (0,5)       |
-| 🕰️ Wanduhr     | Zeit als Bruch                | 15:30 bis 17:15 in Stunden            | 7/4 (1,75)      |
-| 🐌 Fenster     | Zahlengerade                  | −2,5 + 3 3/4 − 1/2                    | 3/4 (0,75)      |
-| 💰 Schatztruhe | Vorzeichenregeln, Division    | (−1/2 − 1/4) : (−3/8)                 | 2               |
+Jedes Rätsel steckt hinter einem kleinen Detail im Zimmer (von links nach rechts):
+
+| # | Detail im Zimmer            | Thema                 | Aufgabe                                  | Lösung        |
+|---|-----------------------------|-----------------------|------------------------------------------|---------------|
+| 1 | 🐌 Schnecke (Fensterbank)    | Zahlengerade          | −1¾ + 2,5 − 1¼                           | −1/2 (−0,5)   |
+| 2 | ❓ Fragezeichen-Buch (Regal) | Zahlenfolge           | 12, −6, 3, −1,5, 0,75, ?                 | −3/8 (−0,375) |
+| 3 | 🟪 Lila Rechteck (Gemälde)   | Brüche addieren       | Umfang eines Rechtecks 5/4 m × 2/5 m     | 33/10 (3,3)   |
+| 4 | 🕒 Uhrzeiger (Wanduhr)       | Zeit als Bruch        | 15:30 bis 17:15 in Stunden               | 7/4 (1,75)    |
+| 5 | 🔒 Truhenschloss             | Vorzeichenregeln      | (−1/2 − 1/4) : (−3/8)                    | 2             |
 
 Antworten dürfen als Bruch (`-3/8`), Dezimalzahl (`-0,375`) oder gemischte Zahl (`1 3/4`) eingegeben werden. Gleichwertige Brüche (z. B. `14/8`) werden ebenfalls als richtig erkannt.
 

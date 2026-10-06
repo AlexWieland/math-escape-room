@@ -6,68 +6,19 @@
 
   // ---------------------------------------------------------------
   // 1. Die Rätsel
+  //    name/short: Name in der Fortschrittsanzeige (short = Kurzform fürs Handy)
   //    answer: die richtige Zahl
   //    question: HTML (darf kleine SVG-Grafiken enthalten)
   // ---------------------------------------------------------------
   const PUZZLES = {
-    sequence: {
-      order: 1,
-      icon: '📚',
-      category: 'Zahlenfolge',
-      title: 'Die Bücher-Reihe',
-      question: `
-        <p>Auf den Buchrücken im Regal stehen Zahlen – nur das letzte Buch ist unleserlich:</p>
-        <p class="text-center font-display text-2xl tracking-wide text-gold-300">12 · −6 · 3 · −1,5 · 0,75 · <span class="text-pink-300">?</span></p>
-        <p>Welche Zahl gehört auf das letzte Buch? <span class="text-slate-400">(als Bruch oder Dezimalzahl)</span></p>`,
-      hint: 'Von Buch zu Buch wird immer mit derselben Zahl multipliziert. 12 · ? = −6. Achte auf das Vorzeichen!',
-      answer: -0.375, // −3/8
-    },
-
-    painting: {
-      order: 2,
-      icon: '🖼️',
-      category: 'Bruchrechnen',
-      title: 'Das Rechteck im Bild',
-      question: `
-        <p>Im Gemälde ist ein lila Rechteck versteckt. Auf der Rückseite steht, wie groß es in Wirklichkeit ist:</p>
-        <svg class="puzzle-figure" viewBox="0 0 260 130" aria-hidden="true">
-          <rect x="50" y="25" width="170" height="80" fill="rgba(167,139,250,.2)" stroke="#a78bfa" stroke-width="3"/>
-          <text x="135" y="17" fill="#e2e8f0" font-size="15" text-anchor="middle">5/4 m</text>
-          <text x="25" y="70" fill="#e2e8f0" font-size="15" text-anchor="middle">2/5 m</text>
-        </svg>
-        <p>Wie groß ist der <strong>Flächeninhalt</strong> des Rechtecks (in m²)? Gib das Ergebnis gekürzt oder als Dezimalzahl an.</p>`,
-      hint: 'Fläche = Länge · Breite. Brüche multiplizieren: Zähler mal Zähler, Nenner mal Nenner – und dann kürzen.',
-      answer: 0.5, // 1/2
-    },
-
-    clock: {
-      order: 3,
-      icon: '🕰️',
-      category: 'Zeit als Bruch',
-      title: 'Die stehengebliebene Uhr',
-      question: `
-        <p>Die Wanduhr ist um <strong>15:30 Uhr</strong> stehen geblieben. Der letzte Bus fährt um <strong>17:15 Uhr</strong>.</p>
-        <svg class="puzzle-figure" viewBox="0 0 120 120" style="max-width:140px" aria-hidden="true">
-          <circle cx="60" cy="60" r="54" fill="#fffbeb" stroke="#7c4a24" stroke-width="6"/>
-          <g fill="#1f2937" font-size="12" text-anchor="middle" font-weight="700">
-            <text x="60" y="20">12</text><text x="103" y="64">3</text><text x="60" y="108">6</text><text x="17" y="64">9</text>
-          </g>
-          <line x1="60" y1="60" x2="60" y2="100" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
-          <line x1="60" y1="60" x2="89" y2="68" stroke="#b91c1c" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="60" cy="60" r="4" fill="#1f2937"/>
-        </svg>
-        <p>Wie viele <strong>Stunden</strong> bleiben bis zur Abfahrt? Gib die Antwort als Bruch oder Dezimalzahl an (nicht in Minuten!).</p>`,
-      hint: 'Von 15:30 bis 17:15 sind es 1 Stunde und 45 Minuten. Welcher Bruchteil einer Stunde sind 45 Minuten?',
-      answer: 1.75, // 7/4
-    },
-
     snail: {
-      order: 4,
+      order: 1,
       icon: '🐌',
+      name: 'Schnecke',
       category: 'Zahlengerade',
-      title: 'Die Schnecke auf der Zahlengeraden',
+      title: 'Die Schnecke auf der Fensterbank',
       question: `
-        <p>Auf die Fensterbank ist eine Zahlengerade gemalt. Die Schnecke sitzt bei <strong>−2,5</strong>.</p>
+        <p>Auf die Fensterbank ist eine Zahlengerade gemalt. Die Schnecke sitzt bei <strong>−1¾</strong>.</p>
         <svg class="puzzle-figure" viewBox="0 0 260 70" aria-hidden="true">
           <line x1="10" y1="40" x2="250" y2="40" stroke="#e2e8f0" stroke-width="2"/>
           <path d="M250 40 l-8 -5 v10 z" fill="#e2e8f0"/>
@@ -79,22 +30,81 @@
             <text x="20" y="62">−3</text><text x="64" y="62">−2</text><text x="108" y="62">−1</text>
             <text x="152" y="62">0</text><text x="196" y="62">1</text><text x="240" y="62">2</text>
           </g>
-          <circle cx="42" cy="40" r="6" fill="#f97316" stroke="#fff" stroke-width="2"/>
-          <text x="42" y="22" fill="#fdba74" font-size="16" text-anchor="middle">🐌</text>
+          <circle cx="75" cy="40" r="6" fill="#f97316" stroke="#fff" stroke-width="2"/>
+          <text x="75" y="22" font-size="16" text-anchor="middle">🐌</text>
         </svg>
-        <p>Sie kriecht zuerst <strong>3 3/4</strong> Einheiten nach rechts und danach <strong>1/2</strong> Einheit nach links.</p>
-        <p>Bei welcher Zahl sitzt sie jetzt?</p>`,
-      hint: 'Nach rechts heißt plus, nach links heißt minus: −2,5 + 3,75 − 0,5.',
-      answer: 0.75, // 3/4
+        <p>Am Vormittag kriecht sie <strong>2,5</strong> Einheiten nach rechts, am Nachmittag rutscht sie <strong>1¼</strong> Einheiten nach links zurück.</p>
+        <p>Bei welcher Zahl sitzt sie am Abend?</p>`,
+      hint: 'Nach rechts heißt plus, nach links heißt minus: −1,75 + 2,5 − 1,25. Rechne Schritt für Schritt und achte auf das Vorzeichen des Ergebnisses!',
+      answer: -0.5, // −1/2
+    },
+
+    sequence: {
+      order: 2,
+      icon: '❓',
+      name: 'Fragezeichen-Buch',
+      short: '?-Buch',
+      category: 'Zahlenfolge',
+      title: 'Das Buch mit dem Fragezeichen',
+      question: `
+        <p>Im Regal stehen Bücher mit Zahlen auf dem Rücken – auf dem letzten steht nur ein <strong>?</strong>:</p>
+        <p class="text-center font-display text-2xl tracking-wide text-gold-300">12 · −6 · 3 · −1,5 · 0,75 · <span class="text-pink-300">?</span></p>
+        <p>Welche Zahl gehört auf das Fragezeichen-Buch? <span class="text-slate-400">(als Bruch oder Dezimalzahl)</span></p>`,
+      hint: 'Von Buch zu Buch wird immer mit derselben Zahl multipliziert: 12 · ? = −6. Das Vorzeichen wechselt jedes Mal!',
+      answer: -0.375, // −3/8
+    },
+
+    painting: {
+      order: 3,
+      icon: '🟪',
+      name: 'Lila Rechteck',
+      short: 'Rechteck',
+      category: 'Brüche addieren',
+      title: 'Das lila Rechteck im Gemälde',
+      question: `
+        <p>Der Maler hat ein lila Rechteck in sein Bild versteckt. Er möchte es mit Goldband umranden. Auf der Rückseite stehen die Maße:</p>
+        <svg class="puzzle-figure" viewBox="0 0 260 130" aria-hidden="true">
+          <rect x="50" y="25" width="170" height="80" fill="rgba(167,139,250,.2)" stroke="#a78bfa" stroke-width="3"/>
+          <text x="135" y="17" fill="#e2e8f0" font-size="15" text-anchor="middle">5/4 m</text>
+          <text x="25" y="70" fill="#e2e8f0" font-size="15" text-anchor="middle">2/5 m</text>
+        </svg>
+        <p>Wie viele <strong>Meter Goldband</strong> braucht er für den ganzen Rand (Umfang)?</p>`,
+      hint: 'Umfang = 2 · (Länge + Breite). Mache die Brüche zuerst gleichnamig: 5/4 = 25/20 und 2/5 = 8/20.',
+      answer: 3.3, // 33/10
+    },
+
+    clock: {
+      order: 4,
+      icon: '🕒',
+      name: 'Uhrzeiger',
+      short: 'Zeiger',
+      category: 'Zeit als Bruch',
+      title: 'Die stehengebliebenen Uhrzeiger',
+      question: `
+        <p>Die Zeiger der Wanduhr stehen still – auf <strong>15:30 Uhr</strong>. Der letzte Bus fährt um <strong>17:15 Uhr</strong>.</p>
+        <svg class="puzzle-figure" viewBox="0 0 120 120" style="max-width:140px" aria-hidden="true">
+          <circle cx="60" cy="60" r="54" fill="#fffbeb" stroke="#7c4a24" stroke-width="6"/>
+          <g fill="#1f2937" font-size="12" text-anchor="middle" font-weight="700">
+            <text x="60" y="20">12</text><text x="103" y="64">3</text><text x="60" y="108">6</text><text x="17" y="64">9</text>
+          </g>
+          <line x1="60" y1="60" x2="60" y2="100" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+          <line x1="60" y1="60" x2="89" y2="68" stroke="#b91c1c" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="60" cy="60" r="4" fill="#1f2937"/>
+        </svg>
+        <p>Wie viele <strong>Stunden</strong> bleiben bis zur Abfahrt? Gib die Antwort als Bruch oder Dezimalzahl an – nicht in Minuten!</p>`,
+      hint: 'Von 15:30 bis 17:15 sind es 1 Stunde und 45 Minuten. Welcher Bruchteil einer Stunde sind 45 Minuten?',
+      answer: 1.75, // 7/4
     },
 
     chest: {
       order: 5,
-      icon: '💰',
+      icon: '🔒',
+      name: 'Truhenschloss',
+      short: 'Schloss',
       category: 'Vorzeichenregeln',
-      title: 'Das Zahlenschloss',
+      title: 'Das Schloss der Schatztruhe',
       question: `
-        <p>Die Truhe öffnet sich nur mit dem Ergebnis dieser Rechnung:</p>
+        <p>In das Schloss der Truhe ist eine Rechnung eingraviert. Ihr Ergebnis ist der Code:</p>
         <p class="text-center font-display text-2xl text-gold-300">( −1/2 − 1/4 ) : ( −3/8 )</p>
         <p>Wie lautet der Code?</p>`,
       hint: 'Zuerst die Klammer: −1/2 − 1/4 = −3/4. Durch einen Bruch teilt man, indem man mit dem Kehrwert multipliziert. Und: minus mal minus ergibt plus!',
@@ -104,7 +114,7 @@
 
   const IDS = Object.keys(PUZZLES).sort((a, b) => PUZZLES[a].order - PUZZLES[b].order);
   const TOTAL = IDS.length;
-  const STORAGE_KEY = 'mathe-zimmer-rational-v1';
+  const STORAGE_KEY = 'mathe-zimmer-rational-v2';
 
   // ---------------------------------------------------------------
   // 2. Zustand (wird im Browser gespeichert, falls möglich)
@@ -155,10 +165,15 @@
   // Fortschritts-Kacheln erzeugen
   IDS.forEach((id) => {
     const li = document.createElement('li');
-    li.className = 'progress-dot rounded-lg bg-white/5 py-1.5 px-1 truncate';
+    const p = PUZZLES[id];
+    li.className = 'progress-dot flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 rounded-lg bg-white/5 py-1.5 px-0.5 sm:px-1 min-w-0';
     li.dataset.id = id;
-    li.innerHTML = `<span aria-hidden="true">${PUZZLES[id].icon}</span> <span class="hidden sm:inline">${PUZZLES[id].category}</span>`;
-    li.title = PUZZLES[id].title;
+    li.innerHTML = `
+      <span class="dot-icon" aria-hidden="true">${p.icon}</span>
+      <span class="truncate max-w-full text-[0.62rem] sm:text-sm leading-tight tracking-tighter sm:tracking-normal">
+        <span class="sm:hidden">${p.short || p.name}</span><span class="hidden sm:inline">${p.name}</span>
+      </span>`;
+    li.title = `${p.name} – ${p.category}`;
     dotsEl.appendChild(li);
   });
 
@@ -242,7 +257,9 @@
     progressBar.setAttribute('aria-valuenow', count);
 
     dotsEl.querySelectorAll('.progress-dot').forEach((li) => {
-      li.classList.toggle('solved', solved.has(li.dataset.id));
+      const isSolved = solved.has(li.dataset.id);
+      li.classList.toggle('solved', isSolved);
+      li.setAttribute('aria-label', `${PUZZLES[li.dataset.id].name}: ${isSolved ? 'gelöst' : 'noch offen'}`);
     });
 
     room.querySelectorAll('.hotspot').forEach((el) => {
