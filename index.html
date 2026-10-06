@@ -39,7 +39,7 @@
   <!-- Konfetti-Bibliothek -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
 
-  <link rel="stylesheet" href="style.css?v=4" />
+  <link rel="stylesheet" href="style.css?v=5" />
 </head>
 
 <body class="min-h-screen bg-night-900 text-slate-100 font-body antialiased">
@@ -54,7 +54,7 @@
         Das geheimnisvolle Mathe-Zimmer
       </h1>
       <p class="mt-2 sm:mt-3 text-slate-300 max-w-2xl mx-auto text-sm sm:text-base">
-        Die Tür ist verschlossen! Im Zimmer sind <strong class="text-gold-300">5 Rätsel zu Brüchen, Dezimalzahlen und negativen Zahlen</strong> versteckt.
+        Die Tür ist verschlossen! Im Zimmer sind <strong class="text-gold-300">8 Rätsel zu Brüchen, Dezimalzahlen und negativen Zahlen</strong> versteckt.
         <span class="pointer-fine">Klicke</span><span class="pointer-coarse">Tippe</span> auf verdächtige Details, löse alle Aufgaben – und du kommst frei.
       </p>
     </header>
@@ -64,7 +64,7 @@
       <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3 mb-3">
         <div class="flex items-center gap-2">
           <span class="text-2xl" aria-hidden="true">🔑</span>
-          <span class="font-display text-lg">Gelöst: <span id="progress-count">0</span> / 5</span>
+          <span class="font-display text-lg">Gelöst: <span id="progress-count">0</span> / <span id="progress-total">8</span></span>
         </div>
         <div class="flex gap-2 w-full sm:w-auto [&>button]:flex-1 sm:[&>button]:flex-none">
           <button id="hint-toggle" type="button"
@@ -79,10 +79,10 @@
         </div>
       </div>
       <div class="h-4 w-full rounded-full bg-night-900 overflow-hidden ring-1 ring-white/10"
-           role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="progress-bar">
+           role="progressbar" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0" id="progress-bar">
         <div id="progress-fill" class="progress-fill h-full rounded-full" style="width:0%"></div>
       </div>
-      <ol id="progress-dots" class="mt-3 grid grid-cols-5 gap-1.5 sm:gap-2 text-center text-xs sm:text-sm"></ol>
+      <ol id="progress-dots" class="mt-3 grid grid-cols-4 sm:grid-cols-8 gap-1.5 sm:gap-2 text-center text-xs sm:text-sm"></ol>
     </section>
 
     <!-- Interaktives Zimmer -->
@@ -157,8 +157,14 @@
 
         <!-- ① Fenster -->
         <rect x="60" y="80" width="160" height="210" rx="6" fill="url(#sky)" stroke="#8a5a35" stroke-width="10" />
-        <circle cx="175" cy="125" r="22" fill="#fef9c3" />
-        <circle cx="166" cy="119" r="20" fill="#13205a" opacity="0.6" />
+        <!-- Hotspot: der Mond -->
+        <g class="hotspot" data-puzzle="moon" tabindex="0" role="button" aria-label="Mond im Fenster untersuchen">
+          <rect class="hotspot-hit" fill="transparent" pointer-events="none" x="115" y="62" width="120" height="112" />
+          <circle cx="175" cy="125" r="22" fill="#fef9c3" />
+          <circle cx="166" cy="119" r="20" fill="#13205a" opacity="0.6" />
+          <rect class="hotspot-area" fill="transparent" stroke="none" x="149" y="99" width="52" height="52" rx="6" />
+          <g class="hint-marker" transform="translate(175 125)"><circle r="12" /></g>
+        </g>
         <g fill="#fff">
           <circle cx="90" cy="110" r="2" /><circle cx="120" cy="150" r="1.5" /><circle cx="190" cy="190" r="2" />
           <circle cx="100" cy="220" r="1.5" /><circle cx="150" cy="250" r="2" /><circle cx="200" cy="245" r="1.2" />
@@ -187,11 +193,11 @@
         <rect x="330" y="320" width="150" height="8" fill="#8a5a35" />
         <!-- Reihe 1: nummerierte Bücher -->
         <g font-family="Fredoka, sans-serif" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="central" fill="#fff">
-          <rect x="335" y="160" width="22" height="60" fill="#ef4444" /><text x="346" y="190" transform="rotate(-90 346 190)">12</text>
-          <rect x="359" y="150" width="22" height="70" fill="#3b82f6" /><text x="370" y="185" transform="rotate(-90 370 185)">−6</text>
-          <rect x="383" y="165" width="22" height="55" fill="#22c55e" /><text x="394" y="192.5" transform="rotate(-90 394 192.5)">3</text>
-          <rect x="407" y="155" width="22" height="65" fill="#eab308" /><text x="418" y="187.5" transform="rotate(-90 418 187.5)">−1,5</text>
-          <rect x="431" y="145" width="22" height="75" fill="#a855f7" /><text x="442" y="182.5" transform="rotate(-90 442 182.5)">0,75</text>
+          <rect x="335" y="160" width="22" height="60" fill="#ef4444" /><text x="346" y="190" transform="rotate(-90 346 190)">81</text>
+          <rect x="359" y="150" width="22" height="70" fill="#3b82f6" /><text x="370" y="185" transform="rotate(-90 370 185)">−54</text>
+          <rect x="383" y="165" width="22" height="55" fill="#22c55e" /><text x="394" y="192.5" transform="rotate(-90 394 192.5)">36</text>
+          <rect x="407" y="155" width="22" height="65" fill="#eab308" /><text x="418" y="187.5" transform="rotate(-90 418 187.5)">−24</text>
+          <rect x="431" y="145" width="22" height="75" fill="#a855f7" /><text x="442" y="182.5" transform="rotate(-90 442 182.5)">16</text>
         </g>
         <!-- Reihe 2 -->
         <rect x="340" y="250" width="18" height="70" fill="#0ea5e9" />
@@ -242,6 +248,19 @@
           <rect class="hotspot-area" fill="transparent" stroke="none" x="849" y="119" width="44" height="58" rx="6" />
           <g class="hint-marker" transform="translate(871 148)"><circle r="12" /></g>
         </g>
+        <!-- Hotspot: das Thermometer an der Wand -->
+        <g class="hotspot" data-puzzle="thermo" tabindex="0" role="button" aria-label="Thermometer an der Wand untersuchen">
+          <rect class="hotspot-hit" fill="transparent" pointer-events="none" x="698" y="230" width="100" height="168" />
+          <rect x="738" y="245" width="28" height="130" rx="14" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" />
+          <rect x="748" y="258" width="8" height="94" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1.5" />
+          <rect x="749.5" y="316" width="5" height="40" fill="#ef4444" />
+          <circle cx="752" cy="359" r="9" fill="#ef4444" />
+          <g stroke="#64748b" stroke-width="1.5"><line x1="758" y1="266" x2="763" y2="266" /><line x1="758" y1="278" x2="763" y2="278" /><line x1="758" y1="290" x2="763" y2="290" /><line x1="758" y1="302" x2="763" y2="302" /><line x1="758" y1="314" x2="763" y2="314" /><line x1="758" y1="326" x2="763" y2="326" /><line x1="758" y1="338" x2="763" y2="338" /></g>
+          <text x="743" y="305" font-family="Fredoka, sans-serif" font-size="8" font-weight="700" fill="#334155" text-anchor="middle">0</text>
+          <rect class="hotspot-area" fill="transparent" stroke="none" x="733" y="240" width="38" height="140" rx="6" />
+          <g class="hint-marker" transform="translate(752 310)"><circle r="12" /></g>
+        </g>
+
         <!-- Tür (Ausgang) -->
         <g id="door">
           <rect x="785" y="220" width="150" height="215" rx="6" fill="#4a2c17" />
@@ -251,10 +270,9 @@
             <rect x="810" y="245" width="100" height="75" rx="4" fill="none" stroke="#5a3418" stroke-width="4" />
             <rect x="810" y="335" width="100" height="85" rx="4" fill="none" stroke="#5a3418" stroke-width="4" />
             <circle cx="905" cy="335" r="7" fill="#fbbf24" />
-            <!-- Schloss mit 5 Lämpchen -->
+            <!-- Schloss mit 8 Lämpchen (eins pro Rätsel) -->
             <g id="door-locks">
-              <circle cx="830" cy="282" r="6" /><circle cx="845" cy="282" r="6" /><circle cx="860" cy="282" r="6" />
-              <circle cx="875" cy="282" r="6" /><circle cx="890" cy="282" r="6" />
+              <circle cx="814" cy="282" r="5" /><circle cx="827" cy="282" r="5" /><circle cx="840" cy="282" r="5" /><circle cx="853" cy="282" r="5" /><circle cx="866" cy="282" r="5" /><circle cx="879" cy="282" r="5" /><circle cx="892" cy="282" r="5" /><circle cx="905" cy="282" r="5" />
             </g>
           </g>
         </g>
@@ -275,11 +293,17 @@
           <g class="hint-marker" transform="translate(630 475)"><circle r="12" /></g>
         </g>
 
-        <!-- Kleiner Tisch mit Kerze (Deko) -->
+        <!-- Kleiner Tisch -->
         <rect x="80" y="410" width="110" height="10" rx="3" fill="#8a5a35" />
         <rect x="92" y="420" width="8" height="70" fill="#6b4226" /><rect x="170" y="420" width="8" height="70" fill="#6b4226" />
-        <rect x="128" y="380" width="14" height="30" rx="2" fill="#fef3c7" />
-        <path class="flame" d="M135 362 Q144 374 135 381 Q126 374 135 362 Z" fill="#fb923c" />
+        <!-- Hotspot: die Kerze -->
+        <g class="hotspot" data-puzzle="candle" tabindex="0" role="button" aria-label="Kerze auf dem Tisch untersuchen">
+          <rect class="hotspot-hit" fill="transparent" pointer-events="none" x="75" y="342" width="120" height="100" />
+          <rect x="128" y="380" width="14" height="30" rx="2" fill="#fef3c7" />
+          <path class="flame" d="M135 362 Q144 374 135 381 Q126 374 135 362 Z" fill="#fb923c" />
+          <rect class="hotspot-area" fill="transparent" stroke="none" x="121" y="355" width="28" height="58" rx="6" />
+          <g class="hint-marker" transform="translate(135 384)"><circle r="12" /></g>
+        </g>
       </svg>
       </div>
 
@@ -288,7 +312,7 @@
         <div class="text-center px-5 py-5 sm:px-10 sm:py-8 rounded-3xl bg-night-800/95 ring-2 ring-gold-400 shadow-2xl max-w-md mx-4">
           <div class="text-4xl sm:text-6xl mb-1 sm:mb-2" aria-hidden="true">🏆</div>
           <h2 class="font-display text-xl sm:text-3xl font-bold text-gold-300">Geschafft – die Tür ist offen!</h2>
-          <p class="mt-2 text-sm sm:text-base text-slate-300">Du hast alle 5 Rätsel gelöst. Ein echtes Mathe-Genie!</p>
+          <p class="mt-2 text-sm sm:text-base text-slate-300">Du hast alle 8 Rätsel gelöst. Ein echtes Mathe-Genie!</p>
           <button id="play-again" type="button"
             class="mt-4 sm:mt-5 min-h-[44px] px-5 py-2.5 rounded-xl font-semibold bg-gradient-to-r from-gold-400 to-pink-400 text-night-900 hover:scale-105 active:scale-95 transition">
             Nochmal spielen
@@ -360,6 +384,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=4"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>
