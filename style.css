@@ -1,0 +1,177 @@
+/* ================================================================
+   Das geheimnisvolle Mathe-Zimmer – Zusatz-Styles
+   (Tailwind übernimmt das Layout, hier stehen Animationen & SVG-Styles)
+   ================================================================ */
+
+html { scroll-behavior: smooth; }
+
+/* ---------- Funkelnder Sternenhimmel im Hintergrund ---------- */
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(1px 1px at 10% 20%, #fff8 50%, transparent),
+    radial-gradient(1px 1px at 30% 80%, #fff6 50%, transparent),
+    radial-gradient(1.5px 1.5px at 50% 40%, #fff9 50%, transparent),
+    radial-gradient(1px 1px at 70% 10%, #fff7 50%, transparent),
+    radial-gradient(1.5px 1.5px at 85% 65%, #fff8 50%, transparent),
+    radial-gradient(1px 1px at 20% 55%, #fff5 50%, transparent),
+    radial-gradient(1px 1px at 92% 30%, #fff6 50%, transparent),
+    radial-gradient(ellipse at top, #2a1b4d 0%, #0f0a1e 60%);
+  animation: twinkle 6s ease-in-out infinite alternate;
+}
+@keyframes twinkle { from { opacity: 0.7; } to { opacity: 1; } }
+
+/* ---------- Fortschrittsbalken ---------- */
+.progress-fill {
+  background: linear-gradient(90deg, #fbbf24, #f472b6, #a78bfa, #f472b6, #fbbf24);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+  transition: width 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+.progress-dot {
+  transition: all 0.3s ease;
+}
+.progress-dot.solved {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+  box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.5);
+}
+
+/* ---------- Zimmer: auf kleinen Bildschirmen seitlich wischbar ---------- */
+.room-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+@media (max-width: 639px) {
+  .room-scroll > svg { width: 760px; max-width: none; }
+}
+
+/* ---------- Hotspots im SVG ---------- */
+.hotspot {
+  cursor: pointer;
+  outline: none;
+  transition: filter 0.25s ease, transform 0.25s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.hotspot-area {
+  fill: transparent;           /* unsichtbar, vergrößert aber die Klickfläche */
+  stroke: transparent;
+  stroke-width: 3;
+  stroke-dasharray: 8 6;
+  transition: stroke 0.25s ease, fill 0.25s ease;
+}
+.hotspot:hover,
+.hotspot:focus-visible {
+  filter: drop-shadow(0 0 10px rgba(253, 230, 138, 0.75));
+}
+.hotspot:hover .hotspot-area,
+.hotspot:focus-visible .hotspot-area {
+  stroke: rgba(253, 230, 138, 0.7);
+  fill: rgba(253, 230, 138, 0.06);
+}
+.hotspot:active { transform: scale(0.98); }
+
+/* Pulsierende Markierung – nur sichtbar, wenn "Verstecke zeigen" aktiv ist */
+.hint-marker circle {
+  fill: rgba(251, 191, 36, 0.35);
+  stroke: #fde68a;
+  stroke-width: 2;
+}
+.hint-marker {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.show-hints .hotspot:not(.solved) .hint-marker { opacity: 1; }
+.show-hints .hotspot:not(.solved) .hint-marker circle {
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50%      { transform: scale(1.45); opacity: 0.35; }
+}
+.hint-marker circle { transform-box: fill-box; transform-origin: center; }
+
+/* Gelöste Hotspots bekommen einen grünen Schimmer + Häkchen */
+.hotspot.solved { filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.7)); }
+.solved-badge { pointer-events: none; animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); transform-box: fill-box; transform-origin: center; }
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+
+/* ---------- Tür ---------- */
+#door-locks circle { fill: #3f1d0b; stroke: #1f0f05; stroke-width: 1.5; transition: fill 0.4s ease; }
+#door-locks circle.on { fill: #4ade80; filter: drop-shadow(0 0 4px #4ade80); }
+
+.door-panel {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.door-open .door-panel { transform: perspective(600px) rotateY(-75deg) scaleX(0.3); }
+#door-light { transition: opacity 1.2s ease; }
+.door-open #door-light { opacity: 1; }
+
+/* Kerzenflamme */
+.flame { transform-box: fill-box; transform-origin: bottom center; animation: flicker 0.9s ease-in-out infinite alternate; }
+@keyframes flicker {
+  0%   { transform: scale(1, 1) rotate(-2deg); }
+  100% { transform: scale(0.9, 1.12) rotate(2deg); }
+}
+
+/* ---------- Modal ---------- */
+.modal.open { display: flex; }
+.modal .modal-backdrop { animation: fadeIn 0.25s ease forwards; }
+.modal .modal-card    { animation: modalIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.modal.closing .modal-backdrop { animation: fadeOut 0.2s ease forwards; }
+.modal.closing .modal-card     { animation: modalOut 0.2s ease forwards; }
+
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.9) rotate(-1deg); }
+  to   { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+}
+@keyframes modalOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.92) translateY(10px); }
+}
+
+/* Feedback-Zustände des Eingabefelds */
+.answer-input.correct { --tw-ring-color: #22c55e; background: rgba(34, 197, 94, 0.15); }
+.answer-input.wrong   { --tw-ring-color: #ef4444; background: rgba(239, 68, 68, 0.15); animation: shake 0.45s ease; }
+.feedback.correct { color: #4ade80; }
+.feedback.wrong   { color: #f87171; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+/* Kleine SVG-Grafiken innerhalb der Rätsel */
+.puzzle-figure { display: block; margin: 0.5rem auto 0; max-width: 260px; width: 100%; }
+
+/* ---------- Erfolgsbanner ---------- */
+.win-banner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 10, 30, 0.35);
+  animation: fadeIn 0.6s ease;
+}
+.win-banner.hidden { display: none; }
+.win-banner > div { animation: modalIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* Respektiere "Bewegung reduzieren" */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
