@@ -6,19 +6,48 @@
 
   // ---------------------------------------------------------------
   // 1. Die Rätsel
-  //    name/short: Name in der Fortschrittsanzeige (short = Kurzform fürs Handy)
+  //    name: Name des Verstecks im Zimmer
+  //    category: kurze Beschreibung der Aufgabe (erscheint in der Fortschrittsanzeige)
   //    answer: die richtige Zahl
   //    question: HTML (darf kleine SVG-Grafiken enthalten)
   // ---------------------------------------------------------------
   const PUZZLES = {
-    snail: {
+    candle: {
       order: 1,
+      icon: '🕯️',
+      name: 'Kerze',
+      category: 'Bruchteil berechnen',
+      title: 'Die brennende Kerze',
+      question: `
+        <p>Die Kerze auf dem Tisch war am Anfang <strong>20 cm</strong> lang. Pro Stunde brennen <strong>2,5 cm</strong> ab.</p>
+        <p>Welcher <strong>Bruchteil</strong> der Kerze ist nach <strong>3 Stunden</strong> abgebrannt?</p>
+        <p class="text-slate-400 text-sm">Gib das Ergebnis als gekürzten Bruch oder als Dezimalzahl an.</p>`,
+      hint: 'In 3 Stunden brennen 3 · 2,5 cm = 7,5 cm ab. Der Bruchteil ist 7,5 / 20. Erweitere mit 2, damit keine Kommazahl mehr im Bruch steht.',
+      answer: 0.375, // 3/8
+    },
+
+    moon: {
+      order: 2,
+      icon: '🌙',
+      name: 'Mond',
+      category: 'Negative Zahlen vergleichen',
+      title: 'Der Mond und die negativen Zahlen',
+      question: `
+        <p>Neben dem Mond leuchten vier Sterne mit Zahlen. Nur der Stern mit der <strong>größten</strong> Zahl zeigt den Weg:</p>
+        <p class="text-center font-display text-2xl tracking-wide text-gold-300">−2/3 · −0,6 · −5/8 · −0,65</p>
+        <p>Welche Zahl ist die größte?</p>`,
+      hint: 'Wandle alle Zahlen in Dezimalzahlen um (−2/3 ≈ −0,667; −5/8 = −0,625). Bei negativen Zahlen ist die Zahl am größten, die am nächsten bei 0 liegt.',
+      answer: -0.6,
+    },
+
+    snail: {
+      order: 3,
       icon: '🐌',
       name: 'Schnecke',
-      category: 'Zahlengerade',
+      category: 'Zahlengerade: Veränderung',
       title: 'Die Schnecke auf der Fensterbank',
       question: `
-        <p>Auf die Fensterbank ist eine Zahlengerade gemalt. Die Schnecke sitzt bei <strong>−1¾</strong>.</p>
+        <p>Auf die Fensterbank ist eine Zahlengerade gemalt. Am Morgen sitzt die Schnecke bei <strong>0,8</strong>, am Abend bei <strong>−1 1/5</strong>.</p>
         <svg class="puzzle-figure" viewBox="0 0 260 70" aria-hidden="true">
           <line x1="10" y1="40" x2="250" y2="40" stroke="#e2e8f0" stroke-width="2"/>
           <path d="M250 40 l-8 -5 v10 z" fill="#e2e8f0"/>
@@ -30,59 +59,76 @@
             <text x="20" y="62">−3</text><text x="64" y="62">−2</text><text x="108" y="62">−1</text>
             <text x="152" y="62">0</text><text x="196" y="62">1</text><text x="240" y="62">2</text>
           </g>
-          <circle cx="75" cy="40" r="6" fill="#f97316" stroke="#fff" stroke-width="2"/>
-          <text x="75" y="22" font-size="16" text-anchor="middle">🐌</text>
+          <circle cx="187.2" cy="40" r="6" fill="#f97316" stroke="#fff" stroke-width="2"/>
+          <text x="187.2" y="22" font-size="16" text-anchor="middle">🐌</text>
+          <circle cx="99.2" cy="40" r="5" fill="none" stroke="#fdba74" stroke-width="2" stroke-dasharray="3 2"/>
+          <text x="99.2" y="22" fill="#fdba74" font-size="14" text-anchor="middle">?</text>
         </svg>
-        <p>Am Vormittag kriecht sie <strong>2,5</strong> Einheiten nach rechts, am Nachmittag rutscht sie <strong>1¼</strong> Einheiten nach links zurück.</p>
-        <p>Bei welcher Zahl sitzt sie am Abend?</p>`,
-      hint: 'Nach rechts heißt plus, nach links heißt minus: −1,75 + 2,5 − 1,25. Rechne Schritt für Schritt und achte auf das Vorzeichen des Ergebnisses!',
-      answer: -0.5, // −1/2
+        <p>Um wie viel hat sich ihre Position verändert? Gib die Veränderung <strong>mit Vorzeichen</strong> an (nach links = negativ).</p>`,
+      hint: 'Veränderung = Endwert − Startwert = −1,2 − 0,8.',
+      answer: -2,
     },
 
     sequence: {
-      order: 2,
+      order: 4,
       icon: '❓',
       name: 'Fragezeichen-Buch',
-      short: '?-Buch',
-      category: 'Zahlenfolge',
+      category: 'Zahlenfolge mit Brüchen',
       title: 'Das Buch mit dem Fragezeichen',
       question: `
         <p>Im Regal stehen Bücher mit Zahlen auf dem Rücken – auf dem letzten steht nur ein <strong>?</strong>:</p>
-        <p class="text-center font-display text-2xl tracking-wide text-gold-300">12 · −6 · 3 · −1,5 · 0,75 · <span class="text-pink-300">?</span></p>
-        <p>Welche Zahl gehört auf das Fragezeichen-Buch? <span class="text-slate-400">(als Bruch oder Dezimalzahl)</span></p>`,
-      hint: 'Von Buch zu Buch wird immer mit derselben Zahl multipliziert: 12 · ? = −6. Das Vorzeichen wechselt jedes Mal!',
-      answer: -0.375, // −3/8
+        <p class="text-center font-display text-2xl tracking-wide text-gold-300">81 · −54 · 36 · −24 · 16 · <span class="text-pink-300">?</span></p>
+        <p>Welche Zahl gehört auf das Fragezeichen-Buch? <span class="text-slate-400">(als Bruch oder gemischte Zahl)</span></p>`,
+      hint: 'Von Buch zu Buch wird immer mit demselben Bruch multipliziert: 81 · ? = −54. Kürze −54/81!',
+      answer: -32 / 3, // −10 2/3
     },
 
     painting: {
-      order: 3,
+      order: 5,
       icon: '🟪',
       name: 'Lila Rechteck',
-      short: 'Rechteck',
-      category: 'Brüche addieren',
+      category: 'Brüche dividieren',
       title: 'Das lila Rechteck im Gemälde',
       question: `
-        <p>Der Maler hat ein lila Rechteck in sein Bild versteckt. Er möchte es mit Goldband umranden. Auf der Rückseite stehen die Maße:</p>
+        <p>Auf der Rückseite des Gemäldes steht: Das lila Rechteck hat eine Fläche von <strong>3/4 m²</strong> und ist <strong>1 1/4 m</strong> lang.</p>
         <svg class="puzzle-figure" viewBox="0 0 260 130" aria-hidden="true">
           <rect x="50" y="25" width="170" height="80" fill="rgba(167,139,250,.2)" stroke="#a78bfa" stroke-width="3"/>
-          <text x="135" y="17" fill="#e2e8f0" font-size="15" text-anchor="middle">5/4 m</text>
-          <text x="25" y="70" fill="#e2e8f0" font-size="15" text-anchor="middle">2/5 m</text>
+          <text x="135" y="17" fill="#e2e8f0" font-size="15" text-anchor="middle">1 1/4 m</text>
+          <text x="28" y="70" fill="#fdba74" font-size="18" text-anchor="middle">?</text>
+          <text x="135" y="72" fill="#e2e8f0" font-size="15" text-anchor="middle">A = 3/4 m²</text>
         </svg>
-        <p>Wie viele <strong>Meter Goldband</strong> braucht er für den ganzen Rand (Umfang)?</p>`,
-      hint: 'Umfang = 2 · (Länge + Breite). Mache die Brüche zuerst gleichnamig: 5/4 = 25/20 und 2/5 = 8/20.',
-      answer: 3.3, // 33/10
+        <p>Wie <strong>breit</strong> ist das Rechteck (in m)?</p>`,
+      hint: 'Breite = Fläche : Länge = 3/4 : 5/4. Durch einen Bruch dividiert man, indem man mit dem Kehrwert multipliziert.',
+      answer: 0.6, // 3/5
+    },
+
+    thermo: {
+      order: 6,
+      icon: '🌡️',
+      name: 'Thermometer',
+      category: 'Addieren mit Vorzeichen',
+      title: 'Das Thermometer an der Wand',
+      question: `
+        <p>Das Thermometer zeigt den Temperaturverlauf eines Wintertages:</p>
+        <ul class="list-disc pl-5 space-y-1 text-slate-300">
+          <li>Morgens: <strong>−4,5 °C</strong></li>
+          <li>Bis Mittag steigt die Temperatur um <strong>7 1/4 Grad</strong>.</li>
+          <li>Bis zum Abend sinkt sie um <strong>5,5 Grad</strong>.</li>
+        </ul>
+        <p>Wie viel Grad zeigt das Thermometer am Abend?</p>`,
+      hint: 'Steigen heißt plus, sinken heißt minus: −4,5 + 7,25 − 5,5. Ist das Ergebnis über oder unter 0?',
+      answer: -2.75, // −11/4
     },
 
     clock: {
-      order: 4,
+      order: 7,
       icon: '🕒',
       name: 'Uhrzeiger',
-      short: 'Zeiger',
-      category: 'Zeit als Bruch',
-      title: 'Die stehengebliebenen Uhrzeiger',
+      category: 'Multiplizieren mit Minus',
+      title: 'Die ungenaue Wanduhr',
       question: `
-        <p>Die Zeiger der Wanduhr stehen still – auf <strong>15:30 Uhr</strong>. Der letzte Bus fährt um <strong>17:15 Uhr</strong>.</p>
-        <svg class="puzzle-figure" viewBox="0 0 120 120" style="max-width:140px" aria-hidden="true">
+        <p>Die Wanduhr geht jeden Tag <strong>2/5 Minute nach</strong> (sie ist zu langsam). Eine Abweichung nach hinten zählt <strong>negativ</strong>.</p>
+        <svg class="puzzle-figure" viewBox="0 0 120 120" style="max-width:120px" aria-hidden="true">
           <circle cx="60" cy="60" r="54" fill="#fffbeb" stroke="#7c4a24" stroke-width="6"/>
           <g fill="#1f2937" font-size="12" text-anchor="middle" font-weight="700">
             <text x="60" y="20">12</text><text x="103" y="64">3</text><text x="60" y="108">6</text><text x="17" y="64">9</text>
@@ -91,30 +137,29 @@
           <line x1="60" y1="60" x2="89" y2="68" stroke="#b91c1c" stroke-width="5" stroke-linecap="round"/>
           <circle cx="60" cy="60" r="4" fill="#1f2937"/>
         </svg>
-        <p>Wie viele <strong>Stunden</strong> bleiben bis zur Abfahrt? Gib die Antwort als Bruch oder Dezimalzahl an – nicht in Minuten!</p>`,
-      hint: 'Von 15:30 bis 17:15 sind es 1 Stunde und 45 Minuten. Welcher Bruchteil einer Stunde sind 45 Minuten?',
-      answer: 1.75, // 7/4
+        <p>Um wie viele Minuten weicht sie nach <strong>3 Wochen</strong> ab? Gib das Ergebnis mit Vorzeichen an.</p>`,
+      hint: '3 Wochen sind 21 Tage. Rechne 21 · (−2/5). Plus mal minus ergibt minus.',
+      answer: -8.4, // −42/5
     },
 
     chest: {
-      order: 5,
+      order: 8,
       icon: '🔒',
       name: 'Truhenschloss',
-      short: 'Schloss',
-      category: 'Vorzeichenregeln',
+      category: 'Mittelwert berechnen',
       title: 'Das Schloss der Schatztruhe',
       question: `
-        <p>In das Schloss der Truhe ist eine Rechnung eingraviert. Ihr Ergebnis ist der Code:</p>
-        <p class="text-center font-display text-2xl text-gold-300">( −1/2 − 1/4 ) : ( −3/8 )</p>
-        <p>Wie lautet der Code?</p>`,
-      hint: 'Zuerst die Klammer: −1/2 − 1/4 = −3/4. Durch einen Bruch teilt man, indem man mit dem Kehrwert multipliziert. Und: minus mal minus ergibt plus!',
-      answer: 2,
+        <p>Das letzte Schloss! Auf vier Rädchen stehen diese Zahlen:</p>
+        <p class="text-center font-display text-2xl tracking-wide text-gold-300">−3/4 · 1/2 · −1 1/4 · 2,5</p>
+        <p>Der Code ist ihr <strong>Mittelwert</strong> (Durchschnitt). Wie lautet er?</p>`,
+      hint: 'Mittelwert = Summe aller Zahlen : Anzahl. Addiere zuerst: −0,75 + 0,5 − 1,25 + 2,5. Teile das Ergebnis dann durch 4.',
+      answer: 0.25, // 1/4
     },
   };
 
   const IDS = Object.keys(PUZZLES).sort((a, b) => PUZZLES[a].order - PUZZLES[b].order);
   const TOTAL = IDS.length;
-  const STORAGE_KEY = 'mathe-zimmer-rational-v2';
+  const STORAGE_KEY = 'mathe-zimmer-rational-v3';
 
   // ---------------------------------------------------------------
   // 2. Zustand (wird im Browser gespeichert, falls möglich)
@@ -162,18 +207,21 @@
   let lastFocused = null;
   let closeTimer = null;
 
+  // Anzahl der Rätsel in der Anzeige eintragen
+  $('#progress-total').textContent = TOTAL;
+  progressBar.setAttribute('aria-valuemax', TOTAL);
+
   // Fortschritts-Kacheln erzeugen
   IDS.forEach((id) => {
     const li = document.createElement('li');
     const p = PUZZLES[id];
-    li.className = 'progress-dot flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 rounded-lg bg-white/5 py-1.5 px-0.5 sm:px-1 min-w-0';
+    li.className = 'progress-dot flex items-center gap-2 rounded-lg bg-white/5 py-1.5 px-2 min-w-0 text-left';
     li.dataset.id = id;
+    // Beschreibung der Mathe-Aufgabe – verrät nicht, wo das Rätsel versteckt ist
     li.innerHTML = `
-      <span class="dot-icon" aria-hidden="true">${p.icon}</span>
-      <span class="truncate max-w-full text-[0.62rem] sm:text-sm leading-tight tracking-tighter sm:tracking-normal">
-        <span class="sm:hidden">${p.short || p.name}</span><span class="hidden sm:inline">${p.name}</span>
-      </span>`;
-    li.title = `${p.name} – ${p.category}`;
+      <span class="dot-num" aria-hidden="true">${p.order}</span>
+      <span class="min-w-0 text-[0.7rem] sm:text-xs lg:text-sm leading-tight">${p.category}</span>`;
+    li.title = `Rätsel ${p.order}: ${p.category}`;
     dotsEl.appendChild(li);
   });
 
@@ -258,8 +306,10 @@
 
     dotsEl.querySelectorAll('.progress-dot').forEach((li) => {
       const isSolved = solved.has(li.dataset.id);
+      const p = PUZZLES[li.dataset.id];
       li.classList.toggle('solved', isSolved);
-      li.setAttribute('aria-label', `${PUZZLES[li.dataset.id].name}: ${isSolved ? 'gelöst' : 'noch offen'}`);
+      li.querySelector('.dot-num').textContent = isSolved ? '✓' : p.order;
+      li.setAttribute('aria-label', `Rätsel ${p.order}, ${p.category}: ${isSolved ? 'gelöst' : 'noch offen'}`);
     });
 
     room.querySelectorAll('.hotspot').forEach((el) => {
