@@ -12,10 +12,12 @@
   //    answer: die richtige Zahl
   //    question: HTML (darf kleine SVG-Grafiken enthalten)
   // ---------------------------------------------------------------
-  // Zahlen einer Aufzählung als einzelne Kärtchen – ohne Trennzeichen wie „·“,
-  // die man mit einem Malzeichen verwechseln könnte.
+  // Zahlen einer Aufzählung, getrennt durch „|“ – nicht durch „·“,
+  // das man mit einem Malzeichen verwechseln könnte.
   const numberList = (...items) =>
-    `<div class="num-list">${items.map((x) => `<span class="num-chip">${x}</span>`).join('')}</div>`;
+    `<p class="num-list">${items
+      .map((x) => `<span class="num-item">${x}</span>`)
+      .join('<span class="num-sep" aria-hidden="true">|</span>')}</p>`;
 
   const PUZZLES = {
     candle: {
@@ -163,7 +165,7 @@
       title: 'Das Schloss der Schatztruhe',
       question: `
         <p>Das letzte Schloss! Auf vier Rädchen stehen diese Zahlen:</p>
-        ${numberList('−3/4', '1/2', '−1 1/4', '2,5')}
+        ${numberList('−3/4', '1/2', '−1¼', '2,5')}
         <p>Der Code ist ihr <strong>Mittelwert</strong> (Durchschnitt). Wie lautet er?</p>`,
       clue: 'Der Schatz bleibt verschlossen – untersuche das kleine goldene Teil vorne an der Truhe.',
       hint: 'Mittelwert = Summe aller Zahlen : Anzahl. Addiere zuerst: −0,75 + 0,5 − 1,25 + 2,5. Teile das Ergebnis dann durch 4.',

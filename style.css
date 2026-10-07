@@ -267,27 +267,27 @@ button, summary, input, .hotspot { touch-action: manipulation; }
   80% { transform: translateX(5px); }
 }
 
-/* Zahlen-Aufzählungen in den Rätseln (statt „a · b · c“) */
+/* Zahlen-Aufzählungen in den Rätseln: „a | b | c“ mit großzügigem Abstand */
 .num-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.5rem;
-}
-.num-chip {
+  align-items: baseline;
+  row-gap: 0.25rem;
   font-family: "Fredoka", system-ui, sans-serif;
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #fde68a;
-  white-space: nowrap;
-  padding: 0.2rem 0.75rem;
-  border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(253, 230, 138, 0.35);
+}
+.num-item { white-space: nowrap; }
+.num-sep {
+  margin: 0 0.9rem;
+  color: rgba(253, 230, 138, 0.45);
+  font-weight: 400;
 }
 @media (max-width: 639px) {
-  .num-list { gap: 0.35rem; }
-  .num-chip { font-size: 1.1rem; padding: 0.15rem 0.45rem; }
+  .num-list { font-size: 1.2rem; }
+  .num-sep { margin: 0 0.55rem; }
 }
 
 /* Kleine SVG-Grafiken innerhalb der Rätsel */
