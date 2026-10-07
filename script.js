@@ -175,7 +175,13 @@
 
   const IDS = Object.keys(PUZZLES).sort((a, b) => PUZZLES[a].order - PUZZLES[b].order);
   const TOTAL = IDS.length;
-  const STORAGE_KEY = 'mathe-zimmer-rational-v3';
+  // Seiten-Einstellungen (z. B. /klassenzimmer/): eigene Hinweistexte und eigener Spielstand
+  const ROOM = window.ROOM_CONFIG || {};
+  Object.entries(ROOM.clues || {}).forEach(([id, clue]) => {
+    if (PUZZLES[id]) PUZZLES[id].clue = clue;
+  });
+
+  const STORAGE_KEY = 'mathe-zimmer-rational-v3' + (ROOM.id ? `-${ROOM.id}` : '');
 
   // ---------------------------------------------------------------
   // 2. Zustand (wird im Browser gespeichert, falls möglich)
@@ -620,6 +626,13 @@
       noise({ dur: 0.05, vol: 0.15, freq: 1200 });
     },
     flap() { noise({ dur: 0.18, vol: 0.12, freq: 1500, q: 0.6 }); },
+    chalk() {
+      tone({ type: 'square', filter: 5000, vol: 0.05, dur: 0.45, freqs: [[0, 2600], [0.2, 3100], [0.45, 2400]] });
+      noise({ dur: 0.4, vol: 0.05, freq: 6000, q: 4 });
+    },
+    creak() {
+      tone({ type: 'sawtooth', filter: 900, vol: 0.12, dur: 0.5, freqs: [[0, 140], [0.25, 95], [0.5, 120]] });
+    },
     tick() {
       [0, 0.25, 0.5].forEach((d) => noise({ dur: 0.03, vol: 0.2, freq: 4000, q: 3, delay: d }));
     },
@@ -629,6 +642,10 @@
   // Deko-Gegenstände: kleine Animation, Geräusch und manchmal ein Text
   // ---------------------------------------------------------------
   const FUN = {
+    hamster:    { anim: 'shake',  sound: 'squeak', texts: ['Fiep!', 'Fiep fiep!', '*knabber*'] },
+    board:      { sound: 'chalk',  texts: ['Iiiieh!', '*quietsch*'] },
+    chair:      { anim: 'wiggle', sound: 'creak',  texts: ['Knarz!'] },
+    bag:        { anim: 'wiggle', sound: 'rustle', texts: ['Hausaufgaben?'] },
     cat:        { anim: 'wiggle', sound: 'meow',   texts: ['Miau!', 'Miauuu?', 'Schnurr …'] },
     ball:       { anim: 'bounce', sound: 'boing',  texts: ['Boing!'] },
     teddy:      { anim: 'jump',   sound: 'squeak', texts: ['Quietsch!', 'Hallo!'] },

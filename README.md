@@ -4,11 +4,21 @@ Ein interaktives Mathe-Escape-Rätsel als Single-Page-Website, die ohne Build-Sc
 
 Im großen, vollgestellten Zimmer (SVG) sind 8 Rätsel zwischen vielen Gegenständen und Ablenkungen versteckt. Wer die richtigen Details im Zimmer findet und alle Aufgaben löst, öffnet die Tür – mit Konfetti. 🎉
 
+## Zwei Räume
+
+| Seite | Adresse | Bild |
+|-------|---------|------|
+| Mathe-Zimmer | `/` (Startseite) | gezeichnetes, vollgestelltes Zimmer |
+| Klassenzimmer | `/klassenzimmer/` | möglichst fotorealistisch gezeichnetes Klassenzimmer am Abend (Zentralperspektive, Licht und Schatten, Holz- und Putzstruktur, Filmkorn) |
+
+Beide Seiten verwenden dieselben 8 Rätsel sowie dieselbe `style.css` und `script.js`. Jede Seite hat ihren eigenen Spielstand. Das Klassenzimmer legt über `window.ROOM_CONFIG` in `klassenzimmer/index.html` eigene Hinweistexte fest, die zu den Verstecken im Klassenzimmer passen. Später kann das gezeichnete Klassenzimmer durch ein echtes Foto ersetzt werden; die Verstecke werden dann auf passende Details im Foto gelegt.
+
 ## Dateien
 
 | Datei       | Inhalt                                                                  |
 |-------------|-------------------------------------------------------------------------|
 | `index.html`| Seitenaufbau, das gezeichnete Zimmer (SVG) und das Modal                |
+| `klassenzimmer/index.html` | Zweite Seite: das Klassenzimmer (SVG) mit eigenen Hinweistexten |
 | `style.css` | Animationen (Modal, Hotspots, Tür, Kerze), Feedback-Farben              |
 | `script.js` | Rätsel, Antwortprüfung, Fortschritt (wird im Browser gespeichert), Konfetti |
 | `.nojekyll` | Sagt GitHub Pages, dass die Dateien unverändert ausgeliefert werden sollen |

@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f0a1e" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Mathe-Zimmer" />
+  <title>Das Mathe-Klassenzimmer – Rationale Zahlen</title>
+  <meta name="description" content="Finde die 8 versteckten Rätsel zu rationalen Zahlen im geheimnisvollen Klassenzimmer und öffne die Tür!" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (window.tailwind) tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            night: { 900: '#0f0a1e', 800: '#1a1033', 700: '#2a1b4d' },
+            gold:  { 300: '#fde68a', 400: '#fbbf24', 500: '#f59e0b' },
+          },
+          fontFamily: {
+            display: ['"Fredoka"', 'system-ui', 'sans-serif'],
+            body: ['"Nunito"', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Schriften -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔑</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Konfetti-Bibliothek -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
+
+  <link rel="stylesheet" href="../style.css?v=21" />
+</head>
+
+<body class="min-h-screen bg-night-900 text-slate-100 font-body antialiased">
+  <div class="stars" aria-hidden="true"></div>
+
+  <main class="page relative max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-10">
+
+    <!-- Kopfbereich -->
+    <header class="text-center mb-4 sm:mb-8">
+      <a href="../" class="inline-block mb-3 text-xs sm:text-sm text-violet-300 hover:text-violet-200 underline-offset-4 hover:underline">← Zum Mathe-Zimmer</a>
+      <p class="uppercase tracking-[0.2em] sm:tracking-[0.3em] text-[0.7rem] sm:text-sm text-gold-400 mb-1 sm:mb-2">Escape-Rätsel · Rationale Zahlen</p>
+      <h1 class="font-display text-[1.7rem] leading-tight sm:text-5xl font-bold bg-gradient-to-r from-gold-300 via-pink-300 to-violet-300 bg-clip-text text-transparent">
+        Das geheimnisvolle Klassenzimmer
+      </h1>
+      <p class="mt-2 sm:mt-3 text-slate-300 max-w-2xl mx-auto text-sm sm:text-base">
+        Es ist schon Abend und die Klassenzimmertür ist verschlossen! Im Raum sind <strong class="text-gold-300">8 Rätsel zu Brüchen, Dezimalzahlen und negativen Zahlen</strong> versteckt.
+        <span class="pointer-fine">Klicke</span><span class="pointer-coarse">Tippe</span> auf verdächtige Details, löse alle Aufgaben – und du kommst frei.
+      </p>
+    </header>
+
+    <!-- Fortschritt -->
+    <section class="mb-4 sm:mb-6 bg-night-800/80 backdrop-blur rounded-2xl p-3 sm:p-5 ring-1 ring-white/10 shadow-xl" aria-label="Fortschritt">
+      <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3 mb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl" aria-hidden="true">🔑</span>
+          <span class="font-display text-lg">Gelöst: <span id="progress-count">0</span> / <span id="progress-total">8</span></span>
+        </div>
+        <div class="flex gap-2 w-full sm:w-auto [&>button]:flex-1 sm:[&>button]:flex-none">
+          <button id="hint-toggle" type="button"
+            class="min-h-[44px] sm:min-h-0 px-3 py-2 sm:py-1.5 rounded-lg text-sm bg-white/10 hover:bg-white/20 transition ring-1 ring-white/10 disabled:opacity-40 disabled:cursor-not-allowed"
+            title="Gibt einen Hinweis auf ein noch nicht gelöstes Versteck – beim zweiten Klick wird es im Bild markiert">
+            ✨ Hinweis
+          </button>
+          <button id="sound-toggle" type="button" aria-pressed="true" aria-label="Geräusche ausschalten" title="Geräusche an/aus"
+            class="min-h-[44px] sm:min-h-0 !flex-none px-3 py-2 sm:py-1.5 rounded-lg text-sm bg-white/10 hover:bg-white/20 transition ring-1 ring-white/10">
+            🔊
+          </button>
+          <button id="reset-btn" type="button"
+            class="min-h-[44px] sm:min-h-0 px-3 py-2 sm:py-1.5 rounded-lg text-sm bg-white/10 hover:bg-rose-500/40 transition ring-1 ring-white/10">
+            ↺ Neu starten
+          </button>
+        </div>
+      </div>
+      <p id="hint-text" class="hint-text hidden mb-3 flex items-start gap-2 rounded-xl bg-gold-400/10 ring-1 ring-gold-400/40 px-3 py-2 text-sm text-gold-300" role="status" aria-live="polite">
+        <span aria-hidden="true">💡</span><span class="hint-clue"></span>
+      </p>
+      <div class="h-4 w-full rounded-full bg-night-900 overflow-hidden ring-1 ring-white/10"
+           role="progressbar" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0" id="progress-bar">
+        <div id="progress-fill" class="progress-fill h-full rounded-full" style="width:0%"></div>
+      </div>
+      <ol id="progress-dots" class="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2" aria-label="Rätsel-Übersicht"></ol>
+    </section>
+
+    <!-- Interaktives Zimmer -->
+    <section class="room-wrapper relative -mx-3 sm:mx-0 rounded-none sm:rounded-3xl overflow-hidden ring-1 ring-white/10 shadow-2xl" aria-label="Das Zimmer">
+      <div class="room-scroll">
+      <svg id="room" viewBox="0 0 1400 800" class="block w-full h-auto select-none" role="img"
+           aria-labelledby="room-title">
+        <title id="room-title">Ein Klassenzimmer am Abend mit Tafel, Lehrerpult, Schulbänken, Fenstern, Bücherregal, Bildern, Uhr, Hamsterkäfig, Truhe und einer verschlossenen Tür</title>
+        <defs>
+          <linearGradient id="backWall" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#d9cdb4" /><stop offset="0.75" stop-color="#cbbd9f" /><stop offset="1" stop-color="#b7a888" />
+          </linearGradient>
+          <linearGradient id="leftWall" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#a99b7f" /><stop offset="1" stop-color="#c7b99b" />
+          </linearGradient>
+          <linearGradient id="rightWall" x1="1" y1="0" x2="0" y2="0">
+            <stop offset="0" stop-color="#9d8f74" /><stop offset="1" stop-color="#c2b496" />
+          </linearGradient>
+          <linearGradient id="ceiling" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#d8d3c8" /><stop offset="1" stop-color="#efebe2" />
+          </linearGradient>
+          <linearGradient id="floorWood" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#8a5a32" /><stop offset="1" stop-color="#5e3b1f" />
+          </linearGradient>
+          <linearGradient id="duskSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0f1b4d" /><stop offset="0.6" stop-color="#3b3f8f" /><stop offset="0.85" stop-color="#c2668a" /><stop offset="1" stop-color="#f59e5b" />
+          </linearGradient>
+          <linearGradient id="board" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#2f5446" /><stop offset="1" stop-color="#1e3b31" />
+          </linearGradient>
+          <linearGradient id="deskTop" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#d9b48a" /><stop offset="1" stop-color="#c79c6c" />
+          </linearGradient>
+          <linearGradient id="teacherWood" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#7a4b28" /><stop offset="1" stop-color="#5a3519" />
+          </linearGradient>
+          <linearGradient id="chestGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#9a5b2e" /><stop offset="1" stop-color="#5f3417" />
+          </linearGradient>
+          <linearGradient id="glass" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#e0f2fe" stop-opacity="0.35" /><stop offset="1" stop-color="#e0f2fe" stop-opacity="0.12" />
+          </linearGradient>
+          <radialGradient id="lampGlow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#fff7d6" stop-opacity="0.75" /><stop offset="1" stop-color="#fff7d6" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id="floorPool" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#ffe9b0" stop-opacity="0.35" /><stop offset="1" stop-color="#ffe9b0" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id="doorGlow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#fef3c7" stop-opacity="1" /><stop offset="1" stop-color="#fbbf24" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id="vignette" cx="0.5" cy="0.45" r="0.75">
+            <stop offset="0.55" stop-color="#000" stop-opacity="0" /><stop offset="1" stop-color="#000" stop-opacity="0.55" />
+          </radialGradient>
+          <linearGradient id="cornerShadeL" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#000" stop-opacity="0.22" /><stop offset="1" stop-color="#000" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id="cornerShadeR" x1="1" y1="0" x2="0" y2="0">
+            <stop offset="0" stop-color="#000" stop-opacity="0.22" /><stop offset="1" stop-color="#000" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id="floorShadeBack" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#000" stop-opacity="0.35" /><stop offset="1" stop-color="#000" stop-opacity="0" />
+          </linearGradient>
+          <filter id="blur6" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6" /></filter>
+          <filter id="blur3" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3" /></filter>
+          <!-- Filmkorn und Putzstruktur für einen fotografischen Look -->
+          <filter id="grain" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="table" tableValues="0 0.09" /></feComponentTransfer>
+          </filter>
+          <filter id="plaster" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="3" seed="4" />
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="table" tableValues="0 0.12" /></feComponentTransfer>
+          </filter>
+          <filter id="chalkDust" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02 0.06" numOctaves="3" seed="9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.35 0" />
+          </filter>
+          <filter id="woodGrain" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.004 0.18" numOctaves="2" seed="2" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0.25  0 0 0 0 0.14  0 0 0 0 0.05  0 0 0 0.35 0" />
+          </filter>
+          <clipPath id="floorClip"><polygon points="300,470 1100,470 1400,800 0,800" /></clipPath>
+          <clipPath id="boardClip"><rect x="478" y="148" width="444" height="174" /></clipPath>
+        </defs>
+
+        <!-- Decke, Wände, Boden -->
+        <polygon points="0,0 1400,0 1100,90 300,90" fill="url(#ceiling)" />
+        <polygon points="0,0 300,90 300,470 0,800" fill="url(#leftWall)" />
+        <polygon points="1100,90 1400,0 1400,800 1100,470" fill="url(#rightWall)" />
+        <rect x="300" y="90" width="800" height="380" fill="url(#backWall)" />
+        <rect x="300" y="90" width="800" height="380" filter="url(#plaster)" />
+        <polygon points="0,0 300,90 300,470 0,800" filter="url(#plaster)" opacity="0.8" />
+        <polygon points="1100,90 1400,0 1400,800 1100,470" filter="url(#plaster)" opacity="0.8" />
+        <!-- Ecken etwas abgedunkelt (Umgebungsverdeckung) -->
+        <rect x="300" y="90" width="40" height="380" fill="url(#cornerShadeL)" />
+        <rect x="1060" y="90" width="40" height="380" fill="url(#cornerShadeR)" />
+        <rect x="300" y="90" width="800" height="14" fill="#000" opacity="0.08" />
+        <!-- Sockelleisten -->
+        <rect x="300" y="458" width="800" height="12" fill="#6b5a45" />
+        <polygon points="0,782 300,462 300,470 0,800" fill="#6b5a45" />
+        <polygon points="1100,462 1400,782 1400,800 1100,470" fill="#6b5a45" />
+
+        <polygon points="300,470 1100,470 1400,800 0,800" fill="url(#floorWood)" />
+        <g clip-path="url(#floorClip)">
+          <rect x="0" y="470" width="1400" height="330" filter="url(#woodGrain)" />
+          <g stroke="#3d2412" stroke-opacity="0.45" stroke-width="1.2">
+            <line x1="252.0" y1="470.0" x2="-1023.1" y2="868.5" />
+            <line x1="284.0" y1="470.0" x2="-900.0" y2="868.5" />
+            <line x1="316.0" y1="470.0" x2="-776.9" y2="868.5" />
+            <line x1="348.0" y1="470.0" x2="-653.8" y2="868.5" />
+            <line x1="380.0" y1="470.0" x2="-530.8" y2="868.5" />
+            <line x1="412.0" y1="470.0" x2="-407.7" y2="868.5" />
+            <line x1="444.0" y1="470.0" x2="-284.6" y2="868.5" />
+            <line x1="476.0" y1="470.0" x2="-161.5" y2="868.5" />
+            <line x1="508.0" y1="470.0" x2="-38.5" y2="868.5" />
+            <line x1="540.0" y1="470.0" x2="84.6" y2="868.5" />
+            <line x1="572.0" y1="470.0" x2="207.7" y2="868.5" />
+            <line x1="604.0" y1="470.0" x2="330.8" y2="868.5" />
+            <line x1="636.0" y1="470.0" x2="453.8" y2="868.5" />
+            <line x1="668.0" y1="470.0" x2="576.9" y2="868.5" />
+            <line x1="700.0" y1="470.0" x2="700.0" y2="868.5" />
+            <line x1="732.0" y1="470.0" x2="823.1" y2="868.5" />
+            <line x1="764.0" y1="470.0" x2="946.2" y2="868.5" />
+            <line x1="796.0" y1="470.0" x2="1069.2" y2="868.5" />
+            <line x1="828.0" y1="470.0" x2="1192.3" y2="868.5" />
+            <line x1="860.0" y1="470.0" x2="1315.4" y2="868.5" />
+            <line x1="892.0" y1="470.0" x2="1438.5" y2="868.5" />
+            <line x1="924.0" y1="470.0" x2="1561.5" y2="868.5" />
+            <line x1="956.0" y1="470.0" x2="1684.6" y2="868.5" />
+            <line x1="988.0" y1="470.0" x2="1807.7" y2="868.5" />
+            <line x1="1020.0" y1="470.0" x2="1930.8" y2="868.5" />
+            <line x1="1052.0" y1="470.0" x2="2053.8" y2="868.5" />
+            <line x1="1084.0" y1="470.0" x2="2176.9" y2="868.5" />
+            <line x1="1116.0" y1="470.0" x2="2300.0" y2="868.5" />
+            <line x1="1148.0" y1="470.0" x2="2423.1" y2="868.5" />
+            <line x1="0" y1="482.2" x2="1400" y2="482.2" stroke-opacity="0.25" />
+            <line x1="0" y1="496.7" x2="1400" y2="496.7" stroke-opacity="0.25" />
+            <line x1="0" y1="511.8" x2="1400" y2="511.8" stroke-opacity="0.25" />
+            <line x1="0" y1="530.0" x2="1400" y2="530.0" stroke-opacity="0.25" />
+            <line x1="0" y1="548.8" x2="1400" y2="548.8" stroke-opacity="0.25" />
+            <line x1="0" y1="571.4" x2="1400" y2="571.4" stroke-opacity="0.25" />
+            <line x1="0" y1="597.2" x2="1400" y2="597.2" stroke-opacity="0.25" />
+            <line x1="0" y1="626.6" x2="1400" y2="626.6" stroke-opacity="0.25" />
+            <line x1="0" y1="660.2" x2="1400" y2="660.2" stroke-opacity="0.25" />
+            <line x1="0" y1="698.4" x2="1400" y2="698.4" stroke-opacity="0.25" />
+            <line x1="0" y1="741.8" x2="1400" y2="741.8" stroke-opacity="0.25" />
+            <line x1="0" y1="790.5" x2="1400" y2="790.5" stroke-opacity="0.25" />
+          </g>
+          <rect x="0" y="470" width="1400" height="60" fill="url(#floorShadeBack)" />
+        </g>
+        <!-- Deckenleuchten (lassen sich mit dem Lichtschalter ausschalten) -->
+        <polygon id="wall-lamp-shade" class="lamp-panel" points="380.6,-3.3 575.0,-3.3 584.6,22.3 405.1,22.3" fill="#fffbe8" stroke="#9ca3af" stroke-width="1.5" />
+        <polygon class="lamp-panel" points="825.0,-3.3 1019.4,-3.3 994.9,22.3 815.4,22.3" fill="#fffbe8" stroke="#9ca3af" stroke-width="1.5" />
+        <polygon class="lamp-panel" points="435.6,54.1 596.6,54.1 603.2,71.9 452.7,71.9" fill="#fffbe8" stroke="#9ca3af" stroke-width="1.5" />
+        <polygon class="lamp-panel" points="803.4,54.1 964.4,54.1 947.3,71.9 796.8,71.9" fill="#fffbe8" stroke="#9ca3af" stroke-width="1.5" />
+        <g id="wall-lamp-glow">
+          <ellipse cx="486.7" cy="28.0" rx="112.0" ry="29.3" fill="url(#lampGlow)" />
+          <ellipse cx="913.3" cy="28.0" rx="112.0" ry="29.3" fill="url(#lampGlow)" />
+          <ellipse cx="522.2" cy="81.3" rx="93.3" ry="24.4" fill="url(#lampGlow)" />
+          <ellipse cx="877.8" cy="81.3" rx="93.3" ry="24.4" fill="url(#lampGlow)" />
+          <ellipse cx="700.0" cy="571.4" rx="310.3" ry="48.3" fill="url(#floorPool)" />
+          <ellipse cx="700.0" cy="505.0" rx="225.0" ry="35.0" fill="url(#floorPool)" />
+        </g>
+        <!-- Fenster mit Abendhimmel -->
+        <polygon points="30.0,175.8 130.0,175.0 130.0,378.9 30.0,425.9" fill="url(#duskSky)" />
+        <polygon points="165.0,174.7 255.0,174.0 255.0,320.1 165.0,362.5" fill="url(#duskSky)" />
+        <circle cx="50" cy="200" r="1.4" fill="#fff" opacity="0.85" />
+        <circle cx="110" cy="190" r="1.4" fill="#fff" opacity="0.85" />
+        <circle cx="120" cy="240" r="1.4" fill="#fff" opacity="0.85" />
+        <circle cx="180" cy="205" r="1.4" fill="#fff" opacity="0.85" />
+        <circle cx="230" cy="215" r="1.4" fill="#fff" opacity="0.85" />
+        <circle cx="200" cy="245" r="1.4" fill="#fff" opacity="0.85" />
+        <circle cx="60" cy="300" r="1.4" fill="#fff" opacity="0.85" />
+        <polygon points="30.0,388.0 60.0,354.5 75.0,370.0 100.0,333.6 130.0,348.0 130.0,378.9 30.0,425.9" fill="#1f1a33" opacity="0.85" />
+        <polygon points="165.0,339.7 190.0,313.3 215.0,314.0 240.0,290.1 255.0,302.4 255.0,320.1 165.0,362.5" fill="#1f1a33" opacity="0.85" />
+        <polygon points="30.0,175.8 130.0,175.0 130.0,378.9 30.0,425.9" fill="none" stroke="#f5f5f4" stroke-width="7" stroke-linejoin="round" />
+        <line x1="80.0" y1="175.4" x2="80.0" y2="402.4" stroke="#f5f5f4" stroke-width="5" />
+        <line x1="30" y1="300.8" x2="130" y2="276.9" stroke="#f5f5f4" stroke-width="5" />
+        <polygon points="24.0,432.6 136.0,379.1 146.0,385.1 34.0,441.6" fill="#e7e5e4" />
+        <polygon points="34.0,441.6 146.0,385.1 146.0,390.1 34.0,447.6" fill="#a8a29e" />
+        <polygon points="165.0,174.7 255.0,174.0 255.0,320.1 165.0,362.5" fill="none" stroke="#f5f5f4" stroke-width="7" stroke-linejoin="round" />
+        <line x1="210.0" y1="174.3" x2="210.0" y2="341.3" stroke="#f5f5f4" stroke-width="5" />
+        <line x1="165" y1="268.6" x2="255" y2="247.1" stroke="#f5f5f4" stroke-width="5" />
+        <polygon points="159.0,368.2 261.0,319.5 271.0,325.5 169.0,377.2" fill="#e7e5e4" />
+        <polygon points="169.0,377.2 271.0,325.5 271.0,330.5 169.0,383.2" fill="#a8a29e" />
+        <polygon points="35.0,461.1 125.0,412.5 125.0,487.5 35.0,551.2" fill="#e5e7eb" />
+        <line x1="45.0" y1="463.1" x2="45.0" y2="536.8" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="55.0" y1="457.5" x2="55.0" y2="529.8" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="65.0" y1="452.0" x2="65.0" y2="522.9" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="75.0" y1="446.4" x2="75.0" y2="516.0" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="85.0" y1="440.9" x2="85.0" y2="509.0" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="95.0" y1="435.4" x2="95.0" y2="502.1" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="105.0" y1="429.8" x2="105.0" y2="495.1" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="115.0" y1="424.3" x2="115.0" y2="488.2" stroke="#9ca3af" stroke-width="1.5" />
+        <polygon points="170.0,388.2 250.0,345.0 250.0,399.0 170.0,455.6" fill="#e5e7eb" />
+        <line x1="178.9" y1="388.9" x2="178.9" y2="443.9" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="187.8" y1="384.0" x2="187.8" y2="437.7" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="196.7" y1="379.0" x2="196.7" y2="431.5" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="205.6" y1="374.1" x2="205.6" y2="425.3" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="214.4" y1="369.2" x2="214.4" y2="419.2" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="223.3" y1="364.3" x2="223.3" y2="413.0" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="232.2" y1="359.3" x2="232.2" y2="406.8" stroke="#9ca3af" stroke-width="1.5" />
+        <line x1="241.1" y1="354.4" x2="241.1" y2="400.7" stroke="#9ca3af" stroke-width="1.5" />
+        <polygon points="40,520 140,470 330,560 200,700" fill="#93c5fd" opacity="0.07" filter="url(#blur6)" />
+        <!-- Kunstdruck im Rahmen (hinten links) -->
+        <rect x="318" y="114" width="128" height="102" fill="#000" opacity="0.18" filter="url(#blur3)" transform="translate(3 4)" />
+        <rect x="318" y="114" width="128" height="102" fill="#f5f5f4" stroke="#57534e" stroke-width="4" />
+        <rect x="330" y="126" width="104" height="78" fill="#fef3c7" />
+        <polygon points="330,204 360,160 384,188 404,166 434,204" fill="#0f766e" />
+        <circle cx="414" cy="140" r="9" fill="#f97316" />
+        <!-- Bücherregal (hinten links) -->
+        <rect x="318" y="246" width="136" height="224" fill="#6b4226" />
+        <rect x="326" y="254" width="120" height="208" fill="#3b2314" />
+        <rect x="326" y="322" width="120" height="7" fill="#7c4f2c" /><rect x="326" y="392" width="120" height="7" fill="#7c4f2c" />
+        <g font-family="Fredoka, sans-serif" font-size="9" font-weight="700" text-anchor="middle" dominant-baseline="central" fill="#fff">
+          <rect x="329" y="266" width="18" height="54" fill="#b91c1c" /><text x="338" y="293.0" transform="rotate(-90 338 293.0)">81</text>
+          <rect x="349" y="262" width="18" height="58" fill="#1d4ed8" /><text x="358" y="291.0" transform="rotate(-90 358 291.0)">−54</text>
+          <rect x="369" y="270" width="18" height="50" fill="#15803d" /><text x="378" y="295.0" transform="rotate(-90 378 295.0)">36</text>
+          <rect x="389" y="264" width="18" height="56" fill="#a16207" /><text x="398" y="292.0" transform="rotate(-90 398 292.0)">−24</text>
+          <rect x="409" y="260" width="18" height="60" fill="#7e22ce" /><text x="418" y="290.0" transform="rotate(-90 418 290.0)">16</text>
+        </g>
+        <rect x="336" y="336" width="14" height="56" fill="#0e7490" /><rect x="352" y="344" width="18" height="48" fill="#be123c" /><rect x="372" y="340" width="12" height="52" fill="#65a30d" />
+        <rect x="392" y="360" width="46" height="12" fill="#ca8a04" /><rect x="394" y="372" width="44" height="20" fill="#475569" />
+        <rect x="334" y="410" width="22" height="52" fill="#9a3412" /><rect x="358" y="418" width="16" height="44" fill="#4338ca" />
+        <rect x="380" y="430" width="58" height="32" rx="3" fill="#a8a29e" /><rect x="388" y="436" width="42" height="6" fill="#57534e" />
+        <!-- Tafel mit Kreide-Notizen -->
+        <rect x="466" y="136" width="468" height="198" rx="3" fill="#8a6a45" />
+        <rect x="474" y="144" width="452" height="182" fill="url(#board)" />
+        <rect x="474" y="144" width="452" height="182" filter="url(#chalkDust)" opacity="0.5" />
+        <rect x="462" y="332" width="476" height="9" rx="2" fill="#a07850" />
+        <rect x="500" y="327" width="40" height="7" rx="2" fill="#f5f5f4" /><rect x="560" y="329" width="18" height="4" rx="2" fill="#fef3c7" />
+        <rect x="860" y="324" width="44" height="10" rx="2" fill="#57534e" /><rect x="860" y="324" width="44" height="4" rx="2" fill="#a8a29e" />
+        <g class="fun" data-fun="board" role="button" tabindex="-1" aria-label="Tafel">
+          <rect x="474" y="144" width="452" height="182" fill="transparent" />
+          <g fill="none" stroke="#f8fafc" stroke-opacity="0.85" stroke-linecap="round" font-family="Fredoka, sans-serif">
+            <text x="500" y="182" fill="#f8fafc" fill-opacity="0.9" stroke="none" font-size="22" font-weight="600">Rationale Zahlen</text>
+            <line x1="500" y1="190" x2="676" y2="190" stroke-width="2" />
+            <text x="500" y="226" fill="#f8fafc" fill-opacity="0.8" stroke="none" font-size="18">−3/4 + 1/2 = −1/4</text>
+            <text x="500" y="256" fill="#f8fafc" fill-opacity="0.8" stroke="none" font-size="18">0,5 = 1/2 = 50 %</text>
+            <text x="500" y="286" fill="#f8fafc" fill-opacity="0.75" stroke="none" font-size="18">(−2) · (−3) = 6</text>
+            <line x1="712" y1="270" x2="900" y2="270" stroke-width="2" />
+            <path d="M900 270 l-8 -4 v8 z" fill="#f8fafc" stroke="none" />
+            <line x1="724" y1="264" x2="724" y2="276" stroke-width="2" /><text x="724" y="296" fill="#f8fafc" fill-opacity="0.8" stroke="none" font-size="13" text-anchor="middle">−2</text>
+            <line x1="766" y1="264" x2="766" y2="276" stroke-width="2" /><text x="766" y="296" fill="#f8fafc" fill-opacity="0.8" stroke="none" font-size="13" text-anchor="middle">−1</text>
+            <line x1="808" y1="264" x2="808" y2="276" stroke-width="2" /><text x="808" y="296" fill="#f8fafc" fill-opacity="0.8" stroke="none" font-size="13" text-anchor="middle">0</text>
+            <line x1="850" y1="264" x2="850" y2="276" stroke-width="2" /><text x="850" y="296" fill="#f8fafc" fill-opacity="0.8" stroke="none" font-size="13" text-anchor="middle">1</text>
+            <line x1="892" y1="264" x2="892" y2="276" stroke-width="2" /><text x="892" y="296" fill="#f8fafc" fill-opacity="0.8" stroke="none" font-size="13" text-anchor="middle">2</text>
+            <circle cx="787" cy="270" r="4" fill="#fde68a" stroke="none" />
+            <text x="787" y="252" fill="#fde68a" fill-opacity="0.9" stroke="none" font-size="13" text-anchor="middle">−0,5</text>
+            <path d="M760 180 q20 -20 40 0 q20 20 40 0" stroke-width="2" stroke-opacity="0.35" />
+            <text x="780" y="222" fill="#f8fafc" fill-opacity="0.35" stroke="none" font-size="16">x = ?</text>
+          </g>
+        </g>
+        <!-- Tür (Ausgang) -->
+        <g id="door">
+          <rect x="952" y="246" width="116" height="224" fill="#6b5a45" />
+          <rect id="door-light" x="960" y="254" width="100" height="216" fill="url(#doorGlow)" opacity="0" />
+          <g id="door-panel" class="door-panel">
+            <rect x="960" y="254" width="100" height="216" fill="#8b5e34" />
+            <rect x="960" y="254" width="100" height="216" filter="url(#woodGrain)" opacity="0.7" />
+            <rect x="972" y="316" width="76" height="58" rx="2" fill="none" stroke="#5f3c1f" stroke-width="3" />
+            <rect x="972" y="384" width="76" height="72" rx="2" fill="none" stroke="#5f3c1f" stroke-width="3" />
+            <rect x="976" y="264" width="68" height="40" fill="url(#glass)" stroke="#5f3c1f" stroke-width="3" />
+            <rect x="1036" y="360" width="16" height="5" rx="2" fill="#d6d3d1" /><circle cx="1040" cy="372" r="2.5" fill="#44403c" />
+            <!-- Schloss mit 8 Lämpchen (eins pro Rätsel) -->
+            <g id="door-locks">
+              <circle cx="971" cy="298" r="4" /><circle cx="982" cy="298" r="4" /><circle cx="993" cy="298" r="4" /><circle cx="1004" cy="298" r="4" /><circle cx="1015" cy="298" r="4" /><circle cx="1026" cy="298" r="4" /><circle cx="1037" cy="298" r="4" /><circle cx="1048" cy="298" r="4" />
+            </g>
+          </g>
+        </g>
+        <!-- Wanduhr über der Tür -->
+        <circle cx="1012" cy="194" r="33" fill="#000" opacity="0.2" filter="url(#blur3)" transform="translate(2 3)" />
+        <circle cx="1010" cy="192" r="32" fill="#e7e5e4" stroke="#44403c" stroke-width="4" />
+        <circle cx="1010" cy="192" r="26" fill="#fafaf9" />
+        <g stroke="#1c1917" stroke-width="2" stroke-linecap="round">
+          <line x1="1010.0" y1="171.0" x2="1010.0" y2="167.0" />
+          <line x1="1021.5" y1="172.1" x2="1022.5" y2="170.3" />
+          <line x1="1029.9" y1="180.5" x2="1031.7" y2="179.5" />
+          <line x1="1031.0" y1="192.0" x2="1035.0" y2="192.0" />
+          <line x1="1029.9" y1="203.5" x2="1031.7" y2="204.5" />
+          <line x1="1021.5" y1="211.9" x2="1022.5" y2="213.7" />
+          <line x1="1010.0" y1="213.0" x2="1010.0" y2="217.0" />
+          <line x1="998.5" y1="211.9" x2="997.5" y2="213.7" />
+          <line x1="990.1" y1="203.5" x2="988.3" y2="204.5" />
+          <line x1="989.0" y1="192.0" x2="985.0" y2="192.0" />
+          <line x1="990.1" y1="180.5" x2="988.3" y2="179.5" />
+          <line x1="998.5" y1="172.1" x2="997.5" y2="170.3" />
+        </g>
+        <!-- Lichtschalter neben der Tür -->
+        <g class="fun" data-fun="switch" role="button" tabindex="-1" aria-label="Lichtschalter">
+          <rect x="1074" y="392" width="16" height="24" rx="3" fill="#f5f5f4" stroke="#a8a29e" /><rect x="1079" y="398" width="6" height="12" rx="2" fill="#d6d3d1" />
+        </g>
+        <!-- Kalender an der rechten Wand -->
+        <g class="fun" data-fun="calendar" role="button" tabindex="-1" aria-label="Kalender">
+          <g transform="translate(0 342.0) skewY(-16.7)">
+            <rect x="1138" y="160" width="86" height="96" rx="3" fill="#fafaf9" stroke="#a8a29e" />
+            <rect x="1138" y="160" width="86" height="22" rx="3" fill="#dc2626" />
+            <text x="1181" y="176" font-family="Fredoka, sans-serif" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">OKTOBER</text>
+            <g font-family="Fredoka, sans-serif" font-size="7.5" font-weight="600" text-anchor="middle" fill="#334155"><text x="1146" y="204">1</text><text x="1157" y="204">2</text><text x="1168" y="204">3</text><text x="1179" y="204">4</text><text x="1190" y="204">5</text><text x="1201" y="204">6</text><text x="1212" y="204">7</text><text x="1146" y="217">8</text><text x="1157" y="217">9</text><text x="1168" y="217">10</text><text x="1179" y="217">11</text><text x="1190" y="217">12</text><text x="1201" y="217">13</text><text x="1212" y="217">14</text><text x="1146" y="230">15</text><text x="1157" y="230">16</text><text x="1168" y="230">17</text><text x="1179" y="230">18</text><text x="1190" y="230">19</text><text x="1201" y="230">20</text><text x="1212" y="230">21</text></g>
+          </g>
+        </g>
+        <!-- Bruch-Poster an der rechten Wand (Ablenkung) -->
+        <g transform="translate(0 378.0) skewY(-16.7)">
+          <rect x="1256" y="150" width="104" height="132" fill="#fff" stroke="#94a3b8" stroke-width="2" />
+          <text x="1308" y="170" font-family="Fredoka, sans-serif" font-size="12" font-weight="700" fill="#1e3a8a" text-anchor="middle">BRÜCHE</text>
+          <circle cx="1286" cy="204" r="18" fill="#fde68a" /><path d="M1286 204 L1286 186 A18 18 0 0 1 1304 204 Z" fill="#f97316" />
+          <text x="1286" y="236" font-family="Fredoka, sans-serif" font-size="11" fill="#334155" text-anchor="middle">1/4</text>
+          <circle cx="1332" cy="204" r="18" fill="#bfdbfe" /><path d="M1332 204 L1332 186 A18 18 0 0 1 1332 222 Z" fill="#2563eb" />
+          <text x="1332" y="236" font-family="Fredoka, sans-serif" font-size="11" fill="#334155" text-anchor="middle">1/2</text>
+          <text x="1308" y="266" font-family="Fredoka, sans-serif" font-size="11" fill="#334155" text-anchor="middle">−2/3 &lt; −1/2</text>
+        </g>
+        <!-- Niedriger Schrank mit Hamsterkäfig (rechts hinten) -->
+        <polygon points="1108,452 1250,470 1250,600 1108,560" fill="#7c5a3a" />
+        <polygon points="1108,452 1250,470 1268,462 1126,446" fill="#9b7653" />
+        <polygon points="1108,452 1250,470 1250,600 1108,560" filter="url(#woodGrain)" opacity="0.6" />
+        <line x1="1179" y1="462" x2="1179" y2="580" stroke="#5a3e24" stroke-width="2" />
+        <circle cx="1170" cy="520" r="3" fill="#d6d3d1" /><circle cx="1188" cy="524" r="3" fill="#d6d3d1" />
+        <g class="fun" data-fun="hamster" role="button" tabindex="-1" aria-label="Hamsterkäfig">
+          <rect x="1128" y="400" width="104" height="58" rx="4" fill="#fde68a" opacity="0.25" />
+          <g stroke="#cbd5e1" stroke-width="1.5"><line x1="1132" y1="402" x2="1132" y2="456" /><line x1="1140" y1="402" x2="1140" y2="456" /><line x1="1148" y1="402" x2="1148" y2="456" /><line x1="1156" y1="402" x2="1156" y2="456" /><line x1="1164" y1="402" x2="1164" y2="456" /><line x1="1172" y1="402" x2="1172" y2="456" /><line x1="1180" y1="402" x2="1180" y2="456" /><line x1="1188" y1="402" x2="1188" y2="456" /><line x1="1196" y1="402" x2="1196" y2="456" /><line x1="1204" y1="402" x2="1204" y2="456" /><line x1="1212" y1="402" x2="1212" y2="456" /><line x1="1220" y1="402" x2="1220" y2="456" /><line x1="1228" y1="402" x2="1228" y2="456" /></g>
+          <path d="M1128 404 Q1180 384 1232 404" fill="none" stroke="#cbd5e1" stroke-width="3" />
+          <rect x="1126" y="452" width="108" height="8" rx="2" fill="#0284c7" />
+          <ellipse cx="1170" cy="446" rx="13" ry="9" fill="#f59e0b" /><circle cx="1180" cy="442" r="6" fill="#f59e0b" />
+          <circle cx="1183" cy="440" r="1.3" fill="#111" /><circle cx="1177" cy="436" r="2.5" fill="#fbbf24" />
+          <circle cx="1206" cy="440" r="13" fill="none" stroke="#ef4444" stroke-width="3" /><line x1="1206" y1="440" x2="1206" y2="454" stroke="#ef4444" stroke-width="3" />
+        </g>
+        <!-- Lehrerpult -->
+        <ellipse cx="700" cy="489.6" rx="190" ry="10" fill="#000" opacity="0.35" filter="url(#blur6)" />
+        <polygon points="533.3,398.9 866.7,398.9 866.7,485.6 533.3,485.6" fill="url(#teacherWood)" />
+        <polygon points="533.3,398.9 866.7,398.9 866.7,485.6 533.3,485.6" filter="url(#woodGrain)" opacity="0.6" />
+        <polygon points="543.8,394.6 856.2,394.6 866.7,398.9 533.3,398.9" fill="#a2734b" />
+        <rect x="547.3" y="412.9" width="305.3" height="34" rx="2" fill="none" stroke="#4a2c14" stroke-width="2" opacity="0.6" />
+        <rect x="673.3" y="426.9" width="40" height="5" rx="2" fill="#d6d3d1" />
+        <!-- Papierstapel und Apfel auf dem Pult -->
+        <polygon points="640,394 690,394 694,386 646,386" fill="#f8fafc" /><polygon points="640,394 690,394 690,398 640,398" fill="#e2e8f0" />
+        <circle cx="760" cy="388" r="8" fill="#dc2626" /><rect x="759" y="377" width="2" height="5" fill="#365314" />
+        <g class="fun" data-fun="hourglass" role="button" tabindex="-1" aria-label="Sanduhr">
+          <path d="M718 368 L734 368 L726 381 L734 394 L718 394 L726 381 Z" fill="#fde68a" stroke="#92400e" stroke-width="2.5" />
+        </g>
+        <g class="fun" data-fun="globe" role="button" tabindex="-1" aria-label="Globus">
+          <circle cx="820" cy="368" r="17" fill="#0284c7" />
+          <path d="M808 360 Q820 352 830 364 Q825 376 812 376 Z M824 380 Q832 372 836 378" fill="#22c55e" />
+          <path d="M800 368 A20 20 0 0 0 840 368" fill="none" stroke="#a16207" stroke-width="2" />
+          <rect x="818" y="386" width="4" height="6" fill="#a16207" /><ellipse cx="820" cy="394" rx="10" ry="3" fill="#78350f" />
+        </g>
+        <!-- Schulbänke mit Stühlen (in Zentralperspektive) -->
+        <g>
+          <ellipse cx="430.8" cy="509.5" rx="109.0" ry="28.2" fill="#000" opacity="0.35" filter="url(#blur6)" />
+          <line x1="380.3" y1="421.3" x2="380.3" y2="498.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <line x1="514.9" y1="421.3" x2="514.9" y2="498.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <line x1="334.6" y1="434.4" x2="334.6" y2="522.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <line x1="488.5" y1="434.4" x2="488.5" y2="522.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <polygon points="322.2,420.3 494.4,420.3 494.4,435.6 322.2,435.6" fill="#8f6a45" />
+          <polygon points="322.2,420.3 494.4,420.3 523.8,407.4 376.2,407.4" fill="url(#deskTop)" stroke="#7c5a3a" stroke-width="1" />
+          <polygon points="322.2,420.3 494.4,420.3 523.8,407.4 376.2,407.4" filter="url(#woodGrain)" opacity="0.5" />
+        </g>
+        <g>
+          <line x1="376.1" y1="464.9" x2="376.1" y2="528.9" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <line x1="427.3" y1="464.9" x2="427.3" y2="528.9" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <line x1="341.5" y1="479.4" x2="341.5" y2="550.1" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <line x1="398.1" y1="479.4" x2="398.1" y2="550.1" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <polygon points="333.3,480.8 400.0,480.8 433.8,463.8 374.6,463.8" fill="#1d4ed8" />
+          <line x1="339.7" y1="480.8" x2="339.7" y2="460.2" stroke="#6b7280" stroke-width="5.2" />
+          <line x1="393.7" y1="480.8" x2="393.7" y2="460.2" stroke="#6b7280" stroke-width="5.2" />
+          <polygon points="333.3,464.9 400.0,464.9 400.0,412.5 333.3,412.5" fill="#2563eb" />
+          <polygon points="336.5,418.9 396.8,418.9 396.8,415.7 336.5,415.7" fill="#93c5fd" opacity="0.6" />
+        </g>
+        <g>
+          <ellipse cx="629.5" cy="509.5" rx="109.0" ry="28.2" fill="#000" opacity="0.35" filter="url(#blur6)" />
+          <line x1="566.6" y1="421.3" x2="566.6" y2="498.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <line x1="701.2" y1="421.3" x2="701.2" y2="498.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <line x1="547.5" y1="434.4" x2="547.5" y2="522.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <line x1="701.4" y1="434.4" x2="701.4" y2="522.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <polygon points="537.5,420.3 709.7,420.3 709.7,435.6 537.5,435.6" fill="#8f6a45" />
+          <polygon points="537.5,420.3 709.7,420.3 708.3,407.4 560.7,407.4" fill="url(#deskTop)" stroke="#7c5a3a" stroke-width="1" />
+          <polygon points="537.5,420.3 709.7,420.3 708.3,407.4 560.7,407.4" filter="url(#woodGrain)" opacity="0.5" />
+        </g>
+        <g>
+          <line x1="596.3" y1="464.9" x2="596.3" y2="528.9" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <line x1="647.4" y1="464.9" x2="647.4" y2="528.9" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <line x1="585.2" y1="479.4" x2="585.2" y2="550.1" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <line x1="641.8" y1="479.4" x2="641.8" y2="550.1" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <polygon points="579.4,480.8 646.0,480.8 652.1,463.8 593.0,463.8" fill="#1d4ed8" />
+          <line x1="585.7" y1="480.8" x2="585.7" y2="460.2" stroke="#6b7280" stroke-width="5.2" />
+          <line x1="639.7" y1="480.8" x2="639.7" y2="460.2" stroke="#6b7280" stroke-width="5.2" />
+          <polygon points="579.4,464.9 646.0,464.9 646.0,412.5 579.4,412.5" fill="#2563eb" />
+          <polygon points="582.5,418.9 642.9,418.9 642.9,415.7 582.5,415.7" fill="#93c5fd" opacity="0.6" />
+        </g>
+        <g>
+          <ellipse cx="828.2" cy="509.5" rx="109.0" ry="28.2" fill="#000" opacity="0.35" filter="url(#blur6)" />
+          <line x1="752.9" y1="421.3" x2="752.9" y2="498.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <line x1="887.5" y1="421.3" x2="887.5" y2="498.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <line x1="760.4" y1="434.4" x2="760.4" y2="522.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <line x1="914.3" y1="434.4" x2="914.3" y2="522.3" stroke="#4b5563" stroke-width="6.4" stroke-linecap="round" />
+          <polygon points="752.8,420.3 925.0,420.3 925.0,435.6 752.8,435.6" fill="#8f6a45" />
+          <polygon points="752.8,420.3 925.0,420.3 892.9,407.4 745.2,407.4" fill="url(#deskTop)" stroke="#7c5a3a" stroke-width="1" />
+          <polygon points="752.8,420.3 925.0,420.3 892.9,407.4 745.2,407.4" filter="url(#woodGrain)" opacity="0.5" />
+        </g>
+        <g>
+          <line x1="816.5" y1="464.9" x2="816.5" y2="528.9" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <line x1="867.6" y1="464.9" x2="867.6" y2="528.9" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <line x1="828.9" y1="479.4" x2="828.9" y2="550.1" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <line x1="885.5" y1="479.4" x2="885.5" y2="550.1" stroke="#6b7280" stroke-width="5.2" stroke-linecap="round" />
+          <polygon points="825.4,480.8 892.1,480.8 870.4,463.8 811.3,463.8" fill="#1d4ed8" />
+          <line x1="831.7" y1="480.8" x2="831.7" y2="460.2" stroke="#6b7280" stroke-width="5.2" />
+          <line x1="885.7" y1="480.8" x2="885.7" y2="460.2" stroke="#6b7280" stroke-width="5.2" />
+          <polygon points="825.4,464.9 892.1,464.9 892.1,412.5 825.4,412.5" fill="#2563eb" />
+          <polygon points="828.6,418.9 888.9,418.9 888.9,415.7 828.6,415.7" fill="#93c5fd" opacity="0.6" />
+        </g>
+        <polygon points="410.8,411.3 436.8,411.3 440.8,405.3 414.8,405.3" fill="#fef08a" />
+        <g>
+          <ellipse cx="361.3" cy="555.8" rx="137.1" ry="35.5" fill="#000" opacity="0.35" filter="url(#blur6)" />
+          <line x1="304.2" y1="443.1" x2="304.2" y2="538.3" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <line x1="470.8" y1="443.1" x2="470.8" y2="538.3" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <line x1="231.7" y1="463.8" x2="231.7" y2="576.5" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <line x1="428.9" y1="463.8" x2="428.9" y2="576.5" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <polygon points="214.3,446.1 435.7,446.1 435.7,465.7 214.3,465.7" fill="#8f6a45" />
+          <polygon points="214.3,446.1 435.7,446.1 482.4,425.6 300.0,425.6" fill="url(#deskTop)" stroke="#7c5a3a" stroke-width="1" />
+          <polygon points="214.3,446.1 435.7,446.1 482.4,425.6 300.0,425.6" filter="url(#woodGrain)" opacity="0.5" />
+        </g>
+        <g>
+          <line x1="280.9" y1="504.6" x2="280.9" y2="587.4" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <line x1="347.1" y1="504.6" x2="347.1" y2="587.4" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <line x1="221.0" y1="529.6" x2="221.0" y2="624.1" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <line x1="296.6" y1="529.6" x2="296.6" y2="624.1" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <polygon points="208.5,532.1 297.9,532.1 356.4,502.7 280.0,502.7" fill="#1d4ed8" />
+          <line x1="217.0" y1="532.1" x2="217.0" y2="504.5" stroke="#6b7280" stroke-width="6.9" />
+          <line x1="289.4" y1="532.1" x2="289.4" y2="504.5" stroke="#6b7280" stroke-width="6.9" />
+          <polygon points="208.5,510.9 297.9,510.9 297.9,440.6 208.5,440.6" fill="#2563eb" />
+          <polygon points="212.8,449.1 293.6,449.1 293.6,444.9 212.8,444.9" fill="#93c5fd" opacity="0.6" />
+        </g>
+        <g>
+          <ellipse cx="611.3" cy="555.8" rx="137.1" ry="35.5" fill="#000" opacity="0.35" filter="url(#blur6)" />
+          <line x1="534.8" y1="443.1" x2="534.8" y2="538.3" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <line x1="701.5" y1="443.1" x2="701.5" y2="538.3" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <line x1="504.6" y1="463.8" x2="504.6" y2="576.5" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <line x1="701.8" y1="463.8" x2="701.8" y2="576.5" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <polygon points="491.1,446.1 712.5,446.1 712.5,465.7 491.1,465.7" fill="#8f6a45" />
+          <polygon points="491.1,446.1 712.5,446.1 710.3,425.6 527.9,425.6" fill="url(#deskTop)" stroke="#7c5a3a" stroke-width="1" />
+          <polygon points="491.1,446.1 712.5,446.1 710.3,425.6 527.9,425.6" filter="url(#woodGrain)" opacity="0.5" />
+        </g>
+        <g>
+          <line x1="565.8" y1="504.6" x2="565.8" y2="587.4" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <line x1="632.0" y1="504.6" x2="632.0" y2="587.4" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <line x1="546.6" y1="529.6" x2="546.6" y2="624.1" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <line x1="622.3" y1="529.6" x2="622.3" y2="624.1" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <polygon points="538.3,532.1 627.7,532.1 638.2,502.7 561.8,502.7" fill="#1d4ed8" />
+          <line x1="546.8" y1="532.1" x2="546.8" y2="504.5" stroke="#6b7280" stroke-width="6.9" />
+          <line x1="619.1" y1="532.1" x2="619.1" y2="504.5" stroke="#6b7280" stroke-width="6.9" />
+          <polygon points="538.3,510.9 627.7,510.9 627.7,440.6 538.3,440.6" fill="#2563eb" />
+          <polygon points="542.6,449.1 623.4,449.1 623.4,444.9 542.6,444.9" fill="#93c5fd" opacity="0.6" />
+        </g>
+        <g>
+          <ellipse cx="861.3" cy="555.8" rx="137.1" ry="35.5" fill="#000" opacity="0.35" filter="url(#blur6)" />
+          <line x1="765.5" y1="443.1" x2="765.5" y2="538.3" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <line x1="932.1" y1="443.1" x2="932.1" y2="538.3" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <line x1="777.5" y1="463.8" x2="777.5" y2="576.5" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <line x1="974.6" y1="463.8" x2="974.6" y2="576.5" stroke="#4b5563" stroke-width="8.1" stroke-linecap="round" />
+          <polygon points="767.9,446.1 989.3,446.1 989.3,465.7 767.9,465.7" fill="#8f6a45" />
+          <polygon points="767.9,446.1 989.3,446.1 938.2,425.6 755.9,425.6" fill="url(#deskTop)" stroke="#7c5a3a" stroke-width="1" />
+          <polygon points="767.9,446.1 989.3,446.1 938.2,425.6 755.9,425.6" filter="url(#woodGrain)" opacity="0.5" />
+        </g>
+        <g>
+          <line x1="850.7" y1="504.6" x2="850.7" y2="587.4" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <line x1="916.9" y1="504.6" x2="916.9" y2="587.4" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <line x1="872.3" y1="529.6" x2="872.3" y2="624.1" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <line x1="947.9" y1="529.6" x2="947.9" y2="624.1" stroke="#6b7280" stroke-width="6.9" stroke-linecap="round" />
+          <polygon points="868.1,532.1 957.4,532.1 920.0,502.7 843.6,502.7" fill="#1d4ed8" />
+          <line x1="876.6" y1="532.1" x2="876.6" y2="504.5" stroke="#6b7280" stroke-width="6.9" />
+          <line x1="948.9" y1="532.1" x2="948.9" y2="504.5" stroke="#6b7280" stroke-width="6.9" />
+          <polygon points="868.1,510.9 957.4,510.9 957.4,440.6 868.1,440.6" fill="#2563eb" />
+          <polygon points="872.3,449.1 953.2,449.1 953.2,444.9 872.3,444.9" fill="#93c5fd" opacity="0.6" />
+        </g>
+        <polygon points="835.3,434.8 865.3,434.8 870.3,425.8 840.3,425.8" fill="#bae6fd" />
+        <line x1="871.3" y1="430.8" x2="895.3" y2="424.8" stroke="#facc15" stroke-width="3" stroke-linecap="round" />
+        <g>
+          <ellipse cx="243.5" cy="634.3" rx="184.8" ry="47.8" fill="#000" opacity="0.35" filter="url(#blur6)" />
+          <line x1="180.5" y1="478.4" x2="180.5" y2="603.4" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <line x1="399.2" y1="478.4" x2="399.2" y2="603.4" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <line x1="48.0" y1="516.3" x2="48.0" y2="673.1" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <line x1="322.5" y1="516.3" x2="322.5" y2="673.1" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <polygon points="20.0,492.5 330.0,492.5 330.0,520.0 20.0,520.0" fill="#8f6a45" />
+          <polygon points="20.0,492.5 330.0,492.5 415.4,455.0 176.9,455.0" fill="url(#deskTop)" stroke="#7c5a3a" stroke-width="1" />
+          <polygon points="20.0,492.5 330.0,492.5 415.4,455.0 176.9,455.0" filter="url(#woodGrain)" opacity="0.5" />
+        </g>
+        <g>
+          <line x1="106.2" y1="577.4" x2="106.2" y2="694.6" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <line x1="200.0" y1="577.4" x2="200.0" y2="694.6" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <line x1="-21.5" y1="630.6" x2="-21.5" y2="773.0" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <line x1="92.4" y1="630.6" x2="92.4" y2="773.0" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <polygon points="-45.2,636.5 90.3,636.5 215.4,573.6 107.7,573.6" fill="#1d4ed8" />
+          <line x1="-32.3" y1="636.5" x2="-32.3" y2="594.5" stroke="#6b7280" stroke-width="10.0" />
+          <line x1="77.4" y1="636.5" x2="77.4" y2="594.5" stroke="#6b7280" stroke-width="10.0" />
+          <polygon points="-45.2,604.2 90.3,604.2 90.3,497.7 -45.2,497.7" fill="#2563eb" />
+          <polygon points="-38.7,510.6 83.9,510.6 83.9,504.2 -38.7,504.2" fill="#93c5fd" opacity="0.6" />
+        </g>
+        <g>
+          <ellipse cx="580.4" cy="634.3" rx="184.8" ry="47.8" fill="#000" opacity="0.35" filter="url(#blur6)" />
+          <line x1="483.2" y1="478.4" x2="483.2" y2="603.4" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <line x1="702.0" y1="478.4" x2="702.0" y2="603.4" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <line x1="427.9" y1="516.3" x2="427.9" y2="673.1" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <line x1="702.5" y1="516.3" x2="702.5" y2="673.1" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <polygon points="407.5,492.5 717.5,492.5 717.5,520.0 407.5,520.0" fill="#8f6a45" />
+          <polygon points="407.5,492.5 717.5,492.5 713.5,455.0 475.0,455.0" fill="url(#deskTop)" stroke="#7c5a3a" stroke-width="1" />
+          <polygon points="407.5,492.5 717.5,492.5 713.5,455.0 475.0,455.0" filter="url(#woodGrain)" opacity="0.5" />
+        </g>
+        <g class="fun" data-fun="chair" role="button" tabindex="-1" aria-label="Stuhl">
+          <line x1="509.9" y1="577.4" x2="509.9" y2="694.6" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <line x1="603.6" y1="577.4" x2="603.6" y2="694.6" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <line x1="469.0" y1="630.6" x2="469.0" y2="773.0" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <line x1="582.9" y1="630.6" x2="582.9" y2="773.0" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <polygon points="454.8,636.5 590.3,636.5 612.8,573.6 505.1,573.6" fill="#1d4ed8" />
+          <line x1="467.7" y1="636.5" x2="467.7" y2="594.5" stroke="#6b7280" stroke-width="10.0" />
+          <line x1="577.4" y1="636.5" x2="577.4" y2="594.5" stroke="#6b7280" stroke-width="10.0" />
+          <polygon points="454.8,604.2 590.3,604.2 590.3,497.7 454.8,497.7" fill="#2563eb" />
+          <polygon points="461.3,510.6 583.9,510.6 583.9,504.2 461.3,504.2" fill="#93c5fd" opacity="0.6" />
+        </g>
+        <g>
+          <ellipse cx="917.4" cy="634.3" rx="184.8" ry="47.8" fill="#000" opacity="0.35" filter="url(#blur6)" />
+          <line x1="785.9" y1="478.4" x2="785.9" y2="603.4" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <line x1="1004.7" y1="478.4" x2="1004.7" y2="603.4" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <line x1="807.8" y1="516.3" x2="807.8" y2="673.1" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <line x1="1082.4" y1="516.3" x2="1082.4" y2="673.1" stroke="#4b5563" stroke-width="10.9" stroke-linecap="round" />
+          <polygon points="795.0,492.5 1105.0,492.5 1105.0,520.0 795.0,520.0" fill="#8f6a45" />
+          <polygon points="795.0,492.5 1105.0,492.5 1011.5,455.0 773.1,455.0" fill="url(#deskTop)" stroke="#7c5a3a" stroke-width="1" />
+          <polygon points="795.0,492.5 1105.0,492.5 1011.5,455.0 773.1,455.0" filter="url(#woodGrain)" opacity="0.5" />
+        </g>
+        <g>
+          <line x1="913.5" y1="577.4" x2="913.5" y2="694.6" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <line x1="1007.3" y1="577.4" x2="1007.3" y2="694.6" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <line x1="959.5" y1="630.6" x2="959.5" y2="773.0" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <line x1="1073.4" y1="630.6" x2="1073.4" y2="773.0" stroke="#6b7280" stroke-width="10.0" stroke-linecap="round" />
+          <polygon points="954.8,636.5 1090.3,636.5 1010.3,573.6 902.6,573.6" fill="#1d4ed8" />
+          <line x1="967.7" y1="636.5" x2="967.7" y2="594.5" stroke="#6b7280" stroke-width="10.0" />
+          <line x1="1077.4" y1="636.5" x2="1077.4" y2="594.5" stroke="#6b7280" stroke-width="10.0" />
+          <polygon points="954.8,604.2 1090.3,604.2 1090.3,497.7 954.8,497.7" fill="#2563eb" />
+          <polygon points="961.3,510.6 1083.9,510.6 1083.9,504.2 961.3,504.2" fill="#93c5fd" opacity="0.6" />
+        </g>
+        <!-- Große Zimmerpflanze links vorne -->
+        <g class="fun" data-fun="plant" role="button" tabindex="-1" aria-label="Zimmerpflanze">
+          <ellipse cx="96" cy="790" rx="70" ry="12" fill="#000" opacity="0.4" filter="url(#blur6)" />
+          <path d="M86 690 Q30 610 10 520 Q60 590 94 680 Z" fill="#166534" />
+          <path d="M92 690 Q78 570 96 480 Q114 570 102 690 Z" fill="#15803d" />
+          <path d="M98 690 Q150 610 176 530 Q140 600 106 680 Z" fill="#16a34a" />
+          <path d="M90 690 Q40 650 0 640 Q50 676 88 700 Z" fill="#14532d" />
+          <path d="M104 690 Q160 660 196 650 Q150 690 108 702 Z" fill="#166534" />
+          <path d="M50 690 L146 690 L136 790 L60 790 Z" fill="#9a3412" />
+          <path d="M50 690 L146 690 L136 790 L60 790 Z" fill="url(#cornerShadeL)" />
+          <rect x="44" y="682" width="108" height="16" rx="4" fill="#c2410c" />
+        </g>
+        <!-- Schulranzen neben einer Bank -->
+        <g class="fun" data-fun="bag" role="button" tabindex="-1" aria-label="Schulranzen">
+          <ellipse cx="372" cy="742" rx="42" ry="8" fill="#000" opacity="0.4" filter="url(#blur3)" />
+          <rect x="336" y="672" width="72" height="70" rx="12" fill="#db2777" />
+          <rect x="336" y="672" width="72" height="30" rx="12" fill="#be185d" />
+          <rect x="350" y="708" width="44" height="22" rx="5" fill="#f9a8d4" />
+          <rect x="364" y="694" width="16" height="10" rx="2" fill="#fde68a" />
+          <path d="M350 672 Q372 650 394 672" fill="none" stroke="#831843" stroke-width="5" />
+        </g>
+        <!-- Ball unter einer Bank -->
+        <g class="fun" data-fun="ball" role="button" tabindex="-1" aria-label="Ball">
+          <ellipse cx="866" cy="772" rx="22" ry="5" fill="#000" opacity="0.4" filter="url(#blur3)" />
+          <circle cx="866" cy="752" r="20" fill="#f8fafc" />
+          <path d="M866 740 l8 6 -3 10 -10 0 -3 -10 z" fill="#111827" />
+          <path d="M848 748 l6 -2 M884 748 l-6 -2 M856 768 l4 -5 M876 768 l-4 -5" stroke="#111827" stroke-width="3" />
+        </g>
+        <!-- Teddy (Klassenmaskottchen) oben auf dem Regal -->
+        <g class="fun" data-fun="teddy" role="button" tabindex="-1" aria-label="Teddybär">
+          <circle cx="440" cy="222" r="10" fill="#a16207" /><circle cx="433" cy="213" r="4" fill="#a16207" /><circle cx="447" cy="213" r="4" fill="#a16207" />
+          <ellipse cx="440" cy="238" rx="11" ry="9" fill="#92400e" />
+          <circle cx="436" cy="221" r="1.3" fill="#111" /><circle cx="444" cy="221" r="1.3" fill="#111" /><ellipse cx="440" cy="225" rx="2.5" ry="2" fill="#fde68a" />
+        </g>
+        <!-- Alte Truhe rechts vorne -->
+        <ellipse cx="1250" cy="752" rx="112" ry="14" fill="#000" opacity="0.45" filter="url(#blur6)" />
+        <rect x="1160" y="672" width="180" height="78" rx="6" fill="url(#chestGrad)" />
+        <rect x="1160" y="672" width="180" height="78" rx="6" filter="url(#woodGrain)" opacity="0.6" />
+        <path d="M1160 678 Q1160 624 1250 624 Q1340 624 1340 678 Z" fill="#a8642f" />
+        <path d="M1160 678 Q1160 624 1250 624 Q1340 624 1340 678 Z" filter="url(#woodGrain)" opacity="0.5" />
+        <rect x="1160" y="670" width="180" height="10" fill="#c9a227" />
+        <rect x="1188" y="628" width="10" height="122" fill="#c9a227" opacity="0.95" /><rect x="1302" y="628" width="10" height="122" fill="#c9a227" opacity="0.95" />
+        <!-- ===== Die 8 Verstecke ===== -->
+        <g class="hotspot" data-puzzle="moon" tabindex="0" role="button" aria-label="Mond im Fenster untersuchen">
+          <rect class="hotspot-hit" fill="transparent" pointer-events="none" x="40" y="180" width="100" height="100" />
+          <circle cx="84" cy="234" r="15" fill="#fef9c3" />
+          <circle cx="78" cy="229" r="14" fill="#1e2a6b" opacity="0.75" />
+          <rect class="hotspot-area" fill="transparent" stroke="none" x="64" y="214" width="40" height="40" rx="5" />
+          <g class="hint-marker" transform="translate(84 234)"><circle r="11" /></g>
+        </g>
+        <g class="hotspot" data-puzzle="snail" tabindex="0" role="button" aria-label="Schnecke auf dem Fensterbrett untersuchen">
+          <rect class="hotspot-hit" fill="transparent" pointer-events="none" x="150" y="290" width="110" height="90" />
+          <g transform="translate(206 334) scale(0.75)">
+            <path d="M-18 18 Q 0 22 22 18 L 24 14 Q 0 12 -18 14 Z" fill="#a3e635" />
+            <circle cx="2" cy="6" r="11" fill="#f97316" />
+            <path d="M2 6 m-6 0 a6 6 0 1 1 6 6 a3.5 3.5 0 1 1 -3 -3" fill="none" stroke="#7c2d12" stroke-width="1.8" />
+            <line x1="20" y1="14" x2="24" y2="4" stroke="#a3e635" stroke-width="2" />
+            <circle cx="24" cy="4" r="1.8" fill="#1f2937" />
+          </g>
+          <rect class="hotspot-area" fill="transparent" stroke="none" x="186" y="324" width="44" height="28" rx="5" />
+          <g class="hint-marker" transform="translate(208 338)"><circle r="11" /></g>
+        </g>
+        <g class="hotspot" data-puzzle="painting" tabindex="0" role="button" aria-label="Lila Rechteck im Kunstdruck untersuchen">
+          <rect class="hotspot-hit" fill="transparent" pointer-events="none" x="330" y="108" width="90" height="84" />
+          <rect x="351" y="141" width="36" height="18" fill="none" stroke="#7c3aed" stroke-width="3" />
+          <rect class="hotspot-area" fill="transparent" stroke="none" x="346" y="136" width="46" height="28" rx="5" />
+          <g class="hint-marker" transform="translate(369 150)"><circle r="11" /></g>
+        </g>
+        <g class="hotspot" data-puzzle="sequence" tabindex="0" role="button" aria-label="Buch mit Fragezeichen untersuchen">
+          <rect class="hotspot-hit" fill="transparent" pointer-events="none" x="392" y="240" width="90" height="100" />
+          <rect x="430" y="262" width="18" height="58" fill="#475569" />
+          <text x="439" y="291" font-family="Fredoka, sans-serif" font-size="11" font-weight="700" text-anchor="middle" dominant-baseline="central" fill="#fff">?</text>
+          <rect class="hotspot-area" fill="transparent" stroke="none" x="426" y="256" width="26" height="68" rx="5" />
+          <g class="hint-marker" transform="translate(439 290)"><circle r="11" /></g>
+        </g>
+        <g class="hotspot" data-puzzle="clock" tabindex="0" role="button" aria-label="Uhrzeiger untersuchen">
+          <rect class="hotspot-hit" fill="transparent" pointer-events="none" x="960" y="150" width="100" height="90" />
+          <line x1="1010" y1="192" x2="1010" y2="214" stroke="#1c1917" stroke-width="2.5" stroke-linecap="round" />
+          <line x1="1010" y1="192" x2="1022.6" y2="195.4" stroke="#b91c1c" stroke-width="3.5" stroke-linecap="round" />
+          <circle cx="1010" cy="192" r="2.8" fill="#1c1917" />
+          <rect class="hotspot-area" fill="transparent" stroke="none" x="1002" y="186" width="26" height="36" rx="5" />
+          <g class="hint-marker" transform="translate(1015 204)"><circle r="11" /></g>
+        </g>
+        <g class="hotspot" data-puzzle="thermo" tabindex="0" role="button" aria-label="Thermometer neben der Tür untersuchen">
+          <rect class="hotspot-hit" fill="transparent" pointer-events="none" x="1064" y="236" width="72" height="146" />
+          <rect x="1070" y="272" width="24" height="96" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5" />
+          <rect x="1078.5" y="282" width="7" height="72" rx="3.5" fill="#fff" stroke="#cbd5e1" stroke-width="1" />
+          <rect x="1080" y="326" width="4" height="30" fill="#ef4444" />
+          <circle cx="1082" cy="356" r="7" fill="#ef4444" />
+          <g stroke="#64748b" stroke-width="1"><line x1="1086" y1="286" x2="1090" y2="286" /><line x1="1086" y1="295" x2="1090" y2="295" /><line x1="1086" y1="304" x2="1090" y2="304" /><line x1="1086" y1="313" x2="1090" y2="313" /><line x1="1086" y1="322" x2="1090" y2="322" /><line x1="1086" y1="331" x2="1090" y2="331" /><line x1="1086" y1="340" x2="1090" y2="340" /></g>
+          <text x="1075" y="317" font-family="Fredoka, sans-serif" font-size="6.5" font-weight="700" fill="#334155" text-anchor="middle">0</text>
+          <rect class="hotspot-area" fill="transparent" stroke="none" x="1066" y="268" width="32" height="104" rx="5" />
+          <g class="hint-marker" transform="translate(1082 320)"><circle r="11" /></g>
+        </g>
+        <g class="hotspot" data-puzzle="candle" tabindex="0" role="button" aria-label="Kerze auf dem Lehrerpult untersuchen">
+          <rect class="hotspot-hit" fill="transparent" pointer-events="none" x="540" y="316" width="90" height="90" />
+          <rect x="581" y="373" width="10" height="22" rx="1.5" fill="#fef3c7" />
+          <ellipse cx="586" cy="395" rx="8" ry="2.5" fill="#d6d3d1" />
+          <circle cx="586" cy="364" r="16" fill="url(#lampGlow)" opacity="0.8" />
+          <path class="flame" d="M586 357 Q593 366 586 372 Q579 366 586 357 Z" fill="#fb923c" />
+          <rect class="hotspot-area" fill="transparent" stroke="none" x="574" y="354" width="24" height="44" rx="5" />
+          <g class="hint-marker" transform="translate(586 376)"><circle r="11" /></g>
+        </g>
+        <g class="hotspot" data-puzzle="chest" tabindex="0" role="button" aria-label="Schloss der Truhe untersuchen">
+          <rect class="hotspot-hit" fill="transparent" pointer-events="none" x="1196" y="630" width="110" height="110" />
+          <rect x="1241" y="679" width="18" height="22" rx="3" fill="#facc15" stroke="#92400e" stroke-width="2" />
+          <circle cx="1250" cy="687" r="3" fill="#92400e" />
+          <rect x="1248.5" y="688" width="3" height="7" fill="#92400e" />
+          <rect class="hotspot-area" fill="transparent" stroke="none" x="1236" y="674" width="28" height="32" rx="5" />
+          <g class="hint-marker" transform="translate(1250 690)"><circle r="11" /></g>
+        </g>
+        <!-- Fotografischer Look: Abdunkeln (Licht aus), Vignette und Filmkorn -->
+        <rect id="room-dim" width="1400" height="800" fill="#0b1026" pointer-events="none" />
+        <rect width="1400" height="800" fill="url(#vignette)" pointer-events="none" />
+        <rect width="1400" height="800" filter="url(#grain)" pointer-events="none" />
+      </svg>
+      </div>
+
+      <!-- Erfolgsbanner -->
+      <div id="win-banner" class="win-banner hidden" role="status" aria-live="polite">
+        <div class="text-center px-5 py-5 sm:px-10 sm:py-8 rounded-3xl bg-night-800/95 ring-2 ring-gold-400 shadow-2xl max-w-md mx-4">
+          <div class="text-4xl sm:text-6xl mb-1 sm:mb-2" aria-hidden="true">🏆</div>
+          <h2 class="font-display text-xl sm:text-3xl font-bold text-gold-300">Geschafft – die Tür ist offen!</h2>
+          <p class="mt-2 text-sm sm:text-base text-slate-300">Du hast alle 8 Rätsel gelöst. Ein echtes Mathe-Genie!</p>
+          <button id="play-again" type="button"
+            class="mt-4 sm:mt-5 min-h-[44px] px-5 py-2.5 rounded-xl font-semibold bg-gradient-to-r from-gold-400 to-pink-400 text-night-900 hover:scale-105 active:scale-95 transition">
+            Nochmal spielen
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <p class="sm:hidden mt-2 text-center text-xs text-gold-300">⇆ Das Zimmer ist groß – wische seitlich, um alles zu sehen.</p>
+    <p class="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-slate-400">
+      <span class="pointer-fine">Tipp: Verdächtige Details leuchten auf, wenn du mit der Maus darüberfährst.</span>
+      <span class="pointer-coarse">Tipp: Schau dir kleine Details im Zimmer genau an und tippe darauf. Findest du nichts? Nutze den „Hinweis“-Button.</span>
+    </p>
+
+    <footer class="mt-6 sm:mt-10 text-center text-xs text-slate-500">
+      Gemacht mit ❤️, SVG &amp; Tailwind CSS · gehostet auf GitHub Pages
+    </footer>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal fixed inset-0 z-50 hidden items-end sm:items-center justify-center sm:p-4" aria-hidden="true">
+    <div class="modal-backdrop absolute inset-0 bg-black/70 backdrop-blur-sm" data-close></div>
+
+    <div class="modal-card relative w-full max-w-lg flex flex-col rounded-t-3xl sm:rounded-3xl bg-gradient-to-b from-night-700 to-night-800 ring-1 ring-white/15 shadow-2xl overflow-hidden"
+         role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+      <div class="h-1.5 shrink-0 bg-gradient-to-r from-gold-400 via-pink-400 to-violet-400"></div>
+      <div class="sm:hidden mx-auto mt-2 h-1.5 w-12 shrink-0 rounded-full bg-white/25" aria-hidden="true"></div>
+      <button type="button" class="absolute top-3 right-3 z-10 w-11 h-11 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 text-xl leading-none transition"
+              aria-label="Schließen" data-close>&times;</button>
+
+      <div class="modal-body overflow-y-auto overscroll-contain px-5 pt-3 pb-5 sm:p-8">
+        <div class="flex items-center gap-3 mb-4 pr-12 sm:pr-8">
+          <span id="modal-icon" class="text-3xl sm:text-4xl" aria-hidden="true"></span>
+          <div>
+            <p id="modal-category" class="text-xs uppercase tracking-widest text-gold-400"></p>
+            <h2 id="modal-title" class="font-display text-xl sm:text-2xl font-semibold leading-tight"></h2>
+          </div>
+        </div>
+
+        <div id="modal-question" class="text-slate-200 leading-relaxed space-y-3"></div>
+
+        <form id="answer-form" class="mt-5 sm:mt-6" autocomplete="off" novalidate>
+          <label for="answer-input" class="block text-sm text-slate-400 mb-1.5">Deine Antwort</label>
+          <div class="flex gap-2">
+            <input id="answer-input" type="text" inputmode="text" enterkeyhint="go"
+              autocapitalize="off" autocorrect="off" spellcheck="false"
+              class="answer-input flex-1 min-w-0 rounded-xl bg-night-900/80 px-4 py-3 text-lg ring-2 ring-white/10 focus:ring-gold-400 outline-none transition"
+              placeholder="z. B. -3/4 oder 0,75" />
+            <button type="submit"
+              class="px-5 py-3 rounded-xl font-semibold bg-gradient-to-r from-gold-400 to-pink-400 text-night-900 hover:brightness-110 active:scale-95 transition">
+              Prüfen
+            </button>
+          </div>
+          <div class="symbol-keys mt-2 flex gap-2" aria-label="Sonderzeichen einfügen">
+            <button type="button" data-insert="-" aria-label="Minus einfügen">−</button>
+            <button type="button" data-insert="/" aria-label="Bruchstrich einfügen">/</button>
+            <button type="button" data-insert="," aria-label="Komma einfügen">,</button>
+            <button type="button" data-insert=" " aria-label="Leerzeichen einfügen">␣</button>
+            <button type="button" data-insert="backspace" aria-label="Letztes Zeichen löschen">⌫</button>
+          </div>
+          <p class="mt-1.5 text-xs text-slate-400">Erlaubt: Brüche (3/4), Dezimalzahlen (0,75), gemischte Zahlen (1 3/4) und negative Zahlen (-2/3).</p>
+          <p id="feedback" class="feedback mt-3 min-h-[1.5rem] font-semibold" aria-live="polite"></p>
+        </form>
+
+        <details id="hint-box" class="mt-2 group">
+          <summary class="cursor-pointer py-2 text-sm text-violet-300 hover:text-violet-200 select-none">💡 Tipp anzeigen</summary>
+          <p id="modal-hint" class="mt-2 text-sm text-slate-300 bg-white/5 rounded-xl p-3"></p>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Einstellungen nur für diese Seite: eigener Spielstand und Hinweistexte passend zum Klassenzimmer
+    window.ROOM_CONFIG = {
+      "id": "klassenzimmer",
+      "clues": {
+        "candle": "Auf dem Lehrerpult brennt etwas ganz langsam herunter.",
+        "snail": "Auf dem Fensterbrett ist jemand seeehr langsam unterwegs.",
+        "sequence": "Im Bücherregal hinten links kann man einen Buchrücken nicht lesen.",
+        "painting": "Im Bild mit den Bergen über dem Regal versteckt sich eine Form, die nicht in die Landschaft passt.",
+        "thermo": "Gleich rechts neben der Tür hängt etwas, das verrät, wie kalt es draußen ist.",
+        "clock": "Über der Tür steht die Zeit still – schau dir die Zeiger ganz genau an.",
+        "chest": "Vorne rechts steht eine alte Truhe – untersuche das kleine goldene Teil an ihrer Vorderseite."
+      }
+    };
+  </script>
+  <script src="../script.js?v=21"></script>
+</body>
+</html>
