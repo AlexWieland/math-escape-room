@@ -123,8 +123,11 @@ button, summary, input, .hotspot { touch-action: manipulation; }
     filter: drop-shadow(0 0 10px rgba(253, 230, 138, 0.75));
   }
   .hotspot:hover .hotspot-area {
-    stroke: rgba(253, 230, 138, 0.7);
-    fill: rgba(253, 230, 138, 0.06);
+    stroke: #fbbf24;
+    stroke-width: 3;
+    fill: rgba(251, 191, 36, 0.12);
+    /* dunkler Rand, damit der Rahmen auch auf hellen Flächen (Bild, Uhr) sichtbar ist */
+    filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 2px rgba(0, 0, 0, 0.85));
   }
 }
 .hotspot:focus-visible {
@@ -132,8 +135,10 @@ button, summary, input, .hotspot { touch-action: manipulation; }
 }
 .hotspot:focus-visible .hotspot-area,
 .hotspot.tapped .hotspot-area {
-  stroke: rgba(253, 230, 138, 0.7);
-  fill: rgba(253, 230, 138, 0.12);
+  stroke: #fbbf24;
+  stroke-width: 3;
+  fill: rgba(251, 191, 36, 0.15);
+  filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 2px rgba(0, 0, 0, 0.85));
 }
 .hotspot:active,
 .hotspot.tapped { filter: drop-shadow(0 0 12px rgba(253, 230, 138, 0.85)); }
@@ -141,8 +146,9 @@ button, summary, input, .hotspot { touch-action: manipulation; }
 /* Pulsierende Markierung – nur sichtbar, wenn "Verstecke zeigen" aktiv ist */
 .hint-marker circle {
   fill: rgba(251, 191, 36, 0.35);
-  stroke: #fde68a;
-  stroke-width: 2;
+  stroke: #f59e0b;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 1.5px rgba(0, 0, 0, 0.9));
 }
 .hint-marker {
   opacity: 0;
