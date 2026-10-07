@@ -208,6 +208,7 @@ button, summary, input, .hotspot { touch-action: manipulation; }
 
 /* Wandlampe aus-/einschalten */
 .lamp-off #wall-lamp-glow { opacity: 0; }
+.lamp-off #wall-lamp-shade { fill: #78716c; }
 .lamp-off .lamp-panel { fill: #a8a29e; }
 #wall-lamp-glow { transition: opacity 0.2s ease; }
 /* Licht aus: Raum wird dunkler (nur das Abendlicht von draußen bleibt) */
