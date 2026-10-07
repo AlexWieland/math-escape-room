@@ -8,6 +8,7 @@
   // 1. Die Rätsel
   //    name: Name des Verstecks im Zimmer
   //    category: kurze Beschreibung der Aufgabe (erscheint in der Fortschrittsanzeige)
+  //    clue: Text-Hinweis auf das Versteck (1. Stufe des Hinweis-Buttons)
   //    answer: die richtige Zahl
   //    question: HTML (darf kleine SVG-Grafiken enthalten)
   // ---------------------------------------------------------------
@@ -22,6 +23,7 @@
         <p>Die Kerze auf dem Tisch war am Anfang <strong>20 cm</strong> lang. Pro Stunde brennen <strong>2,5 cm</strong> ab.</p>
         <p>Welcher <strong>Bruchteil</strong> der Kerze ist nach <strong>3 Stunden</strong> abgebrannt?</p>
         <p class="text-slate-400 text-sm">Gib das Ergebnis als gekürzten Bruch oder als Dezimalzahl an.</p>`,
+      clue: 'Auf dem kleinen Tisch brennt etwas ganz langsam herunter.',
       hint: 'In 3 Stunden brennen 3 · 2,5 cm = 7,5 cm ab. Der Bruchteil ist 7,5 / 20. Erweitere mit 2, damit keine Kommazahl mehr im Bruch steht.',
       answer: 0.375, // 3/8
     },
@@ -36,6 +38,7 @@
         <p>Neben dem Mond leuchten vier Sterne mit Zahlen. Nur der Stern mit der <strong>größten</strong> Zahl zeigt den Weg:</p>
         <p class="text-center font-display text-2xl tracking-wide text-gold-300">−2/3 · −0,6 · −5/8 · −0,65</p>
         <p>Welche Zahl ist die größte?</p>`,
+      clue: 'Schau aus dem Fenster: Am Nachthimmel leuchtet etwas Rundes, das nur halb zu sehen ist.',
       hint: 'Wandle alle Zahlen in Dezimalzahlen um (−2/3 ≈ −0,667; −5/8 = −0,625). Bei negativen Zahlen ist die Zahl am größten, die am nächsten bei 0 liegt.',
       answer: -0.6,
     },
@@ -65,6 +68,7 @@
           <text x="99.2" y="22" fill="#fdba74" font-size="14" text-anchor="middle">?</text>
         </svg>
         <p>Um wie viel hat sich ihre Position verändert? Gib die Veränderung <strong>mit Vorzeichen</strong> an (nach links = negativ).</p>`,
+      clue: 'Auf der Fensterbank ist jemand seeehr langsam unterwegs.',
       hint: 'Veränderung = Endwert − Startwert = −1,2 − 0,8.',
       answer: -2,
     },
@@ -79,6 +83,7 @@
         <p>Im Regal stehen Bücher mit Zahlen auf dem Rücken – auf dem letzten steht nur ein <strong>?</strong>:</p>
         <p class="text-center font-display text-2xl tracking-wide text-gold-300">81 · −54 · 36 · −24 · 16 · <span class="text-pink-300">?</span></p>
         <p>Welche Zahl gehört auf das Fragezeichen-Buch? <span class="text-slate-400">(als Bruch oder gemischte Zahl)</span></p>`,
+      clue: 'Im großen Bücherregal kann man einen Buchrücken nicht lesen.',
       hint: 'Von Buch zu Buch wird immer mit demselben Bruch multipliziert: 81 · ? = −54. Kürze −54/81!',
       answer: -32 / 3, // −10 2/3
     },
@@ -98,6 +103,7 @@
           <text x="135" y="72" fill="#e2e8f0" font-size="15" text-anchor="middle">A = 3/4 m²</text>
         </svg>
         <p>Wie <strong>breit</strong> ist das Rechteck (in m)?</p>`,
+      clue: 'Im Gemälde mit den Bergen versteckt sich eine Form, die nicht in die Landschaft passt.',
       hint: 'Breite = Fläche : Länge = 3/4 : 5/4. Durch einen Bruch dividiert man, indem man mit dem Kehrwert multipliziert.',
       answer: 0.6, // 3/5
     },
@@ -116,6 +122,7 @@
           <li>Bis zum Abend sinkt sie um <strong>5,5 Grad</strong>.</li>
         </ul>
         <p>Wie viel Grad zeigt das Thermometer am Abend?</p>`,
+      clue: 'Neben der Tür hängt etwas, das verrät, wie kalt es draußen ist.',
       hint: 'Steigen heißt plus, sinken heißt minus: −4,5 + 7,25 − 5,5. Ist das Ergebnis über oder unter 0?',
       answer: -2.75, // −11/4
     },
@@ -138,6 +145,7 @@
           <circle cx="60" cy="60" r="4" fill="#1f2937"/>
         </svg>
         <p>Um wie viele Minuten weicht sie nach <strong>3 Wochen</strong> ab? Gib das Ergebnis mit Vorzeichen an.</p>`,
+      clue: 'Die Zeit steht still – schau dir die Zeiger ganz genau an.',
       hint: '3 Wochen sind 21 Tage. Rechne 21 · (−2/5). Plus mal minus ergibt minus.',
       answer: -8.4, // −42/5
     },
@@ -152,6 +160,7 @@
         <p>Das letzte Schloss! Auf vier Rädchen stehen diese Zahlen:</p>
         <p class="text-center font-display text-2xl tracking-wide text-gold-300">−3/4 · 1/2 · −1 1/4 · 2,5</p>
         <p>Der Code ist ihr <strong>Mittelwert</strong> (Durchschnitt). Wie lautet er?</p>`,
+      clue: 'Der Schatz bleibt verschlossen – untersuche das kleine goldene Teil vorne an der Truhe.',
       hint: 'Mittelwert = Summe aller Zahlen : Anzahl. Addiere zuerst: −0,75 + 0,5 − 1,25 + 2,5. Teile das Ergebnis dann durch 4.',
       answer: 0.25, // 1/4
     },
@@ -196,6 +205,7 @@
   const dotsEl      = $('#progress-dots');
   const winBanner   = $('#win-banner');
   const hintToggle  = $('#hint-toggle');
+  const hintText    = $('#hint-text');
   const modalCard   = modal.querySelector('.modal-card');
   const symbolKeys  = [...modal.querySelectorAll('[data-insert]')];
 
@@ -299,32 +309,46 @@
   }
 
   // ---------------------------------------------------------------
-  // Hinweis-Button: zeigt zufällig EIN noch nicht gelöstes Versteck.
-  // Ein erneuter Klick wählt (wenn möglich) ein anderes.
+  // Hinweis-Button – zweistufig für ein zufälliges, ungelöstes Versteck:
+  //   1. Klick: Text-Hinweis anzeigen (Stufe 1)
+  //   2. Klick: dasselbe Versteck im Bild markieren (Stufe 2)
+  //   3. Klick: ein anderes Versteck wählen → wieder mit Text beginnen
   // ---------------------------------------------------------------
   let hintedId = null;
+  let hintStage = 0; // 0 = kein Hinweis, 1 = Text, 2 = Markierung im Bild
 
-  function showRandomHint() {
+  function onHintClick() {
+    if (hintStage === 1) {
+      hintStage = 2;
+      updateHint();
+      // Das Versteck ins Bild holen (auf dem Handy auch seitlich scrollen)
+      const el = room.querySelector(`.hotspot[data-puzzle="${hintedId}"]`);
+      el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      return;
+    }
     const open = IDS.filter((id) => !solved.has(id));
     if (open.length === 0) return;
     const choices = open.length > 1 ? open.filter((id) => id !== hintedId) : open;
     hintedId = randomItem(choices);
+    hintStage = 1;
     updateHint();
-    // Das Versteck ins Bild holen (auf dem Handy auch seitlich scrollen)
-    const el = room.querySelector(`.hotspot[data-puzzle="${hintedId}"]`);
-    el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
   }
 
   function updateHint() {
-    if (hintedId && solved.has(hintedId)) hintedId = null; // gelöst → Markierung weg
+    if (hintedId && solved.has(hintedId)) { hintedId = null; hintStage = 0; } // gelöst → Hinweis weg
     room.querySelectorAll('.hotspot').forEach((el) => {
-      el.classList.toggle('hinted', el.dataset.puzzle === hintedId);
+      el.classList.toggle('hinted', hintStage === 2 && el.dataset.puzzle === hintedId);
     });
-    const allSolved = solved.size === TOTAL;
-    hintToggle.disabled = allSolved;
-    const canSwitch = hintedId && TOTAL - solved.size > 1;
-    hintToggle.textContent = canSwitch ? '✨ Anderes Versteck zeigen' : '✨ Versteck zeigen';
-    if (allSolved) hintToggle.textContent = '✨ Alles gefunden';
+
+    hintText.classList.toggle('hidden', hintStage === 0);
+    if (hintStage > 0) hintText.querySelector('.hint-clue').textContent = PUZZLES[hintedId].clue;
+
+    const open = TOTAL - solved.size;
+    hintToggle.disabled = open === 0;
+    if (open === 0) hintToggle.textContent = '✨ Alles gefunden';
+    else if (hintStage === 1) hintToggle.textContent = '🔍 Versteck markieren';
+    else if (hintStage === 2 && open > 1) hintToggle.textContent = '✨ Anderer Hinweis';
+    else hintToggle.textContent = '✨ Hinweis';
   }
 
   function render() {
@@ -494,6 +518,7 @@
   function resetGame() {
     solved = new Set();
     hintedId = null;
+    hintStage = 0;
     saveProgress();
     room.classList.remove('door-open');
     winBanner.classList.add('hidden');
@@ -538,7 +563,7 @@
     trapFocus(e);
   });
 
-  hintToggle.addEventListener('click', showRandomHint);
+  hintToggle.addEventListener('click', onHintClick);
 
   $('#reset-btn').addEventListener('click', () => {
     if (solved.size === 0 || confirm('Wirklich neu starten? Dein Fortschritt geht verloren.')) resetGame();

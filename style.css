@@ -149,6 +149,10 @@ button, summary, input, .hotspot { touch-action: manipulation; }
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
+/* Text-Hinweis erscheint mit kleiner Animation */
+.hint-text:not(.hidden) { animation: hintIn 0.35s ease; }
+@keyframes hintIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
 /* Nur das per Button zufällig gewählte, noch ungelöste Versteck pulsiert */
 .hotspot.hinted:not(.solved) .hint-marker { opacity: 1; }
 .hotspot.hinted:not(.solved) .hint-marker circle {

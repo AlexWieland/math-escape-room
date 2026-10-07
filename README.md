@@ -30,6 +30,8 @@ Jedes Rätsel steckt hinter einem kleinen Detail im Zimmer. Die Fortschrittsanze
 | 7 | 🕒 Uhrzeiger (Wanduhr)        | Multiplizieren mit Minus | 21 Tage · (−2/5) Minute                          | −8,4 (−42/5)    |
 | 8 | 🔒 Truhenschloss              | Mittelwert berechnen   | Mittelwert von −3/4, 1/2, −1 1/4, 2,5            | 1/4 (0,25)      |
 
+**Hinweis-Button:** Ein Klick auf „✨ Hinweis“ wählt zufällig ein noch nicht gelöstes Versteck und zeigt zuerst nur einen Text-Hinweis (z. B. „Auf der Fensterbank ist jemand seeehr langsam unterwegs.“). Erst der zweite Klick („🔍 Versteck markieren“) lässt das Versteck im Bild pulsieren. Die Hinweistexte stehen im Feld `clue` jedes Rätsels in `script.js`.
+
 Antworten dürfen als Bruch (`-3/8`), Dezimalzahl (`-0,375`) oder gemischte Zahl (`1 3/4`) eingegeben werden. Gleichwertige Brüche (z. B. `14/8`) werden ebenfalls als richtig erkannt.
 
 ## Auf GitHub Pages veröffentlichen
