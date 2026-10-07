@@ -267,6 +267,29 @@ button, summary, input, .hotspot { touch-action: manipulation; }
   80% { transform: translateX(5px); }
 }
 
+/* Zahlen-Aufzählungen in den Rätseln (statt „a · b · c“) */
+.num-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.num-chip {
+  font-family: "Fredoka", system-ui, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #fde68a;
+  white-space: nowrap;
+  padding: 0.2rem 0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(253, 230, 138, 0.35);
+}
+@media (max-width: 639px) {
+  .num-list { gap: 0.35rem; }
+  .num-chip { font-size: 1.1rem; padding: 0.15rem 0.45rem; }
+}
+
 /* Kleine SVG-Grafiken innerhalb der Rätsel */
 .puzzle-figure { display: block; margin: 0.5rem auto 0; max-width: 260px; width: 100%; }
 

@@ -12,6 +12,11 @@
   //    answer: die richtige Zahl
   //    question: HTML (darf kleine SVG-Grafiken enthalten)
   // ---------------------------------------------------------------
+  // Zahlen einer Aufzählung als einzelne Kärtchen – ohne Trennzeichen wie „·“,
+  // die man mit einem Malzeichen verwechseln könnte.
+  const numberList = (...items) =>
+    `<div class="num-list">${items.map((x) => `<span class="num-chip">${x}</span>`).join('')}</div>`;
+
   const PUZZLES = {
     candle: {
       order: 1,
@@ -36,7 +41,7 @@
       title: 'Der Mond und die negativen Zahlen',
       question: `
         <p>Neben dem Mond leuchten vier Sterne mit Zahlen. Nur der Stern mit der <strong>größten</strong> Zahl zeigt den Weg:</p>
-        <p class="text-center font-display text-2xl tracking-wide text-gold-300">−2/3 · −0,6 · −5/8 · −0,65</p>
+        ${numberList('−2/3', '−0,6', '−5/8', '−0,65')}
         <p>Welche Zahl ist die größte?</p>`,
       clue: 'Schau aus dem Fenster: Am Nachthimmel leuchtet etwas Rundes, das nur halb zu sehen ist.',
       hint: 'Wandle alle Zahlen in Dezimalzahlen um (−2/3 ≈ −0,667; −5/8 = −0,625). Bei negativen Zahlen ist die Zahl am größten, die am nächsten bei 0 liegt.',
@@ -81,7 +86,7 @@
       title: 'Das Buch mit dem Fragezeichen',
       question: `
         <p>Im Regal stehen Bücher mit Zahlen auf dem Rücken – auf dem letzten steht nur ein <strong>?</strong>:</p>
-        <p class="text-center font-display text-2xl tracking-wide text-gold-300">81 · −54 · 36 · −24 · 16 · <span class="text-pink-300">?</span></p>
+        ${numberList('81', '−54', '36', '−24', '16', '<span class="text-pink-300">?</span>')}
         <p>Welche Zahl gehört auf das Fragezeichen-Buch? <span class="text-slate-400">(als Bruch oder gemischte Zahl)</span></p>`,
       clue: 'Im großen Bücherregal kann man einen Buchrücken nicht lesen.',
       hint: 'Von Buch zu Buch wird immer mit demselben Bruch multipliziert: 81 · ? = −54. Kürze −54/81!',
@@ -158,7 +163,7 @@
       title: 'Das Schloss der Schatztruhe',
       question: `
         <p>Das letzte Schloss! Auf vier Rädchen stehen diese Zahlen:</p>
-        <p class="text-center font-display text-2xl tracking-wide text-gold-300">−3/4 · 1/2 · −1 1/4 · 2,5</p>
+        ${numberList('−3/4', '1/2', '−1 1/4', '2,5')}
         <p>Der Code ist ihr <strong>Mittelwert</strong> (Durchschnitt). Wie lautet er?</p>`,
       clue: 'Der Schatz bleibt verschlossen – untersuche das kleine goldene Teil vorne an der Truhe.',
       hint: 'Mittelwert = Summe aller Zahlen : Anzahl. Addiere zuerst: −0,75 + 0,5 − 1,25 + 2,5. Teile das Ergebnis dann durch 4.',
