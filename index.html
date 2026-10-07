@@ -39,7 +39,7 @@
   <!-- Konfetti-Bibliothek -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
 
-  <link rel="stylesheet" href="style.css?v=21" />
+  <link rel="stylesheet" href="style.css?v=23" />
 </head>
 
 <body class="min-h-screen bg-night-900 text-slate-100 font-body antialiased">
@@ -335,11 +335,11 @@
         <rect x="330" y="320" width="150" height="8" fill="#8a5a35" />
         <!-- Reihe 1: nummerierte Bücher -->
         <g font-family="Fredoka, sans-serif" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="central" fill="#fff">
-          <rect x="335" y="160" width="22" height="60" fill="#ef4444" /><text x="346" y="190" transform="rotate(-90 346 190)">81</text>
-          <rect x="359" y="150" width="22" height="70" fill="#3b82f6" /><text x="370" y="185" transform="rotate(-90 370 185)">−54</text>
-          <rect x="383" y="165" width="22" height="55" fill="#22c55e" /><text x="394" y="192.5" transform="rotate(-90 394 192.5)">36</text>
-          <rect x="407" y="155" width="22" height="65" fill="#eab308" /><text x="418" y="187.5" transform="rotate(-90 418 187.5)">−24</text>
-          <rect x="431" y="145" width="22" height="75" fill="#a855f7" /><text x="442" y="182.5" transform="rotate(-90 442 182.5)">16</text>
+          <rect x="335" y="160" width="22" height="60" fill="#ef4444" /><text x="346" y="190" transform="rotate(-90 346 190)">−2</text>
+          <rect x="359" y="150" width="22" height="70" fill="#3b82f6" /><text x="370" y="185" transform="rotate(-90 370 185)">+5</text>
+          <rect x="383" y="165" width="22" height="55" fill="#22c55e" /><text x="394" y="192.5" transform="rotate(-90 394 192.5)">−3</text>
+          <rect x="407" y="155" width="22" height="65" fill="#eab308" /><text x="418" y="187.5" transform="rotate(-90 418 187.5)">−1</text>
+          <rect x="431" y="145" width="22" height="75" fill="#a855f7" /><text x="442" y="182.5" transform="rotate(-90 442 182.5)">+2</text>
         </g>
         <!-- Reihe 2 -->
         <rect x="340" y="250" width="18" height="70" fill="#0ea5e9" />
@@ -587,10 +587,34 @@
           <summary class="cursor-pointer py-2 text-sm text-violet-300 hover:text-violet-200 select-none">💡 Tipp anzeigen</summary>
           <p id="modal-hint" class="mt-2 text-sm text-slate-300 bg-white/5 rounded-xl p-3"></p>
         </details>
+        <details class="mt-1 group">
+          <summary class="cursor-pointer py-2 text-sm text-sky-300 hover:text-sky-200 select-none">📘 Vorzeichenregeln</summary>
+          <div class="mt-1 text-sm text-slate-300 bg-white/5 rounded-xl p-3 space-y-3">
+            <div>
+              <p class="font-semibold text-slate-200 mb-1">Klammern auflösen (Plus und Minus)</p>
+              <table class="rules-table">
+                <tr><td>+ (+a) = + a</td><td>plus plus → plus</td></tr>
+                <tr><td>+ (−a) = − a</td><td>plus minus → minus</td></tr>
+                <tr><td>− (+a) = − a</td><td>minus plus → minus</td></tr>
+                <tr><td>− (−a) = + a</td><td>minus minus → plus</td></tr>
+              </table>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-200 mb-1">Multiplizieren und Dividieren</p>
+              <table class="rules-table">
+                <tr><td>(+) · (+) = +</td><td>gleiche Vorzeichen → Ergebnis positiv</td></tr>
+                <tr><td>(−) · (−) = +</td><td></td></tr>
+                <tr><td>(+) · (−) = −</td><td>verschiedene Vorzeichen → Ergebnis negativ</td></tr>
+                <tr><td>(−) · (+) = −</td><td>(gilt genauso für „:“)</td></tr>
+              </table>
+            </div>
+            <p>Addieren: <strong>gleiche</strong> Vorzeichen → Beträge addieren; <strong>verschiedene</strong> Vorzeichen → Beträge subtrahieren, Vorzeichen der Zahl mit dem größeren Betrag.</p>
+          </div>
+        </details>
       </div>
     </div>
   </div>
 
-  <script src="script.js?v=21"></script>
+  <script src="script.js?v=23"></script>
 </body>
 </html>

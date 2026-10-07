@@ -12,164 +12,125 @@
   //    answer: die richtige Zahl
   //    question: HTML (darf kleine SVG-Grafiken enthalten)
   // ---------------------------------------------------------------
-  // Zahlen einer Aufzählung, getrennt durch „|“ – nicht durch „·“,
-  // das man mit einem Malzeichen verwechseln könnte.
-  const numberList = (...items) =>
-    `<p class="num-list">${items
-      .map((x) => `<span class="num-item">${x}</span>`)
-      .join('<span class="num-sep" aria-hidden="true">|</span>')}</p>`;
-
   const PUZZLES = {
     candle: {
       order: 1,
       icon: '🕯️',
       name: 'Kerze',
-      category: 'Bruchteil berechnen',
+      category: 'Ganze Zahlen subtrahieren',
       title: 'Die brennende Kerze',
-      question: `
-        <p>Die Kerze auf dem Tisch war am Anfang <strong>20 cm</strong> lang. Pro Stunde brennen <strong>2,5 cm</strong> ab.</p>
-        <p>Welcher <strong>Bruchteil</strong> der Kerze ist nach <strong>3 Stunden</strong> abgebrannt?</p>
-        <p class="text-slate-400 text-sm">Gib das Ergebnis als gekürzten Bruch oder als Dezimalzahl an.</p>`,
       clue: 'Auf dem kleinen Tisch brennt etwas ganz langsam herunter.',
-      hint: 'In 3 Stunden brennen 3 · 2,5 cm = 7,5 cm ab. Der Bruchteil ist 7,5 / 20. Erweitere mit 2, damit keine Kommazahl mehr im Bruch steht.',
-      answer: 0.375, // 3/8
+      question: `
+        <p>In das Wachs der Kerze ist eine Rechnung geritzt:</p>
+        <p class="calc">(−6) − (+10) = ?</p>
+        <p>Berechne das Ergebnis.</p>`,
+      hint: 'Vorzeichenregel: „− (+a)“ wird zu „− a“. Also rechnest du −6 − 10. Du gehst auf der Zahlengeraden von −6 noch 10 Schritte nach links.',
+      answer: -16,
     },
 
     moon: {
       order: 2,
       icon: '🌙',
       name: 'Mond',
-      category: 'Negative Zahlen vergleichen',
-      title: 'Der Mond und die negativen Zahlen',
-      question: `
-        <p>Neben dem Mond leuchten vier Sterne mit Zahlen. Nur der Stern mit der <strong>größten</strong> Zahl zeigt den Weg:</p>
-        ${numberList('−2/3', '−0,6', '−5/8', '−0,65')}
-        <p>Welche Zahl ist die größte?</p>`,
+      category: 'Brüche addieren',
+      title: 'Die Sternenschrift am Mond',
       clue: 'Schau aus dem Fenster: Am Nachthimmel leuchtet etwas Rundes, das nur halb zu sehen ist.',
-      hint: 'Wandle alle Zahlen in Dezimalzahlen um (−2/3 ≈ −0,667; −5/8 = −0,625). Bei negativen Zahlen ist die Zahl am größten, die am nächsten bei 0 liegt.',
-      answer: -0.6,
+      question: `
+        <p>Neben dem Mond formen die Sterne eine Rechnung:</p>
+        <p class="calc">(−5/6) + (+1/3) = ?</p>
+        <p>Gib das Ergebnis gekürzt als Bruch oder als Dezimalzahl an.</p>`,
+      hint: 'Zuerst gleichnamig machen: 1/3 = 2/6. Dann −5/6 + 2/6: verschiedene Vorzeichen → Beträge subtrahieren (5 − 2) und das Vorzeichen der Zahl mit dem größeren Betrag nehmen. Am Ende kürzen!',
+      answer: -0.5, // −1/2
     },
 
     snail: {
       order: 3,
       icon: '🐌',
       name: 'Schnecke',
-      category: 'Zahlengerade: Veränderung',
+      category: 'Negative Zahl subtrahieren',
       title: 'Die Schnecke auf der Fensterbank',
-      question: `
-        <p>Auf die Fensterbank ist eine Zahlengerade gemalt. Am Morgen sitzt die Schnecke bei <strong>0,8</strong>, am Abend bei <strong>−1 1/5</strong>.</p>
-        <svg class="puzzle-figure" viewBox="0 0 260 70" aria-hidden="true">
-          <line x1="10" y1="40" x2="250" y2="40" stroke="#e2e8f0" stroke-width="2"/>
-          <path d="M250 40 l-8 -5 v10 z" fill="#e2e8f0"/>
-          <g stroke="#e2e8f0" stroke-width="2">
-            <line x1="20" y1="34" x2="20" y2="46"/><line x1="64" y1="34" x2="64" y2="46"/><line x1="108" y1="34" x2="108" y2="46"/>
-            <line x1="152" y1="34" x2="152" y2="46"/><line x1="196" y1="34" x2="196" y2="46"/><line x1="240" y1="34" x2="240" y2="46"/>
-          </g>
-          <g fill="#e2e8f0" font-size="12" text-anchor="middle">
-            <text x="20" y="62">−3</text><text x="64" y="62">−2</text><text x="108" y="62">−1</text>
-            <text x="152" y="62">0</text><text x="196" y="62">1</text><text x="240" y="62">2</text>
-          </g>
-          <circle cx="187.2" cy="40" r="6" fill="#f97316" stroke="#fff" stroke-width="2"/>
-          <text x="187.2" y="22" font-size="16" text-anchor="middle">🐌</text>
-          <circle cx="99.2" cy="40" r="5" fill="none" stroke="#fdba74" stroke-width="2" stroke-dasharray="3 2"/>
-          <text x="99.2" y="22" fill="#fdba74" font-size="14" text-anchor="middle">?</text>
-        </svg>
-        <p>Um wie viel hat sich ihre Position verändert? Gib die Veränderung <strong>mit Vorzeichen</strong> an (nach links = negativ).</p>`,
       clue: 'Auf der Fensterbank ist jemand seeehr langsam unterwegs.',
-      hint: 'Veränderung = Endwert − Startwert = −1,2 − 0,8.',
-      answer: -2,
+      question: `
+        <p>Die Schnecke hat mit ihrer Schleimspur eine Rechnung auf die Fensterbank geschrieben:</p>
+        <p class="calc">(−3) − (−11) = ?</p>
+        <p>Was kommt heraus?</p>`,
+      hint: 'Vorzeichenregel: „− (−a)“ wird zu „+ a“ – minus minus ergibt plus! Also rechnest du −3 + 11.',
+      answer: 8,
     },
 
     sequence: {
       order: 4,
       icon: '❓',
       name: 'Fragezeichen-Buch',
-      category: 'Zahlenfolge mit Brüchen',
+      category: 'Mehrere Faktoren multiplizieren',
       title: 'Das Buch mit dem Fragezeichen',
-      question: `
-        <p>Im Regal stehen Bücher mit Zahlen auf dem Rücken – auf dem letzten steht nur ein <strong>?</strong>:</p>
-        ${numberList('81', '−54', '36', '−24', '16', '<span class="text-pink-300">?</span>')}
-        <p>Welche Zahl gehört auf das Fragezeichen-Buch? <span class="text-slate-400">(als Bruch oder gemischte Zahl)</span></p>`,
       clue: 'Im großen Bücherregal kann man einen Buchrücken nicht lesen.',
-      hint: 'Von Buch zu Buch wird immer mit demselben Bruch multipliziert: 81 · ? = −54. Kürze −54/81!',
-      answer: -32 / 3, // −10 2/3
+      question: `
+        <p>Auf den Buchrücken neben dem Fragezeichen-Buch stehen fünf Zahlen. Auf das <strong>?</strong> gehört ihr <strong>Produkt</strong>:</p>
+        <p class="calc">(−2) · (+5) · (−3) · (−1) · (+2) = ?</p>
+        <p>Wie lautet das Ergebnis?</p>`,
+      hint: 'Rechne zuerst ohne Vorzeichen: 2 · 5 · 3 · 1 · 2. Dann zähle die Minuszeichen: Ist ihre Anzahl gerade, ist das Ergebnis positiv – ist sie ungerade, ist es negativ.',
+      answer: -60,
     },
 
     painting: {
       order: 5,
       icon: '🟪',
       name: 'Lila Rechteck',
-      category: 'Brüche dividieren',
+      category: 'Ganze Zahlen dividieren',
       title: 'Das lila Rechteck im Gemälde',
-      question: `
-        <p>Auf der Rückseite des Gemäldes steht: Das lila Rechteck hat eine Fläche von <strong>3/4 m²</strong> und ist <strong>1 1/4 m</strong> lang.</p>
-        <svg class="puzzle-figure" viewBox="0 0 260 130" aria-hidden="true">
-          <rect x="50" y="25" width="170" height="80" fill="rgba(167,139,250,.2)" stroke="#a78bfa" stroke-width="3"/>
-          <text x="135" y="17" fill="#e2e8f0" font-size="15" text-anchor="middle">1 1/4 m</text>
-          <text x="28" y="70" fill="#fdba74" font-size="18" text-anchor="middle">?</text>
-          <text x="135" y="72" fill="#e2e8f0" font-size="15" text-anchor="middle">A = 3/4 m²</text>
-        </svg>
-        <p>Wie <strong>breit</strong> ist das Rechteck (in m)?</p>`,
       clue: 'Im Gemälde mit den Bergen versteckt sich eine Form, die nicht in die Landschaft passt.',
-      hint: 'Breite = Fläche : Länge = 3/4 : 5/4. Durch einen Bruch dividiert man, indem man mit dem Kehrwert multipliziert.',
-      answer: 0.6, // 3/5
+      question: `
+        <p>Im lila Rechteck hat der Maler winzig klein eine Rechnung versteckt:</p>
+        <p class="calc">(−72) : (+8) = ?</p>
+        <p>Berechne den Quotienten.</p>`,
+      hint: 'Beim Dividieren gelten dieselben Regeln wie beim Multiplizieren: gleiche Vorzeichen → plus, verschiedene Vorzeichen → minus. 72 : 8 = 9 – und welches Vorzeichen?',
+      answer: -9,
     },
 
     thermo: {
       order: 6,
       icon: '🌡️',
       name: 'Thermometer',
-      category: 'Addieren mit Vorzeichen',
+      category: 'Dezimalzahlen mit Vorzeichen',
       title: 'Das Thermometer an der Wand',
-      question: `
-        <p>Das Thermometer zeigt den Temperaturverlauf eines Wintertages:</p>
-        <ul class="list-disc pl-5 space-y-1 text-slate-300">
-          <li>Morgens: <strong>−4,5 °C</strong></li>
-          <li>Bis Mittag steigt die Temperatur um <strong>7 1/4 Grad</strong>.</li>
-          <li>Bis zum Abend sinkt sie um <strong>5,5 Grad</strong>.</li>
-        </ul>
-        <p>Wie viel Grad zeigt das Thermometer am Abend?</p>`,
       clue: 'Neben der Tür hängt etwas, das verrät, wie kalt es draußen ist.',
-      hint: 'Steigen heißt plus, sinken heißt minus: −4,5 + 7,25 − 5,5. Ist das Ergebnis über oder unter 0?',
-      answer: -2.75, // −11/4
+      question: `
+        <p>Am Morgen zeigt das Thermometer <strong>−2,5 °C</strong>. Bis zum Abend sinkt die Temperatur um <strong>3,8 Grad</strong>:</p>
+        <p class="calc">(−2,5) − (+3,8) = ?</p>
+        <p>Wie viel Grad zeigt das Thermometer am Abend?</p>`,
+      hint: '„− (+3,8)“ wird zu „− 3,8“. Von −2,5 aus geht es also noch weiter ins Minus: Beträge addieren (2,5 + 3,8), das Ergebnis ist negativ.',
+      answer: -6.3,
     },
 
     clock: {
       order: 7,
       icon: '🕒',
       name: 'Uhrzeiger',
-      category: 'Multiplizieren mit Minus',
-      title: 'Die ungenaue Wanduhr',
-      question: `
-        <p>Die Wanduhr geht jeden Tag <strong>2/5 Minute nach</strong> (sie ist zu langsam). Eine Abweichung nach hinten zählt <strong>negativ</strong>.</p>
-        <svg class="puzzle-figure" viewBox="0 0 120 120" style="max-width:120px" aria-hidden="true">
-          <circle cx="60" cy="60" r="54" fill="#fffbeb" stroke="#7c4a24" stroke-width="6"/>
-          <g fill="#1f2937" font-size="12" text-anchor="middle" font-weight="700">
-            <text x="60" y="20">12</text><text x="103" y="64">3</text><text x="60" y="108">6</text><text x="17" y="64">9</text>
-          </g>
-          <line x1="60" y1="60" x2="60" y2="100" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
-          <line x1="60" y1="60" x2="89" y2="68" stroke="#b91c1c" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="60" cy="60" r="4" fill="#1f2937"/>
-        </svg>
-        <p>Um wie viele Minuten weicht sie nach <strong>3 Wochen</strong> ab? Gib das Ergebnis mit Vorzeichen an.</p>`,
+      category: 'Brüche multiplizieren',
+      title: 'Die stehengebliebene Uhr',
       clue: 'Die Zeit steht still – schau dir die Zeiger ganz genau an.',
-      hint: '3 Wochen sind 21 Tage. Rechne 21 · (−2/5). Plus mal minus ergibt minus.',
-      answer: -8.4, // −42/5
+      question: `
+        <p>Auf der Rückseite der Uhr klebt ein Zettel:</p>
+        <p class="calc">(−2/3) · (−9/4) = ?</p>
+        <p>Gib das Ergebnis gekürzt, als gemischte Zahl oder als Dezimalzahl an.</p>`,
+      hint: 'Minus mal minus ergibt plus. Dann Zähler mal Zähler und Nenner mal Nenner: (2 · 9) / (3 · 4) – und kürzen nicht vergessen!',
+      answer: 1.5, // 3/2
     },
 
     chest: {
       order: 8,
       icon: '🔒',
       name: 'Truhenschloss',
-      category: 'Mittelwert berechnen',
+      category: 'Punkt vor Strich',
       title: 'Das Schloss der Schatztruhe',
-      question: `
-        <p>Das letzte Schloss! Auf vier Rädchen stehen diese Zahlen:</p>
-        ${numberList('−3/4', '1/2', '−1¼', '2,5')}
-        <p>Der Code ist ihr <strong>Mittelwert</strong> (Durchschnitt). Wie lautet er?</p>`,
       clue: 'Der Schatz bleibt verschlossen – untersuche das kleine goldene Teil vorne an der Truhe.',
-      hint: 'Mittelwert = Summe aller Zahlen : Anzahl. Addiere zuerst: −0,75 + 0,5 − 1,25 + 2,5. Teile das Ergebnis dann durch 4.',
-      answer: 0.25, // 1/4
+      question: `
+        <p>Das letzte Schloss! Der Code ist das Ergebnis dieser Rechnung:</p>
+        <p class="calc">(−12) : (−4) − (+2) · (−5) = ?</p>
+        <p>Achtung: Punktrechnung geht vor Strichrechnung!</p>`,
+      hint: 'Rechne zuerst die beiden Punktrechnungen: (−12) : (−4) = ? und (+2) · (−5) = ?. Dann subtrahierst du: erstes Ergebnis − zweites Ergebnis. Achtung: minus minus ergibt plus!',
+      answer: 13,
     },
   };
 
@@ -181,7 +142,7 @@
     if (PUZZLES[id]) PUZZLES[id].clue = clue;
   });
 
-  const STORAGE_KEY = 'mathe-zimmer-rational-v3' + (ROOM.id ? `-${ROOM.id}` : '');
+  const STORAGE_KEY = 'mathe-zimmer-rational-v4' + (ROOM.id ? `-${ROOM.id}` : '');
 
   // ---------------------------------------------------------------
   // 2. Zustand (wird im Browser gespeichert, falls möglich)
@@ -602,9 +563,76 @@
   }
 
   const SOUNDS = {
+    // Miauen: Stimme (Sägezahn) durch zwei wandernde Formant-Filter – „m-i-a-u“
     meow() {
-      tone({ type: 'sawtooth', filter: 1800, vol: 0.12, dur: 0.65,
-        freqs: [[0, 420], [0.12, 780], [0.35, 700], [0.65, 380]] });
+      const ac = ctx();
+      if (!ac) return;
+      const t = ac.currentTime;
+      const dur = 0.7 + Math.random() * 0.25;      // jedes Miau etwas anders
+      const k = 0.88 + Math.random() * 0.25;       // Tonhöhe (kleine/große Katze)
+      const at = (x) => t + x * dur;
+
+      // Stimmquelle mit typischer Tonhöhenkurve: hoch – höher – absinkend
+      const voice = ac.createOscillator();
+      voice.type = 'sawtooth';
+      voice.frequency.setValueAtTime(430 * k, t);
+      voice.frequency.linearRampToValueAtTime(690 * k, at(0.2));
+      voice.frequency.linearRampToValueAtTime(760 * k, at(0.45));
+      voice.frequency.exponentialRampToValueAtTime(360 * k, at(1));
+      const vib = ac.createOscillator();           // leichtes Vibrato
+      vib.frequency.value = 5.5;
+      const vibAmt = ac.createGain();
+      vibAmt.gain.value = 10 * k;
+      vib.connect(vibAmt).connect(voice.frequency);
+
+      // Etwas Hauch (Rauschen) für einen natürlicheren Klang
+      const len = Math.ceil(ac.sampleRate * dur);
+      const buf = ac.createBuffer(1, len, ac.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      const breath = ac.createBufferSource();
+      breath.buffer = buf;
+      const breathAmt = ac.createGain();
+      breathAmt.gain.value = 0.25;
+
+      // Zwei Formanten wandern von „m/i“ über „a“ zu „u“
+      const formant = (q, points, level) => {
+        const f = ac.createBiquadFilter();
+        f.type = 'bandpass';
+        f.Q.value = q;
+        points.forEach(([x, hz], i) => (i === 0 ? f.frequency.setValueAtTime(hz, at(x)) : f.frequency.linearRampToValueAtTime(hz, at(x))));
+        const g = ac.createGain();
+        g.gain.value = level;
+        f.connect(g);
+        return [f, g];
+      };
+      const [f1, g1] = formant(5, [[0, 350], [0.25, 850], [0.55, 1050], [1, 520]], 1.0);
+      const [f2, g2] = formant(7, [[0, 2300], [0.3, 1900], [0.55, 1500], [1, 850]], 0.55);
+
+      // „m“-Anfang: Klang öffnet sich, am Ende schließt er sich wieder („u“)
+      const mouth = ac.createBiquadFilter();
+      mouth.type = 'lowpass';
+      mouth.frequency.setValueAtTime(450, t);
+      mouth.frequency.exponentialRampToValueAtTime(4200, at(0.18));
+      mouth.frequency.exponentialRampToValueAtTime(1300, at(1));
+
+      const out = ac.createGain();
+      out.gain.setValueAtTime(0.0001, t);
+      out.gain.exponentialRampToValueAtTime(0.55, at(0.1));
+      out.gain.setValueAtTime(0.55, at(0.6));
+      out.gain.exponentialRampToValueAtTime(0.0001, at(1));
+
+      [voice, breath].forEach((src) => {
+        const into = src === breath ? src.connect(breathAmt) : src;
+        into.connect(f1);
+        into.connect(f2);
+      });
+      g1.connect(mouth);
+      g2.connect(mouth);
+      mouth.connect(out).connect(ac.destination);
+
+      voice.start(t); vib.start(t); breath.start(t);
+      voice.stop(at(1) + 0.05); vib.stop(at(1) + 0.05); breath.stop(at(1) + 0.05);
     },
     boing() {
       tone({ type: 'sine', vol: 0.25, dur: 0.5, freqs: [[0, 330], [0.08, 520], [0.5, 140]] });

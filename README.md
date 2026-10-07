@@ -25,20 +25,22 @@ Beide Seiten verwenden dieselben 8 Rätsel sowie dieselbe `style.css` und `scrip
 
 Tailwind CSS, die Schriften und die Konfetti-Bibliothek kommen per CDN, es muss also nichts installiert werden.
 
-## Die 8 Rätsel (Thema: rationale Zahlen)
+## Die 8 Rätsel (7. Schulstufe: Rechnen mit rationalen Zahlen)
 
-Jedes Rätsel steckt hinter einem kleinen Detail im Zimmer. Die Fortschrittsanzeige nennt nur das Thema der Aufgabe, nicht das Versteck.
+Die Aufgaben üben Addieren, Subtrahieren, Multiplizieren und Dividieren mit ganzen Zahlen, Dezimalzahlen und Brüchen – in der Klammer-Schreibweise, damit die **Vorzeichenregeln** wiederholt werden. Jedes Rätsel steckt hinter einem kleinen Detail im Zimmer; die Fortschrittsanzeige nennt nur das Thema der Aufgabe, nicht das Versteck.
 
-| # | Detail im Zimmer             | Thema                  | Aufgabe                                          | Lösung          |
-|---|------------------------------|------------------------|--------------------------------------------------|-----------------|
-| 1 | 🕯️ Kerze (Tisch)              | Bruchteil berechnen    | 20-cm-Kerze, 2,5 cm/h – Anteil nach 3 h          | 3/8 (0,375)     |
-| 2 | 🌙 Mond (Fenster)             | Negative Zahlen vergleichen | Größte von −2/3, −0,6, −5/8, −0,65               | −0,6 (−3/5)     |
-| 3 | 🐌 Schnecke (Fensterbank)     | Zahlengerade: Veränderung | Von 0,8 nach −1 1/5 – Veränderung                | −2              |
-| 4 | ❓ Fragezeichen-Buch (Regal)  | Zahlenfolge mit Brüchen | 81, −54, 36, −24, 16, ?                          | −32/3 (−10 2/3) |
-| 5 | 🟪 Lila Rechteck (Gemälde)    | Brüche dividieren      | Fläche 3/4 m², Länge 1 1/4 m – Breite?           | 3/5 (0,6)       |
-| 6 | 🌡️ Thermometer (Wand)         | Addieren mit Vorzeichen | −4,5 °C + 7 1/4 − 5,5                            | −2,75 (−11/4)   |
-| 7 | 🕒 Uhrzeiger (Wanduhr)        | Multiplizieren mit Minus | 21 Tage · (−2/5) Minute                          | −8,4 (−42/5)    |
-| 8 | 🔒 Truhenschloss              | Mittelwert berechnen   | Mittelwert von −3/4, 1/2, −1 1/4, 2,5            | 1/4 (0,25)      |
+| # | Detail im Zimmer             | Thema                            | Rechnung                          | Lösung        |
+|---|------------------------------|----------------------------------|-----------------------------------|---------------|
+| 1 | 🕯️ Kerze                      | Ganze Zahlen subtrahieren        | (−6) − (+10)                      | −16           |
+| 2 | 🌙 Mond                       | Brüche addieren                  | (−5/6) + (+1/3)                   | −1/2 (−0,5)   |
+| 3 | 🐌 Schnecke                   | Negative Zahl subtrahieren       | (−3) − (−11)                      | 8             |
+| 4 | ❓ Fragezeichen-Buch          | Mehrere Faktoren multiplizieren  | (−2) · (+5) · (−3) · (−1) · (+2)  | −60           |
+| 5 | 🟪 Lila Rechteck              | Ganze Zahlen dividieren          | (−72) : (+8)                      | −9            |
+| 6 | 🌡️ Thermometer                | Dezimalzahlen mit Vorzeichen     | (−2,5) − (+3,8)                   | −6,3          |
+| 7 | 🕒 Uhrzeiger                  | Brüche multiplizieren            | (−2/3) · (−9/4)                   | 3/2 (1,5)     |
+| 8 | 🔒 Truhenschloss              | Punkt vor Strich                 | (−12) : (−4) − (+2) · (−5)        | 13            |
+
+Jeder Tipp erklärt die passende Vorzeichenregel. Zusätzlich gibt es in jedem Rätsel-Fenster einen ausklappbaren Spickzettel **„📘 Vorzeichenregeln“** (Klammern auflösen, Multiplizieren/Dividieren, Addieren).
 
 **Hinweis-Button:** Ein Klick auf „✨ Hinweis“ wählt zufällig ein noch nicht gelöstes Versteck und zeigt zuerst nur einen Text-Hinweis (z. B. „Auf der Fensterbank ist jemand seeehr langsam unterwegs.“). Erst der zweite Klick („🔍 Versteck markieren“) lässt das Versteck im Bild pulsieren. Die Hinweistexte stehen im Feld `clue` jedes Rätsels in `script.js`.
 
