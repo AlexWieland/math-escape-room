@@ -298,6 +298,34 @@
     if (solved.size === TOTAL) setTimeout(celebrate, 1500);
   }
 
+  // ---------------------------------------------------------------
+  // Hinweis-Button: zeigt zufällig EIN noch nicht gelöstes Versteck.
+  // Ein erneuter Klick wählt (wenn möglich) ein anderes.
+  // ---------------------------------------------------------------
+  let hintedId = null;
+
+  function showRandomHint() {
+    const open = IDS.filter((id) => !solved.has(id));
+    if (open.length === 0) return;
+    const choices = open.length > 1 ? open.filter((id) => id !== hintedId) : open;
+    hintedId = randomItem(choices);
+    updateHint();
+    // Auf dem Handy das Zimmer ins Bild holen, damit man die Markierung sieht
+    room.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function updateHint() {
+    if (hintedId && solved.has(hintedId)) hintedId = null; // gelöst → Markierung weg
+    room.querySelectorAll('.hotspot').forEach((el) => {
+      el.classList.toggle('hinted', el.dataset.puzzle === hintedId);
+    });
+    const allSolved = solved.size === TOTAL;
+    hintToggle.disabled = allSolved;
+    const canSwitch = hintedId && TOTAL - solved.size > 1;
+    hintToggle.textContent = canSwitch ? '✨ Anderes Versteck zeigen' : '✨ Versteck zeigen';
+    if (allSolved) hintToggle.textContent = '✨ Alles gefunden';
+  }
+
   function render() {
     const count = solved.size;
     progressEl.textContent = count;
@@ -320,6 +348,8 @@
       if (isSolved && !badge) addBadge(el);
       if (!isSolved && badge) badge.remove();
     });
+
+    updateHint();
 
     // Lämpchen an der Tür
     room.querySelectorAll('#door-locks circle').forEach((c, i) => c.classList.toggle('on', i < count));
@@ -460,6 +490,7 @@
 
   function resetGame() {
     solved = new Set();
+    hintedId = null;
     saveProgress();
     room.classList.remove('door-open');
     winBanner.classList.add('hidden');
@@ -504,11 +535,7 @@
     trapFocus(e);
   });
 
-  hintToggle.addEventListener('click', () => {
-    const on = room.classList.toggle('show-hints');
-    hintToggle.setAttribute('aria-pressed', String(on));
-    hintToggle.textContent = on ? '🙈 Verstecke ausblenden' : '✨ Verstecke zeigen';
-  });
+  hintToggle.addEventListener('click', showRandomHint);
 
   $('#reset-btn').addEventListener('click', () => {
     if (solved.size === 0 || confirm('Wirklich neu starten? Dein Fortschritt geht verloren.')) resetGame();

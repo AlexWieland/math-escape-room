@@ -143,8 +143,9 @@ button, summary, input, .hotspot { touch-action: manipulation; }
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
-.show-hints .hotspot:not(.solved) .hint-marker { opacity: 1; }
-.show-hints .hotspot:not(.solved) .hint-marker circle {
+/* Nur das per Button zufällig gewählte, noch ungelöste Versteck pulsiert */
+.hotspot.hinted:not(.solved) .hint-marker { opacity: 1; }
+.hotspot.hinted:not(.solved) .hint-marker circle {
   animation: pulse 1.6s ease-in-out infinite;
 }
 @keyframes pulse {
