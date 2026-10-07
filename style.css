@@ -312,6 +312,25 @@ button, summary, input, .hotspot { touch-action: manipulation; }
   80% { transform: translateX(5px); }
 }
 
+/* Die Rechnung im Rätsel, groß und gut lesbar */
+.calc {
+  text-align: center;
+  font-family: "Fredoka", system-ui, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #fde68a;
+  word-spacing: 0.15em;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.06);
+}
+@media (max-width: 639px) { .calc { font-size: 1.3rem; } }
+
+/* Spickzettel „Vorzeichenregeln“ im Rätsel-Fenster */
+.rules-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.rules-table td { padding: 0.2rem 0.4rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.rules-table td:first-child { font-family: "Fredoka", system-ui, sans-serif; color: #fde68a; white-space: nowrap; }
+
 /* Zahlen-Aufzählungen in den Rätseln: „a | b | c“ mit großzügigem Abstand */
 .num-list {
   display: flex;
