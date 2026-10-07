@@ -2,7 +2,7 @@
 
 Ein interaktives Mathe-Escape-Rätsel als Single-Page-Website, die ohne Build-Schritt direkt auf **GitHub Pages** läuft.
 
-Im gezeichneten Zimmer (SVG) sind 8 Rätsel versteckt. Wer die richtigen Details im Zimmer findet und alle Aufgaben löst, öffnet die Tür – mit Konfetti. 🎉
+Im großen, vollgestellten Zimmer (SVG) sind 8 Rätsel zwischen vielen Gegenständen und Ablenkungen versteckt. Wer die richtigen Details im Zimmer findet und alle Aufgaben löst, öffnet die Tür – mit Konfetti. 🎉
 
 ## Dateien
 
@@ -29,6 +29,8 @@ Jedes Rätsel steckt hinter einem kleinen Detail im Zimmer. Die Fortschrittsanze
 | 6 | 🌡️ Thermometer (Wand)         | Addieren mit Vorzeichen | −4,5 °C + 7 1/4 − 5,5                            | −2,75 (−11/4)   |
 | 7 | 🕒 Uhrzeiger (Wanduhr)        | Multiplizieren mit Minus | 21 Tage · (−2/5) Minute                          | −8,4 (−42/5)    |
 | 8 | 🔒 Truhenschloss              | Mittelwert berechnen   | Mittelwert von −3/4, 1/2, −1 1/4, 2,5            | 1/4 (0,25)      |
+
+**Hinweis-Button:** Ein Klick auf „✨ Hinweis“ wählt zufällig ein noch nicht gelöstes Versteck und zeigt zuerst nur einen Text-Hinweis (z. B. „Auf der Fensterbank ist jemand seeehr langsam unterwegs.“). Erst der zweite Klick („🔍 Versteck markieren“) lässt das Versteck im Bild pulsieren. Die Hinweistexte stehen im Feld `clue` jedes Rätsels in `script.js`.
 
 Antworten dürfen als Bruch (`-3/8`), Dezimalzahl (`-0,375`) oder gemischte Zahl (`1 3/4`) eingegeben werden. Gleichwertige Brüche (z. B. `14/8`) werden ebenfalls als richtig erkannt.
 
