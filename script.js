@@ -602,9 +602,76 @@
   }
 
   const SOUNDS = {
+    // Miauen: Stimme (Sägezahn) durch zwei wandernde Formant-Filter – „m-i-a-u“
     meow() {
-      tone({ type: 'sawtooth', filter: 1800, vol: 0.12, dur: 0.65,
-        freqs: [[0, 420], [0.12, 780], [0.35, 700], [0.65, 380]] });
+      const ac = ctx();
+      if (!ac) return;
+      const t = ac.currentTime;
+      const dur = 0.7 + Math.random() * 0.25;      // jedes Miau etwas anders
+      const k = 0.88 + Math.random() * 0.25;       // Tonhöhe (kleine/große Katze)
+      const at = (x) => t + x * dur;
+
+      // Stimmquelle mit typischer Tonhöhenkurve: hoch – höher – absinkend
+      const voice = ac.createOscillator();
+      voice.type = 'sawtooth';
+      voice.frequency.setValueAtTime(430 * k, t);
+      voice.frequency.linearRampToValueAtTime(690 * k, at(0.2));
+      voice.frequency.linearRampToValueAtTime(760 * k, at(0.45));
+      voice.frequency.exponentialRampToValueAtTime(360 * k, at(1));
+      const vib = ac.createOscillator();           // leichtes Vibrato
+      vib.frequency.value = 5.5;
+      const vibAmt = ac.createGain();
+      vibAmt.gain.value = 10 * k;
+      vib.connect(vibAmt).connect(voice.frequency);
+
+      // Etwas Hauch (Rauschen) für einen natürlicheren Klang
+      const len = Math.ceil(ac.sampleRate * dur);
+      const buf = ac.createBuffer(1, len, ac.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      const breath = ac.createBufferSource();
+      breath.buffer = buf;
+      const breathAmt = ac.createGain();
+      breathAmt.gain.value = 0.25;
+
+      // Zwei Formanten wandern von „m/i“ über „a“ zu „u“
+      const formant = (q, points, level) => {
+        const f = ac.createBiquadFilter();
+        f.type = 'bandpass';
+        f.Q.value = q;
+        points.forEach(([x, hz], i) => (i === 0 ? f.frequency.setValueAtTime(hz, at(x)) : f.frequency.linearRampToValueAtTime(hz, at(x))));
+        const g = ac.createGain();
+        g.gain.value = level;
+        f.connect(g);
+        return [f, g];
+      };
+      const [f1, g1] = formant(5, [[0, 350], [0.25, 850], [0.55, 1050], [1, 520]], 1.0);
+      const [f2, g2] = formant(7, [[0, 2300], [0.3, 1900], [0.55, 1500], [1, 850]], 0.55);
+
+      // „m“-Anfang: Klang öffnet sich, am Ende schließt er sich wieder („u“)
+      const mouth = ac.createBiquadFilter();
+      mouth.type = 'lowpass';
+      mouth.frequency.setValueAtTime(450, t);
+      mouth.frequency.exponentialRampToValueAtTime(4200, at(0.18));
+      mouth.frequency.exponentialRampToValueAtTime(1300, at(1));
+
+      const out = ac.createGain();
+      out.gain.setValueAtTime(0.0001, t);
+      out.gain.exponentialRampToValueAtTime(0.55, at(0.1));
+      out.gain.setValueAtTime(0.55, at(0.6));
+      out.gain.exponentialRampToValueAtTime(0.0001, at(1));
+
+      [voice, breath].forEach((src) => {
+        const into = src === breath ? src.connect(breathAmt) : src;
+        into.connect(f1);
+        into.connect(f2);
+      });
+      g1.connect(mouth);
+      g2.connect(mouth);
+      mouth.connect(out).connect(ac.destination);
+
+      voice.start(t); vib.start(t); breath.start(t);
+      voice.stop(at(1) + 0.05); vib.stop(at(1) + 0.05); breath.stop(at(1) + 0.05);
     },
     boing() {
       tone({ type: 'sine', vol: 0.25, dur: 0.5, freqs: [[0, 330], [0.08, 520], [0.5, 140]] });
