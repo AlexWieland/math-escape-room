@@ -30,7 +30,7 @@
         <p>Die Kerze auf dem Tisch war am Anfang <strong>20 cm</strong> lang. Pro Stunde brennen <strong>2,5 cm</strong> ab.</p>
         <p>Welcher <strong>Bruchteil</strong> der Kerze ist nach <strong>3 Stunden</strong> abgebrannt?</p>
         <p class="text-slate-400 text-sm">Gib das Ergebnis als gekürzten Bruch oder als Dezimalzahl an.</p>`,
-      clue: 'Auf dem kleinen Tisch brennt etwas ganz langsam herunter.',
+      clue: 'Auf dem Lehrerpult brennt etwas ganz langsam herunter.',
       hint: 'In 3 Stunden brennen 3 · 2,5 cm = 7,5 cm ab. Der Bruchteil ist 7,5 / 20. Erweitere mit 2, damit keine Kommazahl mehr im Bruch steht.',
       answer: 0.375, // 3/8
     },
@@ -75,7 +75,7 @@
           <text x="99.2" y="22" fill="#fdba74" font-size="14" text-anchor="middle">?</text>
         </svg>
         <p>Um wie viel hat sich ihre Position verändert? Gib die Veränderung <strong>mit Vorzeichen</strong> an (nach links = negativ).</p>`,
-      clue: 'Auf der Fensterbank ist jemand seeehr langsam unterwegs.',
+      clue: 'Auf dem Fensterbrett ist jemand seeehr langsam unterwegs.',
       hint: 'Veränderung = Endwert − Startwert = −1,2 − 0,8.',
       answer: -2,
     },
@@ -90,7 +90,7 @@
         <p>Im Regal stehen Bücher mit Zahlen auf dem Rücken – auf dem letzten steht nur ein <strong>?</strong>:</p>
         ${numberList('81', '−54', '36', '−24', '16', '<span class="text-pink-300">?</span>')}
         <p>Welche Zahl gehört auf das Fragezeichen-Buch? <span class="text-slate-400">(als Bruch oder gemischte Zahl)</span></p>`,
-      clue: 'Im großen Bücherregal kann man einen Buchrücken nicht lesen.',
+      clue: 'Im Bücherregal hinten links kann man einen Buchrücken nicht lesen.',
       hint: 'Von Buch zu Buch wird immer mit demselben Bruch multipliziert: 81 · ? = −54. Kürze −54/81!',
       answer: -32 / 3, // −10 2/3
     },
@@ -110,7 +110,7 @@
           <text x="135" y="72" fill="#e2e8f0" font-size="15" text-anchor="middle">A = 3/4 m²</text>
         </svg>
         <p>Wie <strong>breit</strong> ist das Rechteck (in m)?</p>`,
-      clue: 'Im Gemälde mit den Bergen versteckt sich eine Form, die nicht in die Landschaft passt.',
+      clue: 'Im Bild mit den Bergen über dem Regal versteckt sich eine Form, die nicht in die Landschaft passt.',
       hint: 'Breite = Fläche : Länge = 3/4 : 5/4. Durch einen Bruch dividiert man, indem man mit dem Kehrwert multipliziert.',
       answer: 0.6, // 3/5
     },
@@ -129,7 +129,7 @@
           <li>Bis zum Abend sinkt sie um <strong>5,5 Grad</strong>.</li>
         </ul>
         <p>Wie viel Grad zeigt das Thermometer am Abend?</p>`,
-      clue: 'Neben der Tür hängt etwas, das verrät, wie kalt es draußen ist.',
+      clue: 'Gleich rechts neben der Tür hängt etwas, das verrät, wie kalt es draußen ist.',
       hint: 'Steigen heißt plus, sinken heißt minus: −4,5 + 7,25 − 5,5. Ist das Ergebnis über oder unter 0?',
       answer: -2.75, // −11/4
     },
@@ -152,7 +152,7 @@
           <circle cx="60" cy="60" r="4" fill="#1f2937"/>
         </svg>
         <p>Um wie viele Minuten weicht sie nach <strong>3 Wochen</strong> ab? Gib das Ergebnis mit Vorzeichen an.</p>`,
-      clue: 'Die Zeit steht still – schau dir die Zeiger ganz genau an.',
+      clue: 'Über der Tür steht die Zeit still – schau dir die Zeiger ganz genau an.',
       hint: '3 Wochen sind 21 Tage. Rechne 21 · (−2/5). Plus mal minus ergibt minus.',
       answer: -8.4, // −42/5
     },
@@ -167,7 +167,7 @@
         <p>Das letzte Schloss! Auf vier Rädchen stehen diese Zahlen:</p>
         ${numberList('−3/4', '1/2', '−1¼', '2,5')}
         <p>Der Code ist ihr <strong>Mittelwert</strong> (Durchschnitt). Wie lautet er?</p>`,
-      clue: 'Der Schatz bleibt verschlossen – untersuche das kleine goldene Teil vorne an der Truhe.',
+      clue: 'Vorne rechts steht eine alte Truhe – untersuche das kleine goldene Teil an ihrer Vorderseite.',
       hint: 'Mittelwert = Summe aller Zahlen : Anzahl. Addiere zuerst: −0,75 + 0,5 − 1,25 + 2,5. Teile das Ergebnis dann durch 4.',
       answer: 0.25, // 1/4
     },
@@ -620,6 +620,13 @@
       noise({ dur: 0.05, vol: 0.15, freq: 1200 });
     },
     flap() { noise({ dur: 0.18, vol: 0.12, freq: 1500, q: 0.6 }); },
+    chalk() {
+      tone({ type: 'square', filter: 5000, vol: 0.05, dur: 0.45, freqs: [[0, 2600], [0.2, 3100], [0.45, 2400]] });
+      noise({ dur: 0.4, vol: 0.05, freq: 6000, q: 4 });
+    },
+    creak() {
+      tone({ type: 'sawtooth', filter: 900, vol: 0.12, dur: 0.5, freqs: [[0, 140], [0.25, 95], [0.5, 120]] });
+    },
     tick() {
       [0, 0.25, 0.5].forEach((d) => noise({ dur: 0.03, vol: 0.2, freq: 4000, q: 3, delay: d }));
     },
@@ -629,6 +636,10 @@
   // Deko-Gegenstände: kleine Animation, Geräusch und manchmal ein Text
   // ---------------------------------------------------------------
   const FUN = {
+    hamster:    { anim: 'shake',  sound: 'squeak', texts: ['Fiep!', 'Fiep fiep!', '*knabber*'] },
+    board:      { sound: 'chalk',  texts: ['Iiiieh!', '*quietsch*'] },
+    chair:      { anim: 'wiggle', sound: 'creak',  texts: ['Knarz!'] },
+    bag:        { anim: 'wiggle', sound: 'rustle', texts: ['Hausaufgaben?'] },
     cat:        { anim: 'wiggle', sound: 'meow',   texts: ['Miau!', 'Miauuu?', 'Schnurr …'] },
     ball:       { anim: 'bounce', sound: 'boing',  texts: ['Boing!'] },
     teddy:      { anim: 'jump',   sound: 'squeak', texts: ['Quietsch!', 'Hallo!'] },

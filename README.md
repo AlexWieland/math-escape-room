@@ -1,8 +1,8 @@
-# 🔑 Das geheimnisvolle Mathe-Zimmer – Rationale Zahlen
+# 🔑 Das geheimnisvolle Klassenzimmer – Rationale Zahlen
 
 Ein interaktives Mathe-Escape-Rätsel als Single-Page-Website, die ohne Build-Schritt direkt auf **GitHub Pages** läuft.
 
-Im großen, vollgestellten Zimmer (SVG) sind 8 Rätsel zwischen vielen Gegenständen und Ablenkungen versteckt. Wer die richtigen Details im Zimmer findet und alle Aufgaben löst, öffnet die Tür – mit Konfetti. 🎉
+In einem möglichst fotorealistisch gezeichneten Klassenzimmer am Abend (SVG mit Zentralperspektive, Licht und Schatten, Holz- und Putzstruktur, Filmkorn und Vignette) sind 8 Rätsel zwischen vielen Gegenständen und Ablenkungen versteckt. Wer die richtigen Details im Zimmer findet und alle Aufgaben löst, öffnet die Tür – mit Konfetti. 🎉
 
 ## Dateien
 
@@ -21,18 +21,18 @@ Jedes Rätsel steckt hinter einem kleinen Detail im Zimmer. Die Fortschrittsanze
 
 | # | Detail im Zimmer             | Thema                  | Aufgabe                                          | Lösung          |
 |---|------------------------------|------------------------|--------------------------------------------------|-----------------|
-| 1 | 🕯️ Kerze (Tisch)              | Bruchteil berechnen    | 20-cm-Kerze, 2,5 cm/h – Anteil nach 3 h          | 3/8 (0,375)     |
+| 1 | 🕯️ Kerze (Lehrerpult)         | Bruchteil berechnen    | 20-cm-Kerze, 2,5 cm/h – Anteil nach 3 h          | 3/8 (0,375)     |
 | 2 | 🌙 Mond (Fenster)             | Negative Zahlen vergleichen | Größte von −2/3, −0,6, −5/8, −0,65               | −0,6 (−3/5)     |
-| 3 | 🐌 Schnecke (Fensterbank)     | Zahlengerade: Veränderung | Von 0,8 nach −1 1/5 – Veränderung                | −2              |
+| 3 | 🐌 Schnecke (Fensterbrett)    | Zahlengerade: Veränderung | Von 0,8 nach −1 1/5 – Veränderung                | −2              |
 | 4 | ❓ Fragezeichen-Buch (Regal)  | Zahlenfolge mit Brüchen | 81, −54, 36, −24, 16, ?                          | −32/3 (−10 2/3) |
-| 5 | 🟪 Lila Rechteck (Gemälde)    | Brüche dividieren      | Fläche 3/4 m², Länge 1 1/4 m – Breite?           | 3/5 (0,6)       |
-| 6 | 🌡️ Thermometer (Wand)         | Addieren mit Vorzeichen | −4,5 °C + 7 1/4 − 5,5                            | −2,75 (−11/4)   |
-| 7 | 🕒 Uhrzeiger (Wanduhr)        | Multiplizieren mit Minus | 21 Tage · (−2/5) Minute                          | −8,4 (−42/5)    |
-| 8 | 🔒 Truhenschloss              | Mittelwert berechnen   | Mittelwert von −3/4, 1/2, −1 1/4, 2,5            | 1/4 (0,25)      |
+| 5 | 🟪 Lila Rechteck (Bild)       | Brüche dividieren      | Fläche 3/4 m², Länge 1 1/4 m – Breite?           | 3/5 (0,6)       |
+| 6 | 🌡️ Thermometer (neben Tür)    | Addieren mit Vorzeichen | −4,5 °C + 7 1/4 − 5,5                            | −2,75 (−11/4)   |
+| 7 | 🕒 Uhrzeiger (über der Tür)   | Multiplizieren mit Minus | 21 Tage · (−2/5) Minute                          | −8,4 (−42/5)    |
+| 8 | 🔒 Truhenschloss (vorne rechts) | Mittelwert berechnen   | Mittelwert von −3/4, 1/2, −1 1/4, 2,5            | 1/4 (0,25)      |
 
 **Hinweis-Button:** Ein Klick auf „✨ Hinweis“ wählt zufällig ein noch nicht gelöstes Versteck und zeigt zuerst nur einen Text-Hinweis (z. B. „Auf der Fensterbank ist jemand seeehr langsam unterwegs.“). Erst der zweite Klick („🔍 Versteck markieren“) lässt das Versteck im Bild pulsieren. Die Hinweistexte stehen im Feld `clue` jedes Rätsels in `script.js`.
 
-**Lebendiges Zimmer:** Einige Deko-Gegenstände ohne Rätsel reagieren beim Anklicken mit einer kleinen Animation und einem Geräusch – z. B. miaut die Katze, der Ball hüpft, der Teddy quietscht, der Kronleuchter schwingt und klingt, der Globus dreht sich und der Lichtschalter schaltet die Wandlampe. Die Geräusche werden im Browser erzeugt (Web Audio, keine Audiodateien) und lassen sich mit 🔊/🔇 ausschalten. Welche Gegenstände wie reagieren, steht im Objekt `FUN` in `script.js`.
+**Lebendiges Zimmer:** Einige Deko-Gegenstände ohne Rätsel reagieren beim Anklicken mit einer kleinen Animation und einem Geräusch – z. B. fiept der Hamster, die Kreide quietscht an der Tafel, ein Stuhl knarzt, der Ball hüpft, der Teddy quietscht, der Globus dreht sich und der Lichtschalter schaltet die Deckenbeleuchtung aus und an. Die Geräusche werden im Browser erzeugt (Web Audio, keine Audiodateien) und lassen sich mit 🔊/🔇 ausschalten. Welche Gegenstände wie reagieren, steht im Objekt `FUN` in `script.js`.
 
 Antworten dürfen als Bruch (`-3/8`), Dezimalzahl (`-0,375`) oder gemischte Zahl (`1 3/4`) eingegeben werden. Gleichwertige Brüche (z. B. `14/8`) werden ebenfalls als richtig erkannt.
 
