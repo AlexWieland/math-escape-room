@@ -2,7 +2,7 @@
 
 Ein interaktives Mathe-Escape-Rätsel als Single-Page-Website, die ohne Build-Schritt direkt auf **GitHub Pages** läuft.
 
-Im gezeichneten Zimmer (SVG) sind 8 Rätsel versteckt. Wer die richtigen Details im Zimmer findet und alle Aufgaben löst, öffnet die Tür – mit Konfetti. 🎉
+Im großen, vollgestellten Zimmer (SVG) sind 8 Rätsel zwischen vielen Gegenständen und Ablenkungen versteckt. Wer die richtigen Details im Zimmer findet und alle Aufgaben löst, öffnet die Tür – mit Konfetti. 🎉
 
 ## Dateien
 

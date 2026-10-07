@@ -39,13 +39,13 @@
   <!-- Konfetti-Bibliothek -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
 
-  <link rel="stylesheet" href="style.css?v=7" />
+  <link rel="stylesheet" href="style.css?v=8" />
 </head>
 
 <body class="min-h-screen bg-night-900 text-slate-100 font-body antialiased">
   <div class="stars" aria-hidden="true"></div>
 
-  <main class="page relative max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-10">
+  <main class="page relative max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-10">
 
     <!-- Kopfbereich -->
     <header class="text-center mb-4 sm:mb-8">
@@ -88,9 +88,9 @@
     <!-- Interaktives Zimmer -->
     <section class="room-wrapper relative -mx-3 sm:mx-0 rounded-none sm:rounded-3xl overflow-hidden ring-1 ring-white/10 shadow-2xl" aria-label="Das Zimmer">
       <div class="room-scroll">
-      <svg id="room" viewBox="0 0 1000 600" class="block w-full h-auto select-none" role="img"
+      <svg id="room" viewBox="0 0 1400 800" class="block w-full h-auto select-none" role="img"
            aria-labelledby="room-title">
-        <title id="room-title">Ein dunkles Zimmer mit Fenster, Bücherregal, Gemälde, Uhr, Schatztruhe und einer verschlossenen Tür</title>
+        <title id="room-title">Ein großes, vollgestelltes Zimmer mit Fenster, Regalen, Bildern, Uhr, Schrank, Pflanzen, Schatztruhe und einer verschlossenen Tür</title>
         <defs>
           <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stop-color="#2e1f5e" />
@@ -120,35 +120,157 @@
             <stop offset="0" stop-color="#fef3c7" stop-opacity="1" />
             <stop offset="1" stop-color="#fbbf24" stop-opacity="0" />
           </radialGradient>
+          <pattern id="wallpaper" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M20 4 L26 20 L20 36 L14 20 Z" fill="#ffffff" opacity="0.035" />
+          </pattern>
+          <linearGradient id="curtain" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#7f1d1d" />
+            <stop offset="0.5" stop-color="#b91c1c" />
+            <stop offset="1" stop-color="#7f1d1d" />
+          </linearGradient>
+          <linearGradient id="glass" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#a5f3fc" stop-opacity="0.35" />
+            <stop offset="1" stop-color="#a5f3fc" stop-opacity="0.12" />
+          </linearGradient>
           <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="6" result="b" />
             <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
         </defs>
 
-        <!-- Wand & Boden -->
-        <rect width="1000" height="440" fill="url(#wall)" />
-        <g opacity="0.08" stroke="#fff">
-          <line x1="0" y1="60" x2="1000" y2="60" />
-          <line x1="0" y1="420" x2="1000" y2="420" />
+        <!-- Wand mit Tapete, Stuck und Holzvertäfelung -->
+        <rect width="1400" height="590" fill="url(#wall)" />
+        <rect width="1400" height="590" fill="url(#wallpaper)" />
+        <rect width="1400" height="26" fill="#1a1238" />
+        <rect y="26" width="1400" height="8" fill="#3b2a6e" />
+        <rect y="470" width="1400" height="112" fill="#24173f" opacity="0.55" />
+        <g stroke="#ffffff" stroke-opacity="0.06" stroke-width="2" fill="none">
+          <rect x="20" y="488" width="100" height="78" rx="4" /><rect x="150" y="488" width="100" height="78" rx="4" /><rect x="280" y="488" width="100" height="78" rx="4" /><rect x="410" y="488" width="100" height="78" rx="4" /><rect x="540" y="488" width="100" height="78" rx="4" /><rect x="670" y="488" width="100" height="78" rx="4" /><rect x="800" y="488" width="100" height="78" rx="4" /><rect x="930" y="488" width="100" height="78" rx="4" /><rect x="1060" y="488" width="100" height="78" rx="4" /><rect x="1190" y="488" width="100" height="78" rx="4" /><rect x="1320" y="488" width="100" height="78" rx="4" />
         </g>
-        <rect y="440" width="1000" height="160" fill="url(#floor)" />
-        <g stroke="#2a180f" stroke-width="2" opacity="0.5">
-          <line x1="0" y1="480" x2="1000" y2="480" />
-          <line x1="0" y1="525" x2="1000" y2="525" />
-          <line x1="0" y1="570" x2="1000" y2="570" />
-          <line x1="140" y1="440" x2="140" y2="480" /><line x1="420" y1="440" x2="420" y2="480" />
-          <line x1="700" y1="440" x2="700" y2="480" /><line x1="280" y1="480" x2="280" y2="525" />
-          <line x1="560" y1="480" x2="560" y2="525" /><line x1="860" y1="480" x2="860" y2="525" />
-          <line x1="90" y1="525" x2="90" y2="570" /><line x1="380" y1="525" x2="380" y2="570" />
-          <line x1="650" y1="525" x2="650" y2="570" />
+        <rect y="466" width="1400" height="6" fill="#3b2a6e" />
+
+        <!-- Boden -->
+        <rect y="590" width="1400" height="210" fill="url(#floor)" />
+        <g stroke="#2a180f" stroke-width="2" opacity="0.5"><line x1="0" y1="630" x2="1400" y2="630" /><line x1="0" y1="675" x2="1400" y2="675" /><line x1="0" y1="720" x2="1400" y2="720" /><line x1="0" y1="765" x2="1400" y2="765" /><line x1="160" y1="594" x2="160" y2="630" /><line x1="470" y1="594" x2="470" y2="630" /><line x1="820" y1="594" x2="820" y2="630" /><line x1="1180" y1="594" x2="1180" y2="630" /><line x1="300" y1="630" x2="300" y2="675" /><line x1="640" y1="630" x2="640" y2="675" /><line x1="990" y1="630" x2="990" y2="675" /><line x1="1300" y1="630" x2="1300" y2="675" /><line x1="90" y1="675" x2="90" y2="720" /><line x1="420" y1="675" x2="420" y2="720" /><line x1="760" y1="675" x2="760" y2="720" /><line x1="1120" y1="675" x2="1120" y2="720" /><line x1="230" y1="720" x2="230" y2="765" /><line x1="560" y1="720" x2="560" y2="765" /><line x1="910" y1="720" x2="910" y2="765" /><line x1="1260" y1="720" x2="1260" y2="765" /><line x1="380" y1="765" x2="380" y2="800" /><line x1="1040" y1="765" x2="1040" y2="800" /></g>
+        <rect y="582" width="1400" height="12" fill="#24163f" />
+
+        <!-- Großer Teppich -->
+        <ellipse cx="700" cy="705" rx="380" ry="62" fill="#7c2d55" opacity="0.85" />
+        <ellipse cx="700" cy="705" rx="330" ry="48" fill="none" stroke="#fbbf24" stroke-width="3" stroke-dasharray="10 8" opacity="0.6" />
+        <ellipse cx="700" cy="705" rx="200" ry="26" fill="none" stroke="#f472b6" stroke-width="2" opacity="0.35" />
+
+        <!-- Spinnennetz in der Ecke -->
+        <g stroke="#cbd5e1" stroke-opacity="0.25" stroke-width="1" fill="none">
+          <path d="M0 34 L70 34 M0 34 L58 78 M0 34 L26 104" />
+          <path d="M20 34 Q18 44 8 48 M40 34 Q36 54 16 66 M58 34 Q52 66 22 88" />
         </g>
-        <rect y="432" width="1000" height="12" fill="#24163f" />
 
-        <!-- Teppich -->
-        <ellipse cx="500" cy="540" rx="260" ry="42" fill="#7c2d55" opacity="0.85" />
-        <ellipse cx="500" cy="540" rx="225" ry="32" fill="none" stroke="#fbbf24" stroke-width="3" stroke-dasharray="10 8" opacity="0.6" />
+        <!-- Kronleuchter -->
+        <line x1="700" y1="34" x2="700" y2="78" stroke="#a16207" stroke-width="3" />
+        <path d="M640 92 Q700 128 760 92" fill="none" stroke="#ca8a04" stroke-width="5" />
+        <rect x="690" y="78" width="20" height="20" rx="4" fill="#ca8a04" />
+        <g fill="#fef3c7">
+          <rect x="637" y="72" width="8" height="18" rx="1" /><rect x="696" y="56" width="8" height="18" rx="1" /><rect x="755" y="72" width="8" height="18" rx="1" />
+        </g>
+        <g fill="#fbbf24">
+          <ellipse cx="641" cy="66" rx="3" ry="6" /><ellipse cx="700" cy="50" rx="3" ry="6" /><ellipse cx="759" cy="66" rx="3" ry="6" />
+        </g>
+        <circle cx="700" cy="80" r="70" fill="url(#lampGlow)" opacity="0.6" />
 
+        <!-- Vorhänge am Fenster -->
+        <rect x="222" y="200" width="240" height="6" rx="3" fill="#a16207" />
+        <path d="M226 206 Q250 330 232 470 L258 470 Q266 330 252 206 Z" fill="url(#curtain)" />
+        <path d="M430 206 Q414 330 424 470 L450 470 Q442 330 456 206 Z" fill="url(#curtain)" />
+
+        <!-- Garderobe mit Hut und Schal (links) -->
+        <rect x="40" y="168" width="150" height="12" rx="4" fill="#8a5a35" />
+        <g fill="#5b3a29"><circle cx="65" cy="186" r="5" /><circle cx="115" cy="186" r="5" /><circle cx="165" cy="186" r="5" /></g>
+        <path d="M92 196 Q115 178 138 196 L146 208 L84 208 Z" fill="#1e293b" />
+        <rect x="84" y="204" width="62" height="6" rx="3" fill="#334155" />
+        <path d="M58 190 L52 290 L64 292 L68 200 Z M70 190 L78 280 L88 278 L76 192 Z" fill="#16a34a" />
+        <g stroke="#bbf7d0" stroke-width="2"><line x1="53" y1="276" x2="64" y2="278" /><line x1="78" y1="266" x2="87" y2="264" /></g>
+        <path d="M158 190 Q178 240 160 300 L174 300 Q190 240 172 190 Z" fill="#f59e0b" />
+
+        <!-- Bildergalerie (links) – Ablenkung: ein lila Rahmen -->
+        <rect x="32" y="320" width="74" height="58" rx="3" fill="#7c3aed" stroke="#a78bfa" stroke-width="4" />
+        <rect x="42" y="330" width="54" height="38" fill="#ede9fe" />
+        <circle cx="69" cy="349" r="11" fill="#f472b6" />
+        <rect x="118" y="310" width="62" height="80" rx="3" fill="#78350f" stroke="#fbbf24" stroke-width="3" />
+        <rect x="126" y="318" width="46" height="64" fill="#fde68a" />
+        <path d="M130 372 L148 340 L166 372 Z" fill="#0d9488" />
+        <rect x="58" y="398" width="96" height="52" rx="3" fill="#1e3a8a" stroke="#93c5fd" stroke-width="3" />
+        <path d="M66 440 Q86 410 106 440 Q126 414 146 440" fill="none" stroke="#e0f2fe" stroke-width="3" />
+
+        <!-- Kleines Bild zwischen Fenster und Regal -->
+        <rect x="466" y="300" width="40" height="52" rx="3" fill="#14532d" stroke="#86efac" stroke-width="3" />
+        <circle cx="486" cy="322" r="8" fill="#fde047" />
+
+        <!-- Wandregal über dem Bücherregal: Globus, Sanduhr, Glas -->
+        <rect x="506" y="236" width="196" height="9" rx="2" fill="#8a5a35" />
+        <circle cx="540" cy="214" r="20" fill="#0284c7" />
+        <path d="M526 204 Q540 196 552 208 Q546 222 532 222 Z M544 224 Q552 216 558 222" fill="#22c55e" />
+        <line x1="540" y1="234" x2="540" y2="236" stroke="#a16207" stroke-width="4" />
+        <path d="M528 236 L552 236" stroke="#a16207" stroke-width="4" />
+        <path d="M592 198 L616 198 L604 216 L616 234 L592 234 L604 216 Z" fill="#fde68a" stroke="#a16207" stroke-width="3" />
+        <rect x="644" y="206" width="26" height="30" rx="5" fill="url(#glass)" stroke="#67e8f9" stroke-width="2" />
+        <text x="657" y="226" font-family="Fredoka, sans-serif" font-size="12" font-weight="700" fill="#e0f2fe" text-anchor="middle">½</text>
+        <circle cx="688" cy="226" r="10" fill="#e11d48" /><rect x="686" y="210" width="4" height="8" fill="#16a34a" />
+
+        <!-- Wimpelkette über dem Gemälde -->
+        <path d="M730 150 Q850 190 970 150" fill="none" stroke="#e2e8f0" stroke-width="2" stroke-opacity="0.6" />
+        <g>
+          <path d="M742 162 l15 0 l-7.5 22 z" fill="#f43f5e" opacity="0.85" /><path d="M768 172 l15 0 l-7.5 22 z" fill="#f59e0b" opacity="0.85" /><path d="M794 178 l15 0 l-7.5 22 z" fill="#22c55e" opacity="0.85" /><path d="M820 181 l15 0 l-7.5 22 z" fill="#3b82f6" opacity="0.85" /><path d="M846 181 l15 0 l-7.5 22 z" fill="#a855f7" opacity="0.85" /><path d="M872 179 l15 0 l-7.5 22 z" fill="#f43f5e" opacity="0.85" /><path d="M898 172 l15 0 l-7.5 22 z" fill="#f59e0b" opacity="0.85" /><path d="M924 164 l15 0 l-7.5 22 z" fill="#22c55e" opacity="0.85" /><path d="M950 152 l15 0 l-7.5 22 z" fill="#3b82f6" opacity="0.85" />
+        </g>
+
+        <!-- Dartscheibe zwischen Regal und Gemälde -->
+        <circle cx="718" cy="320" r="19" fill="#111827" />
+        <circle cx="718" cy="320" r="14" fill="#dc2626" /><circle cx="718" cy="320" r="9" fill="#f5f5f4" /><circle cx="718" cy="320" r="4" fill="#16a34a" />
+
+        <!-- Wandregal unter dem Gemälde -->
+        <rect x="760" y="478" width="150" height="8" rx="2" fill="#8a5a35" />
+        <path d="M772 478 L776 446 L792 446 L796 478 Z" fill="#0ea5e9" /><path d="M780 446 Q776 420 770 412 M786 446 Q790 418 800 410" stroke="#16a34a" stroke-width="3" fill="none" />
+        <rect x="812" y="452" width="22" height="26" fill="#f59e0b" /><rect x="808" y="446" width="30" height="8" rx="2" fill="#b45309" />
+        <rect x="848" y="440" width="12" height="38" rx="3" fill="#f43f5e" /><rect x="862" y="448" width="12" height="30" rx="3" fill="#6366f1" />
+        <circle cx="892" cy="466" r="12" fill="#facc15" /><text x="892" y="470" font-family="Fredoka, sans-serif" font-size="10" font-weight="700" fill="#713f12" text-anchor="middle">−1</text>
+
+        <!-- Kalender (rechts) – Ablenkung: viele Zahlen -->
+        <rect x="1166" y="140" width="128" height="140" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" />
+        <rect x="1166" y="140" width="128" height="30" rx="6" fill="#dc2626" />
+        <text x="1230" y="161" font-family="Fredoka, sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">OKTOBER</text>
+        <g font-family="Fredoka, sans-serif" font-size="10" font-weight="600" text-anchor="middle"><text x="1182" y="196">1</text><text x="1198" y="196">2</text><text x="1214" y="196">3</text><text x="1230" y="196">4</text><text x="1246" y="196">5</text><text x="1262" y="196">6</text><text x="1278" y="196">7</text><text x="1182" y="214">8</text><text x="1198" y="214">9</text><text x="1214" y="214">10</text><text x="1230" y="214">11</text><text x="1246" y="214">12</text><text x="1262" y="214">13</text><text x="1278" y="214">14</text><text x="1182" y="232">15</text><text x="1198" y="232">16</text><text x="1214" y="232">17</text><text x="1230" y="232">18</text><text x="1246" y="232">19</text><text x="1262" y="232">20</text><text x="1278" y="232">21</text></g>
+        <circle cx="1214" cy="227" r="9" fill="none" stroke="#dc2626" stroke-width="2" />
+        <circle cx="1230" cy="132" r="5" fill="#64748b" />
+
+        <!-- Wandlampe neben der Tür -->
+        <rect x="1150" y="330" width="10" height="26" rx="2" fill="#a16207" />
+        <path d="M1144 330 L1166 330 L1160 306 L1150 306 Z" fill="#fde68a" />
+        <circle cx="1155" cy="320" r="40" fill="url(#lampGlow)" opacity="0.7" />
+        <!-- Lichtschalter -->
+        <rect x="1148" y="420" width="16" height="24" rx="3" fill="#e2e8f0" /><rect x="1153" y="426" width="6" height="12" rx="2" fill="#94a3b8" />
+
+        <!-- Glasschrank (rechts) – Ablenkung: Gläser mit Zahlen -->
+        <rect x="1196" y="310" width="190" height="276" rx="6" fill="#5b3a29" />
+        <rect x="1206" y="320" width="170" height="256" fill="#2a1a12" />
+        <rect x="1206" y="320" width="170" height="256" fill="url(#glass)" opacity="0.5" />
+        <rect x="1206" y="400" width="170" height="7" fill="#8a5a35" /><rect x="1206" y="488" width="170" height="7" fill="#8a5a35" />
+        <line x1="1291" y1="320" x2="1291" y2="576" stroke="#8a5a35" stroke-width="5" />
+        <g font-family="Fredoka, sans-serif" font-size="11" font-weight="700" text-anchor="middle">
+          <rect x="1216" y="360" width="28" height="40" rx="6" fill="#fca5a5" opacity="0.9" /><rect x="1213" y="354" width="34" height="8" rx="2" fill="#7f1d1d" /><text x="1230" y="386" fill="#7f1d1d">−3</text>
+          <rect x="1252" y="368" width="28" height="32" rx="6" fill="#86efac" opacity="0.9" /><rect x="1249" y="362" width="34" height="8" rx="2" fill="#14532d" /><text x="1266" y="390" fill="#14532d">0,5</text>
+          <rect x="1302" y="356" width="30" height="44" rx="6" fill="#93c5fd" opacity="0.9" /><rect x="1299" y="350" width="36" height="8" rx="2" fill="#1e3a8a" /><text x="1317" y="384" fill="#1e3a8a">2/7</text>
+          <rect x="1340" y="366" width="26" height="34" rx="6" fill="#fde68a" opacity="0.9" /><rect x="1337" y="360" width="32" height="8" rx="2" fill="#713f12" /><text x="1353" y="390" fill="#713f12">1¼</text>
+          <rect x="1216" y="448" width="30" height="40" rx="6" fill="#c4b5fd" opacity="0.9" /><rect x="1213" y="442" width="36" height="8" rx="2" fill="#4c1d95" /><text x="1231" y="474" fill="#4c1d95">−0,8</text>
+          <rect x="1256" y="456" width="26" height="32" rx="6" fill="#fdba74" opacity="0.9" /><rect x="1253" y="450" width="32" height="8" rx="2" fill="#7c2d12" /><text x="1269" y="478" fill="#7c2d12">7</text>
+          <circle cx="1318" cy="470" r="16" fill="#0f766e" /><path d="M1306 466 Q1318 450 1330 466" fill="none" stroke="#5eead4" stroke-width="3" />
+          <rect x="1342" y="450" width="26" height="38" rx="6" fill="#f9a8d4" opacity="0.9" /><rect x="1339" y="444" width="32" height="8" rx="2" fill="#831843" /><text x="1355" y="474" fill="#831843">−⅓</text>
+          <rect x="1216" y="530" width="62" height="46" rx="4" fill="#b45309" /><rect x="1222" y="536" width="50" height="10" fill="#fbbf24" opacity="0.6" />
+          <rect x="1302" y="520" width="12" height="56" fill="#ef4444" /><rect x="1316" y="528" width="14" height="48" fill="#3b82f6" /><rect x="1332" y="516" width="10" height="60" fill="#22c55e" /><rect x="1344" y="532" width="18" height="44" fill="#eab308" />
+        </g>
+        <!-- Mauseloch -->
+        <path d="M1152 582 L1152 566 Q1164 552 1176 566 L1176 582 Z" fill="#0b0716" />
+
+        <!-- Ursprüngliche Szene, in die Mitte des größeren Zimmers verschoben -->
+        <g id="scene" transform="translate(200 150)">
         <!-- Stehlampe -->
         <circle cx="250" cy="300" r="120" fill="url(#lampGlow)" />
         <line x1="250" y1="290" x2="250" y2="500" stroke="#1f1530" stroke-width="6" />
@@ -304,6 +426,60 @@
           <rect class="hotspot-area" fill="transparent" stroke="none" x="121" y="355" width="28" height="58" rx="6" />
           <g class="hint-marker" transform="translate(135 384)"><circle r="12" /></g>
         </g>
+        </g>
+
+        <!-- Vordergrund: Pflanze, Korb, Bücherstapel, Katze, Hausschuhe, Papiere -->
+        <!-- Große Zimmerpflanze links -->
+        <g>
+          <path d="M120 600 Q60 520 40 440 Q90 500 128 580 Z" fill="#15803d" />
+          <path d="M126 600 Q110 480 128 400 Q146 480 136 600 Z" fill="#16a34a" />
+          <path d="M132 600 Q190 520 214 450 Q170 500 140 584 Z" fill="#22c55e" />
+          <path d="M124 600 Q70 560 30 540 Q80 580 120 610 Z" fill="#166534" />
+          <path d="M138 600 Q200 570 230 560 Q190 600 142 612 Z" fill="#15803d" />
+          <path d="M84 600 L180 600 L170 680 L94 680 Z" fill="#c2410c" />
+          <rect x="78" y="592" width="108" height="16" rx="4" fill="#ea580c" />
+        </g>
+        <!-- Wollkorb -->
+        <path d="M196 676 L282 676 L274 724 L204 724 Z" fill="#a16207" />
+        <g stroke="#713f12" stroke-width="2" opacity="0.6"><line x1="200" y1="690" x2="278" y2="690" /><line x1="202" y1="706" x2="276" y2="706" /></g>
+        <circle cx="222" cy="670" r="14" fill="#ec4899" /><circle cx="252" cy="666" r="16" fill="#3b82f6" />
+        <path d="M252 666 Q290 700 310 744" fill="none" stroke="#3b82f6" stroke-width="2" />
+        <!-- Teddybär neben dem Regal -->
+        <g transform="translate(906 0)">
+          <circle cx="-188" cy="560" r="16" fill="#a16207" /><circle cx="-200" cy="546" r="6" fill="#a16207" /><circle cx="-176" cy="546" r="6" fill="#a16207" />
+          <ellipse cx="-188" cy="588" rx="18" ry="16" fill="#92400e" />
+          <circle cx="-194" cy="558" r="2" fill="#111" /><circle cx="-182" cy="558" r="2" fill="#111" /><ellipse cx="-188" cy="565" rx="4" ry="3" fill="#fde68a" />
+        </g>
+        <!-- Schirmständer -->
+        <path d="M942 566 L938 532 Q946 524 950 534 L948 566" fill="#0ea5e9" />
+        <path d="M956 566 L962 538 Q970 532 972 544 L962 566" fill="#f43f5e" />
+        <rect x="930" y="562" width="40" height="42" rx="6" fill="#334155" />
+        <!-- Hausschuhe vor der Tür -->
+        <ellipse cx="1030" cy="720" rx="22" ry="9" fill="#db2777" /><ellipse cx="1068" cy="726" rx="22" ry="9" fill="#db2777" />
+        <ellipse cx="1024" cy="718" rx="8" ry="5" fill="#fbcfe8" /><ellipse cx="1062" cy="724" rx="8" ry="5" fill="#fbcfe8" />
+        <!-- Schlafende Katze auf einem Kissen -->
+        <ellipse cx="1240" cy="688" rx="76" ry="22" fill="#4338ca" />
+        <ellipse cx="1240" cy="672" rx="46" ry="20" fill="#f97316" />
+        <circle cx="1196" cy="664" r="15" fill="#f97316" />
+        <path d="M1186 652 L1188 640 L1196 650 Z M1200 650 L1206 640 L1208 654 Z" fill="#f97316" />
+        <path d="M1189 664 q4 3 8 0 M1199 664 q4 3 8 0" stroke="#7c2d12" stroke-width="1.5" fill="none" />
+        <path d="M1284 676 Q1310 690 1290 700" stroke="#f97316" stroke-width="7" fill="none" stroke-linecap="round" />
+        <g stroke="#c2410c" stroke-width="3" opacity="0.6"><line x1="1226" y1="656" x2="1230" y2="670" /><line x1="1244" y1="654" x2="1248" y2="668" /><line x1="1262" y1="658" x2="1266" y2="672" /></g>
+        <text x="1188" y="630" font-family="Fredoka, sans-serif" font-size="16" fill="#c7d2fe" opacity="0.8">z z</text>
+        <!-- Bücherstapel rechts vorne -->
+        <rect x="1318" y="732" width="70" height="14" rx="2" fill="#0ea5e9" />
+        <rect x="1324" y="718" width="60" height="14" rx="2" fill="#f43f5e" />
+        <rect x="1316" y="704" width="66" height="14" rx="2" fill="#84cc16" />
+        <rect x="1328" y="690" width="50" height="14" rx="2" fill="#a855f7" />
+        <!-- Verstreute Zettel mit Rechnungen -->
+        <g font-family="Fredoka, sans-serif" font-size="11" fill="#334155">
+          <g transform="rotate(-8 520 760)"><rect x="490" y="742" width="64" height="40" rx="2" fill="#fefce8" /><text x="500" y="760">3/4 + ?</text><text x="500" y="774">= 1</text></g>
+          <g transform="rotate(10 640 772)"><rect x="612" y="756" width="58" height="36" rx="2" fill="#f0f9ff" /><text x="620" y="778">−2 · ½</text></g>
+          <g transform="rotate(-4 380 752)"><rect x="354" y="738" width="52" height="34" rx="2" fill="#fdf2f8" /><text x="362" y="760">0,25</text></g>
+        </g>
+        <!-- Ball -->
+        <circle cx="880" cy="760" r="18" fill="#ef4444" /><path d="M864 752 Q880 742 896 752 M862 766 Q880 778 898 766" stroke="#fff" stroke-width="3" fill="none" />
+
       </svg>
       </div>
 
@@ -321,6 +497,7 @@
       </div>
     </section>
 
+    <p class="sm:hidden mt-2 text-center text-xs text-gold-300">⇆ Das Zimmer ist groß – wische seitlich, um alles zu sehen.</p>
     <p class="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-slate-400">
       <span class="pointer-fine">Tipp: Verdächtige Details leuchten auf, wenn du mit der Maus darüberfährst.</span>
       <span class="pointer-coarse">Tipp: Schau dir kleine Details im Zimmer genau an und tippe darauf. Findest du nichts? Nutze „Versteck zeigen“.</span>
@@ -384,6 +561,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=7"></script>
+  <script src="script.js?v=8"></script>
 </body>
 </html>

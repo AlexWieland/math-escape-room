@@ -310,8 +310,9 @@
     const choices = open.length > 1 ? open.filter((id) => id !== hintedId) : open;
     hintedId = randomItem(choices);
     updateHint();
-    // Auf dem Handy das Zimmer ins Bild holen, damit man die Markierung sieht
-    room.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Das Versteck ins Bild holen (auf dem Handy auch seitlich scrollen)
+    const el = room.querySelector(`.hotspot[data-puzzle="${hintedId}"]`);
+    el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
   }
 
   function updateHint() {
@@ -470,7 +471,9 @@
   function celebrate() {
     closeModal();
     // Auf dem Handy das Zimmer ins Bild holen, damit man die Tür aufgehen sieht
-    if (window.innerWidth < 640) room.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (window.innerWidth < 640) {
+      room.querySelector('#door').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    }
     room.classList.add('door-open');
     winBanner.classList.remove('hidden');
     fireConfetti();
