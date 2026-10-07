@@ -170,6 +170,47 @@ button, summary, input, .hotspot { touch-action: manipulation; }
 }
 .hint-marker circle { transform-box: fill-box; transform-origin: center; }
 
+/* ---------- Deko-Gegenstände mit kleinen Animationen (kein Rätsel) ---------- */
+.fun { cursor: pointer; outline: none; transform-box: fill-box; transform-origin: 50% 100%; }
+.fun.play-wiggle   { animation: funWiggle 0.7s ease-in-out; }
+.fun.play-jump     { animation: funJump 0.6s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.fun.play-bounce   { animation: funBounce 0.9s ease-out; }
+.fun.play-swing    { transform-origin: 50% 0; animation: funSwing 1.4s ease-in-out; }
+.fun.play-spin     { transform-origin: 50% 50%; animation: funSpin 0.9s ease-in-out; }
+.fun.play-flip     { transform-origin: 50% 50%; animation: funFlip 0.8s ease-in-out; }
+.fun.play-shake    { animation: funShake 0.5s linear; }
+.fun.play-sway     { animation: funSway 1s ease-in-out; }
+.fun.play-flap     { transform-origin: 50% 0; animation: funFlap 0.6s ease-in-out; }
+
+@keyframes funWiggle { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-6deg); } 40% { transform: rotate(5deg); } 60% { transform: rotate(-3deg); } 80% { transform: rotate(2deg); } }
+@keyframes funJump   { 0%,100% { transform: translateY(0) scale(1, 1); } 15% { transform: translateY(0) scale(1.1, 0.85); } 45% { transform: translateY(-38px) scale(0.95, 1.08); } 75% { transform: translateY(0) scale(1.06, 0.92); } }
+@keyframes funBounce { 0%,100% { transform: translateY(0); } 25% { transform: translateY(-70px); } 50% { transform: translateY(0); } 65% { transform: translateY(-28px); } 80% { transform: translateY(0); } 90% { transform: translateY(-8px); } }
+@keyframes funSwing  { 0%,100% { transform: rotate(0); } 15% { transform: rotate(9deg); } 35% { transform: rotate(-7deg); } 55% { transform: rotate(4deg); } 75% { transform: rotate(-2deg); } }
+@keyframes funSpin   { from { transform: scaleX(1); } 25% { transform: scaleX(-1); } 50% { transform: scaleX(1); } 75% { transform: scaleX(-1); } to { transform: scaleX(1); } }
+@keyframes funFlip   { from { transform: rotate(0); } to { transform: rotate(180deg); } }
+@keyframes funShake  { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-4px); } 40% { transform: translateX(4px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(3px); } }
+@keyframes funSway   { 0%,100% { transform: skewX(0); } 25% { transform: skewX(-7deg); } 50% { transform: skewX(6deg); } 75% { transform: skewX(-3deg); } }
+@keyframes funFlap   { 0%,100% { transform: rotate(0); } 30% { transform: rotate(-8deg) scaleY(0.96); } 60% { transform: rotate(5deg); } }
+
+/* Sprechblasen-Text, der kurz über dem Gegenstand aufsteigt */
+.fun-pop {
+  font-family: "Fredoka", system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  fill: #fde68a;
+  stroke: #1a1033;
+  stroke-width: 4px;
+  paint-order: stroke;
+  pointer-events: none;
+  animation: funPop 1.3s ease-out forwards;
+}
+@keyframes funPop { from { opacity: 0; transform: translateY(6px); } 15% { opacity: 1; } 70% { opacity: 1; } to { opacity: 0; transform: translateY(-30px); } }
+
+/* Wandlampe aus-/einschalten */
+.lamp-off #wall-lamp-glow { opacity: 0; }
+.lamp-off #wall-lamp-shade { fill: #78716c; }
+#wall-lamp-glow { transition: opacity 0.2s ease; }
+
 /* Gelöste Hotspots bekommen einen grünen Schimmer + Häkchen */
 .hotspot.solved { filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.7)); }
 .solved-badge { pointer-events: none; animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); transform-box: fill-box; transform-origin: center; }
@@ -265,6 +306,29 @@ button, summary, input, .hotspot { touch-action: manipulation; }
   40% { transform: translateX(8px); }
   60% { transform: translateX(-5px); }
   80% { transform: translateX(5px); }
+}
+
+/* Zahlen-Aufzählungen in den Rätseln: „a | b | c“ mit großzügigem Abstand */
+.num-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  row-gap: 0.25rem;
+  font-family: "Fredoka", system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fde68a;
+}
+.num-item { white-space: nowrap; }
+.num-sep {
+  margin: 0 0.9rem;
+  color: rgba(253, 230, 138, 0.45);
+  font-weight: 400;
+}
+@media (max-width: 639px) {
+  .num-list { font-size: 1.2rem; }
+  .num-sep { margin: 0 0.55rem; }
 }
 
 /* Kleine SVG-Grafiken innerhalb der Rätsel */

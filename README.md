@@ -32,6 +32,8 @@ Jedes Rätsel steckt hinter einem kleinen Detail im Zimmer. Die Fortschrittsanze
 
 **Hinweis-Button:** Ein Klick auf „✨ Hinweis“ wählt zufällig ein noch nicht gelöstes Versteck und zeigt zuerst nur einen Text-Hinweis (z. B. „Auf der Fensterbank ist jemand seeehr langsam unterwegs.“). Erst der zweite Klick („🔍 Versteck markieren“) lässt das Versteck im Bild pulsieren. Die Hinweistexte stehen im Feld `clue` jedes Rätsels in `script.js`.
 
+**Lebendiges Zimmer:** Einige Deko-Gegenstände ohne Rätsel reagieren beim Anklicken mit einer kleinen Animation und einem Geräusch – z. B. miaut die Katze, der Ball hüpft, der Teddy quietscht, der Kronleuchter schwingt und klingt, der Globus dreht sich und der Lichtschalter schaltet die Wandlampe. Die Geräusche werden im Browser erzeugt (Web Audio, keine Audiodateien) und lassen sich mit 🔊/🔇 ausschalten. Welche Gegenstände wie reagieren, steht im Objekt `FUN` in `script.js`.
+
 Antworten dürfen als Bruch (`-3/8`), Dezimalzahl (`-0,375`) oder gemischte Zahl (`1 3/4`) eingegeben werden. Gleichwertige Brüche (z. B. `14/8`) werden ebenfalls als richtig erkannt.
 
 ## Auf GitHub Pages veröffentlichen

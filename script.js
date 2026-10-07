@@ -12,6 +12,13 @@
   //    answer: die richtige Zahl
   //    question: HTML (darf kleine SVG-Grafiken enthalten)
   // ---------------------------------------------------------------
+  // Zahlen einer Aufzählung, getrennt durch „|“ – nicht durch „·“,
+  // das man mit einem Malzeichen verwechseln könnte.
+  const numberList = (...items) =>
+    `<p class="num-list">${items
+      .map((x) => `<span class="num-item">${x}</span>`)
+      .join('<span class="num-sep" aria-hidden="true">|</span>')}</p>`;
+
   const PUZZLES = {
     candle: {
       order: 1,
@@ -36,7 +43,7 @@
       title: 'Der Mond und die negativen Zahlen',
       question: `
         <p>Neben dem Mond leuchten vier Sterne mit Zahlen. Nur der Stern mit der <strong>größten</strong> Zahl zeigt den Weg:</p>
-        <p class="text-center font-display text-2xl tracking-wide text-gold-300">−2/3 · −0,6 · −5/8 · −0,65</p>
+        ${numberList('−2/3', '−0,6', '−5/8', '−0,65')}
         <p>Welche Zahl ist die größte?</p>`,
       clue: 'Schau aus dem Fenster: Am Nachthimmel leuchtet etwas Rundes, das nur halb zu sehen ist.',
       hint: 'Wandle alle Zahlen in Dezimalzahlen um (−2/3 ≈ −0,667; −5/8 = −0,625). Bei negativen Zahlen ist die Zahl am größten, die am nächsten bei 0 liegt.',
@@ -81,7 +88,7 @@
       title: 'Das Buch mit dem Fragezeichen',
       question: `
         <p>Im Regal stehen Bücher mit Zahlen auf dem Rücken – auf dem letzten steht nur ein <strong>?</strong>:</p>
-        <p class="text-center font-display text-2xl tracking-wide text-gold-300">81 · −54 · 36 · −24 · 16 · <span class="text-pink-300">?</span></p>
+        ${numberList('81', '−54', '36', '−24', '16', '<span class="text-pink-300">?</span>')}
         <p>Welche Zahl gehört auf das Fragezeichen-Buch? <span class="text-slate-400">(als Bruch oder gemischte Zahl)</span></p>`,
       clue: 'Im großen Bücherregal kann man einen Buchrücken nicht lesen.',
       hint: 'Von Buch zu Buch wird immer mit demselben Bruch multipliziert: 81 · ? = −54. Kürze −54/81!',
@@ -158,7 +165,7 @@
       title: 'Das Schloss der Schatztruhe',
       question: `
         <p>Das letzte Schloss! Auf vier Rädchen stehen diese Zahlen:</p>
-        <p class="text-center font-display text-2xl tracking-wide text-gold-300">−3/4 · 1/2 · −1 1/4 · 2,5</p>
+        ${numberList('−3/4', '1/2', '−1¼', '2,5')}
         <p>Der Code ist ihr <strong>Mittelwert</strong> (Durchschnitt). Wie lautet er?</p>`,
       clue: 'Der Schatz bleibt verschlossen – untersuche das kleine goldene Teil vorne an der Truhe.',
       hint: 'Mittelwert = Summe aller Zahlen : Anzahl. Addiere zuerst: −0,75 + 0,5 − 1,25 + 2,5. Teile das Ergebnis dann durch 4.',
@@ -524,6 +531,160 @@
     winBanner.classList.add('hidden');
     render();
   }
+
+  // ---------------------------------------------------------------
+  // Geräusche – werden direkt im Browser erzeugt (Web Audio), keine Dateien nötig
+  // ---------------------------------------------------------------
+  const SOUND_KEY = 'mathe-zimmer-sound';
+  let soundOn = true;
+  try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch { /* egal */ }
+  let audioCtx = null;
+
+  function ctx() {
+    if (!soundOn) return null;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    if (!audioCtx) audioCtx = new AC();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  // Ein Ton mit Tonhöhen-Verlauf: freqs = [[Zeit in s, Frequenz], …]
+  function tone({ type = 'sine', freqs, dur, vol = 0.2, filter, delay = 0 }) {
+    const ac = ctx();
+    if (!ac) return;
+    const t0 = ac.currentTime + delay;
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.type = type;
+    freqs.forEach(([t, f], i) => (i === 0 ? osc.frequency.setValueAtTime(f, t0 + t) : osc.frequency.linearRampToValueAtTime(f, t0 + t)));
+    gain.gain.setValueAtTime(0.0001, t0);
+    gain.gain.exponentialRampToValueAtTime(vol, t0 + Math.min(0.04, dur / 4));
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    let node = osc;
+    if (filter) {
+      const f = ac.createBiquadFilter();
+      f.type = 'lowpass';
+      f.frequency.value = filter;
+      osc.connect(f);
+      node = f;
+    }
+    node.connect(gain).connect(ac.destination);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.05);
+  }
+
+  // Kurzes Rauschen (Rascheln, Klick, Wusch)
+  function noise({ dur, vol = 0.15, freq = 2000, q = 1, delay = 0 }) {
+    const ac = ctx();
+    if (!ac) return;
+    const t0 = ac.currentTime + delay;
+    const buffer = ac.createBuffer(1, Math.ceil(ac.sampleRate * dur), ac.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    const src = ac.createBufferSource();
+    src.buffer = buffer;
+    const bp = ac.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = freq;
+    bp.Q.value = q;
+    const gain = ac.createGain();
+    gain.gain.setValueAtTime(vol, t0);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(bp).connect(gain).connect(ac.destination);
+    src.start(t0);
+  }
+
+  const SOUNDS = {
+    meow() {
+      tone({ type: 'sawtooth', filter: 1800, vol: 0.12, dur: 0.65,
+        freqs: [[0, 420], [0.12, 780], [0.35, 700], [0.65, 380]] });
+    },
+    boing() {
+      tone({ type: 'sine', vol: 0.25, dur: 0.5, freqs: [[0, 330], [0.08, 520], [0.5, 140]] });
+      tone({ type: 'sine', vol: 0.12, dur: 0.35, delay: 0.45, freqs: [[0, 300], [0.35, 160]] });
+    },
+    squeak() {
+      tone({ type: 'sine', vol: 0.16, dur: 0.25, freqs: [[0, 1100], [0.1, 1900], [0.25, 1300]] });
+    },
+    chime() {
+      [1319, 1760, 2093].forEach((f, i) => tone({ type: 'sine', vol: 0.08, dur: 1.2, delay: i * 0.12, freqs: [[0, f]] }));
+    },
+    whoosh() { noise({ dur: 0.6, vol: 0.12, freq: 800, q: 0.7 }); },
+    rustle() {
+      for (let i = 0; i < 4; i++) noise({ dur: 0.12, vol: 0.08, freq: 3500 + i * 400, q: 0.8, delay: i * 0.09 });
+    },
+    click() { noise({ dur: 0.03, vol: 0.3, freq: 3000, q: 2 }); },
+    thud() {
+      tone({ type: 'sine', vol: 0.3, dur: 0.18, freqs: [[0, 160], [0.18, 60]] });
+      noise({ dur: 0.05, vol: 0.15, freq: 1200 });
+    },
+    flap() { noise({ dur: 0.18, vol: 0.12, freq: 1500, q: 0.6 }); },
+    tick() {
+      [0, 0.25, 0.5].forEach((d) => noise({ dur: 0.03, vol: 0.2, freq: 4000, q: 3, delay: d }));
+    },
+  };
+
+  // ---------------------------------------------------------------
+  // Deko-Gegenstände: kleine Animation, Geräusch und manchmal ein Text
+  // ---------------------------------------------------------------
+  const FUN = {
+    cat:        { anim: 'wiggle', sound: 'meow',   texts: ['Miau!', 'Miauuu?', 'Schnurr …'] },
+    ball:       { anim: 'bounce', sound: 'boing',  texts: ['Boing!'] },
+    teddy:      { anim: 'jump',   sound: 'squeak', texts: ['Quietsch!', 'Hallo!'] },
+    chandelier: { anim: 'swing',  sound: 'chime' },
+    globe:      { anim: 'spin',   sound: 'whoosh', texts: ['Hui!'] },
+    hourglass:  { anim: 'flip',   sound: 'whoosh' },
+    plant:      { anim: 'sway',   sound: 'rustle' },
+    calendar:   { anim: 'flap',   sound: 'flap' },
+    dart:       { anim: 'shake',  sound: 'thud',   texts: ['Treffer!', 'Volltreffer!'] },
+    yarn:       { anim: 'wiggle', sound: 'rustle' },
+    slippers:   { anim: 'shake',  sound: 'rustle' },
+    switch:     { sound: 'click' },
+  };
+
+  function playFun(el) {
+    const name = el.dataset.fun;
+    const fx = FUN[name];
+    if (!fx) return;
+    if (name === 'switch') room.classList.toggle('lamp-off');
+    if (fx.anim) {
+      const cls = `play-${fx.anim}`;
+      el.classList.remove(cls);
+      void el.getBBox(); // Animation neu starten
+      el.classList.add(cls);
+      el.addEventListener('animationend', () => el.classList.remove(cls), { once: true });
+    }
+    if (fx.sound) SOUNDS[fx.sound]();
+    if (fx.texts) showPop(el, randomItem(fx.texts));
+  }
+
+  function showPop(el, text) {
+    const box = el.getBBox();
+    const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    t.setAttribute('class', 'fun-pop');
+    t.setAttribute('x', box.x + box.width / 2);
+    t.setAttribute('y', box.y - 8);
+    t.setAttribute('text-anchor', 'middle');
+    t.textContent = text;
+    room.appendChild(t);
+    setTimeout(() => t.remove(), 1400);
+  }
+
+  const soundBtn = $('#sound-toggle');
+  function updateSoundBtn() {
+    soundBtn.textContent = soundOn ? '🔊' : '🔇';
+    soundBtn.setAttribute('aria-pressed', String(soundOn));
+    soundBtn.setAttribute('aria-label', soundOn ? 'Geräusche ausschalten' : 'Geräusche einschalten');
+  }
+  soundBtn.addEventListener('click', () => {
+    soundOn = !soundOn;
+    try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch { /* egal */ }
+    updateSoundBtn();
+  });
+  updateSoundBtn();
+
+  room.querySelectorAll('.fun').forEach((el) => el.addEventListener('click', () => playFun(el)));
 
   // ---------------------------------------------------------------
   // 8. Event-Listener

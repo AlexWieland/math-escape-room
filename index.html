@@ -39,7 +39,7 @@
   <!-- Konfetti-Bibliothek -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
 
-  <link rel="stylesheet" href="style.css?v=10" />
+  <link rel="stylesheet" href="style.css?v=13" />
 </head>
 
 <body class="min-h-screen bg-night-900 text-slate-100 font-body antialiased">
@@ -71,6 +71,10 @@
             class="min-h-[44px] sm:min-h-0 px-3 py-2 sm:py-1.5 rounded-lg text-sm bg-white/10 hover:bg-white/20 transition ring-1 ring-white/10 disabled:opacity-40 disabled:cursor-not-allowed"
             title="Gibt einen Hinweis auf ein noch nicht gelöstes Versteck – beim zweiten Klick wird es im Bild markiert">
             ✨ Hinweis
+          </button>
+          <button id="sound-toggle" type="button" aria-pressed="true" aria-label="Geräusche ausschalten" title="Geräusche an/aus"
+            class="min-h-[44px] sm:min-h-0 !flex-none px-3 py-2 sm:py-1.5 rounded-lg text-sm bg-white/10 hover:bg-white/20 transition ring-1 ring-white/10">
+            🔊
           </button>
           <button id="reset-btn" type="button"
             class="min-h-[44px] sm:min-h-0 px-3 py-2 sm:py-1.5 rounded-lg text-sm bg-white/10 hover:bg-rose-500/40 transition ring-1 ring-white/10">
@@ -169,16 +173,18 @@
         </g>
 
         <!-- Kronleuchter -->
-        <line x1="700" y1="34" x2="700" y2="78" stroke="#a16207" stroke-width="3" />
-        <path d="M640 92 Q700 128 760 92" fill="none" stroke="#ca8a04" stroke-width="5" />
-        <rect x="690" y="78" width="20" height="20" rx="4" fill="#ca8a04" />
-        <g fill="#fef3c7">
-          <rect x="637" y="72" width="8" height="18" rx="1" /><rect x="696" y="56" width="8" height="18" rx="1" /><rect x="755" y="72" width="8" height="18" rx="1" />
+        <g class="fun" data-fun="chandelier" role="button" tabindex="-1" aria-label="Kronleuchter">
+          <line x1="700" y1="34" x2="700" y2="78" stroke="#a16207" stroke-width="3" />
+          <path d="M640 92 Q700 128 760 92" fill="none" stroke="#ca8a04" stroke-width="5" />
+          <rect x="690" y="78" width="20" height="20" rx="4" fill="#ca8a04" />
+          <g fill="#fef3c7">
+            <rect x="637" y="72" width="8" height="18" rx="1" /><rect x="696" y="56" width="8" height="18" rx="1" /><rect x="755" y="72" width="8" height="18" rx="1" />
+          </g>
+          <g fill="#fbbf24">
+            <ellipse cx="641" cy="66" rx="3" ry="6" /><ellipse cx="700" cy="50" rx="3" ry="6" /><ellipse cx="759" cy="66" rx="3" ry="6" />
+          </g>
+          <circle cx="700" cy="80" r="70" fill="url(#lampGlow)" opacity="0.6" />
         </g>
-        <g fill="#fbbf24">
-          <ellipse cx="641" cy="66" rx="3" ry="6" /><ellipse cx="700" cy="50" rx="3" ry="6" /><ellipse cx="759" cy="66" rx="3" ry="6" />
-        </g>
-        <circle cx="700" cy="80" r="70" fill="url(#lampGlow)" opacity="0.6" />
 
         <!-- Vorhänge am Fenster -->
         <rect x="222" y="200" width="240" height="6" rx="3" fill="#a16207" />
@@ -210,11 +216,15 @@
 
         <!-- Wandregal über dem Bücherregal: Globus, Sanduhr, Glas -->
         <rect x="506" y="236" width="196" height="9" rx="2" fill="#8a5a35" />
-        <circle cx="540" cy="214" r="20" fill="#0284c7" />
-        <path d="M526 204 Q540 196 552 208 Q546 222 532 222 Z M544 224 Q552 216 558 222" fill="#22c55e" />
+        <g class="fun" data-fun="globe" role="button" tabindex="-1" aria-label="Globus">
+          <circle cx="540" cy="214" r="20" fill="#0284c7" />
+          <path d="M526 204 Q540 196 552 208 Q546 222 532 222 Z M544 224 Q552 216 558 222" fill="#22c55e" />
+        </g>
         <line x1="540" y1="234" x2="540" y2="236" stroke="#a16207" stroke-width="4" />
         <path d="M528 236 L552 236" stroke="#a16207" stroke-width="4" />
-        <path d="M592 198 L616 198 L604 216 L616 234 L592 234 L604 216 Z" fill="#fde68a" stroke="#a16207" stroke-width="3" />
+        <g class="fun" data-fun="hourglass" role="button" tabindex="-1" aria-label="Sanduhr">
+          <path d="M592 198 L616 198 L604 216 L616 234 L592 234 L604 216 Z" fill="#fde68a" stroke="#a16207" stroke-width="3" />
+        </g>
         <rect x="644" y="206" width="26" height="30" rx="5" fill="url(#glass)" stroke="#67e8f9" stroke-width="2" />
         <text x="657" y="226" font-family="Fredoka, sans-serif" font-size="12" font-weight="700" fill="#e0f2fe" text-anchor="middle">½</text>
         <circle cx="688" cy="226" r="10" fill="#e11d48" /><rect x="686" y="210" width="4" height="8" fill="#16a34a" />
@@ -226,8 +236,10 @@
         </g>
 
         <!-- Dartscheibe zwischen Regal und Gemälde -->
-        <circle cx="718" cy="320" r="19" fill="#111827" />
-        <circle cx="718" cy="320" r="14" fill="#dc2626" /><circle cx="718" cy="320" r="9" fill="#f5f5f4" /><circle cx="718" cy="320" r="4" fill="#16a34a" />
+        <g class="fun" data-fun="dart" role="button" tabindex="-1" aria-label="Dartscheibe">
+          <circle cx="718" cy="320" r="19" fill="#111827" />
+          <circle cx="718" cy="320" r="14" fill="#dc2626" /><circle cx="718" cy="320" r="9" fill="#f5f5f4" /><circle cx="718" cy="320" r="4" fill="#16a34a" />
+        </g>
 
         <!-- Wandregal unter dem Gemälde -->
         <rect x="760" y="478" width="150" height="8" rx="2" fill="#8a5a35" />
@@ -237,19 +249,23 @@
         <circle cx="892" cy="466" r="12" fill="#facc15" /><text x="892" y="470" font-family="Fredoka, sans-serif" font-size="10" font-weight="700" fill="#713f12" text-anchor="middle">−1</text>
 
         <!-- Kalender (rechts) – Ablenkung: viele Zahlen -->
-        <rect x="1166" y="140" width="128" height="140" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" />
-        <rect x="1166" y="140" width="128" height="30" rx="6" fill="#dc2626" />
-        <text x="1230" y="161" font-family="Fredoka, sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">OKTOBER</text>
-        <g font-family="Fredoka, sans-serif" font-size="10" font-weight="600" text-anchor="middle"><text x="1182" y="196">1</text><text x="1198" y="196">2</text><text x="1214" y="196">3</text><text x="1230" y="196">4</text><text x="1246" y="196">5</text><text x="1262" y="196">6</text><text x="1278" y="196">7</text><text x="1182" y="214">8</text><text x="1198" y="214">9</text><text x="1214" y="214">10</text><text x="1230" y="214">11</text><text x="1246" y="214">12</text><text x="1262" y="214">13</text><text x="1278" y="214">14</text><text x="1182" y="232">15</text><text x="1198" y="232">16</text><text x="1214" y="232">17</text><text x="1230" y="232">18</text><text x="1246" y="232">19</text><text x="1262" y="232">20</text><text x="1278" y="232">21</text></g>
-        <circle cx="1214" cy="227" r="9" fill="none" stroke="#dc2626" stroke-width="2" />
-        <circle cx="1230" cy="132" r="5" fill="#64748b" />
+        <g class="fun" data-fun="calendar" role="button" tabindex="-1" aria-label="Kalender">
+          <rect x="1166" y="140" width="128" height="140" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" />
+          <rect x="1166" y="140" width="128" height="30" rx="6" fill="#dc2626" />
+          <text x="1230" y="161" font-family="Fredoka, sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">OKTOBER</text>
+          <g font-family="Fredoka, sans-serif" font-size="10" font-weight="600" text-anchor="middle"><text x="1182" y="196">1</text><text x="1198" y="196">2</text><text x="1214" y="196">3</text><text x="1230" y="196">4</text><text x="1246" y="196">5</text><text x="1262" y="196">6</text><text x="1278" y="196">7</text><text x="1182" y="214">8</text><text x="1198" y="214">9</text><text x="1214" y="214">10</text><text x="1230" y="214">11</text><text x="1246" y="214">12</text><text x="1262" y="214">13</text><text x="1278" y="214">14</text><text x="1182" y="232">15</text><text x="1198" y="232">16</text><text x="1214" y="232">17</text><text x="1230" y="232">18</text><text x="1246" y="232">19</text><text x="1262" y="232">20</text><text x="1278" y="232">21</text></g>
+          <circle cx="1214" cy="227" r="9" fill="none" stroke="#dc2626" stroke-width="2" />
+          <circle cx="1230" cy="132" r="5" fill="#64748b" />
+        </g>
 
         <!-- Wandlampe neben der Tür -->
         <rect x="1150" y="330" width="10" height="26" rx="2" fill="#a16207" />
-        <path d="M1144 330 L1166 330 L1160 306 L1150 306 Z" fill="#fde68a" />
-        <circle cx="1155" cy="320" r="40" fill="url(#lampGlow)" opacity="0.7" />
+        <path id="wall-lamp-shade" d="M1144 330 L1166 330 L1160 306 L1150 306 Z" fill="#fde68a" />
+        <circle id="wall-lamp-glow" cx="1155" cy="320" r="40" fill="url(#lampGlow)" opacity="0.7" />
         <!-- Lichtschalter -->
-        <rect x="1148" y="420" width="16" height="24" rx="3" fill="#e2e8f0" /><rect x="1153" y="426" width="6" height="12" rx="2" fill="#94a3b8" />
+        <g class="fun" data-fun="switch" role="button" tabindex="-1" aria-label="Lichtschalter">
+          <rect x="1148" y="420" width="16" height="24" rx="3" fill="#e2e8f0" /><rect x="1153" y="426" width="6" height="12" rx="2" fill="#94a3b8" />
+        </g>
 
         <!-- Glasschrank (rechts) – Ablenkung: Gläser mit Zahlen -->
         <rect x="1196" y="310" width="190" height="276" rx="6" fill="#5b3a29" />
@@ -433,7 +449,7 @@
 
         <!-- Vordergrund: Pflanze, Korb, Bücherstapel, Katze, Hausschuhe, Papiere -->
         <!-- Große Zimmerpflanze links -->
-        <g>
+        <g class="fun" data-fun="plant" role="button" tabindex="-1" aria-label="Zimmerpflanze">
           <path d="M120 600 Q60 520 40 440 Q90 500 128 580 Z" fill="#15803d" />
           <path d="M126 600 Q110 480 128 400 Q146 480 136 600 Z" fill="#16a34a" />
           <path d="M132 600 Q190 520 214 450 Q170 500 140 584 Z" fill="#22c55e" />
@@ -443,32 +459,40 @@
           <rect x="78" y="592" width="108" height="16" rx="4" fill="#ea580c" />
         </g>
         <!-- Wollkorb -->
-        <path d="M196 676 L282 676 L274 724 L204 724 Z" fill="#a16207" />
-        <g stroke="#713f12" stroke-width="2" opacity="0.6"><line x1="200" y1="690" x2="278" y2="690" /><line x1="202" y1="706" x2="276" y2="706" /></g>
-        <circle cx="222" cy="670" r="14" fill="#ec4899" /><circle cx="252" cy="666" r="16" fill="#3b82f6" />
-        <path d="M252 666 Q290 700 310 744" fill="none" stroke="#3b82f6" stroke-width="2" />
+        <g class="fun" data-fun="yarn" role="button" tabindex="-1" aria-label="Wollkorb">
+          <path d="M196 676 L282 676 L274 724 L204 724 Z" fill="#a16207" />
+          <g stroke="#713f12" stroke-width="2" opacity="0.6"><line x1="200" y1="690" x2="278" y2="690" /><line x1="202" y1="706" x2="276" y2="706" /></g>
+          <circle cx="222" cy="670" r="14" fill="#ec4899" /><circle cx="252" cy="666" r="16" fill="#3b82f6" />
+          <path d="M252 666 Q290 700 310 744" fill="none" stroke="#3b82f6" stroke-width="2" />
+        </g>
         <!-- Teddybär neben dem Regal -->
-        <g transform="translate(906 0)">
-          <circle cx="-188" cy="560" r="16" fill="#a16207" /><circle cx="-200" cy="546" r="6" fill="#a16207" /><circle cx="-176" cy="546" r="6" fill="#a16207" />
-          <ellipse cx="-188" cy="588" rx="18" ry="16" fill="#92400e" />
-          <circle cx="-194" cy="558" r="2" fill="#111" /><circle cx="-182" cy="558" r="2" fill="#111" /><ellipse cx="-188" cy="565" rx="4" ry="3" fill="#fde68a" />
+        <g class="fun" data-fun="teddy" role="button" tabindex="-1" aria-label="Teddybär">
+          <g transform="translate(906 0)">
+            <circle cx="-188" cy="560" r="16" fill="#a16207" /><circle cx="-200" cy="546" r="6" fill="#a16207" /><circle cx="-176" cy="546" r="6" fill="#a16207" />
+            <ellipse cx="-188" cy="588" rx="18" ry="16" fill="#92400e" />
+            <circle cx="-194" cy="558" r="2" fill="#111" /><circle cx="-182" cy="558" r="2" fill="#111" /><ellipse cx="-188" cy="565" rx="4" ry="3" fill="#fde68a" />
+          </g>
         </g>
         <!-- Schirmständer -->
         <path d="M942 566 L938 532 Q946 524 950 534 L948 566" fill="#0ea5e9" />
         <path d="M956 566 L962 538 Q970 532 972 544 L962 566" fill="#f43f5e" />
         <rect x="930" y="562" width="40" height="42" rx="6" fill="#334155" />
         <!-- Hausschuhe vor der Tür -->
-        <ellipse cx="1030" cy="720" rx="22" ry="9" fill="#db2777" /><ellipse cx="1068" cy="726" rx="22" ry="9" fill="#db2777" />
-        <ellipse cx="1024" cy="718" rx="8" ry="5" fill="#fbcfe8" /><ellipse cx="1062" cy="724" rx="8" ry="5" fill="#fbcfe8" />
+        <g class="fun" data-fun="slippers" role="button" tabindex="-1" aria-label="Hausschuhe">
+          <ellipse cx="1030" cy="720" rx="22" ry="9" fill="#db2777" /><ellipse cx="1068" cy="726" rx="22" ry="9" fill="#db2777" />
+          <ellipse cx="1024" cy="718" rx="8" ry="5" fill="#fbcfe8" /><ellipse cx="1062" cy="724" rx="8" ry="5" fill="#fbcfe8" />
+        </g>
         <!-- Schlafende Katze auf einem Kissen -->
-        <ellipse cx="1240" cy="688" rx="76" ry="22" fill="#4338ca" />
-        <ellipse cx="1240" cy="672" rx="46" ry="20" fill="#f97316" />
-        <circle cx="1196" cy="664" r="15" fill="#f97316" />
-        <path d="M1186 652 L1188 640 L1196 650 Z M1200 650 L1206 640 L1208 654 Z" fill="#f97316" />
-        <path d="M1189 664 q4 3 8 0 M1199 664 q4 3 8 0" stroke="#7c2d12" stroke-width="1.5" fill="none" />
-        <path d="M1284 676 Q1310 690 1290 700" stroke="#f97316" stroke-width="7" fill="none" stroke-linecap="round" />
-        <g stroke="#c2410c" stroke-width="3" opacity="0.6"><line x1="1226" y1="656" x2="1230" y2="670" /><line x1="1244" y1="654" x2="1248" y2="668" /><line x1="1262" y1="658" x2="1266" y2="672" /></g>
-        <text x="1188" y="630" font-family="Fredoka, sans-serif" font-size="16" fill="#c7d2fe" opacity="0.8">z z</text>
+        <g class="fun" data-fun="cat" role="button" tabindex="-1" aria-label="Katze">
+          <ellipse cx="1240" cy="688" rx="76" ry="22" fill="#4338ca" />
+          <ellipse cx="1240" cy="672" rx="46" ry="20" fill="#f97316" />
+          <circle cx="1196" cy="664" r="15" fill="#f97316" />
+          <path d="M1186 652 L1188 640 L1196 650 Z M1200 650 L1206 640 L1208 654 Z" fill="#f97316" />
+          <path d="M1189 664 q4 3 8 0 M1199 664 q4 3 8 0" stroke="#7c2d12" stroke-width="1.5" fill="none" />
+          <path d="M1284 676 Q1310 690 1290 700" stroke="#f97316" stroke-width="7" fill="none" stroke-linecap="round" />
+          <g stroke="#c2410c" stroke-width="3" opacity="0.6"><line x1="1226" y1="656" x2="1230" y2="670" /><line x1="1244" y1="654" x2="1248" y2="668" /><line x1="1262" y1="658" x2="1266" y2="672" /></g>
+          <text x="1188" y="630" font-family="Fredoka, sans-serif" font-size="16" fill="#c7d2fe" opacity="0.8">z z</text>
+        </g>
         <!-- Bücherstapel rechts vorne -->
         <rect x="1318" y="732" width="70" height="14" rx="2" fill="#0ea5e9" />
         <rect x="1324" y="718" width="60" height="14" rx="2" fill="#f43f5e" />
@@ -481,7 +505,9 @@
           <g transform="rotate(-4 380 752)"><rect x="354" y="738" width="52" height="34" rx="2" fill="#fdf2f8" /><text x="362" y="760">0,25</text></g>
         </g>
         <!-- Ball -->
-        <circle cx="880" cy="760" r="18" fill="#ef4444" /><path d="M864 752 Q880 742 896 752 M862 766 Q880 778 898 766" stroke="#fff" stroke-width="3" fill="none" />
+        <g class="fun" data-fun="ball" role="button" tabindex="-1" aria-label="Ball">
+          <circle cx="880" cy="760" r="18" fill="#ef4444" /><path d="M864 752 Q880 742 896 752 M862 766 Q880 778 898 766" stroke="#fff" stroke-width="3" fill="none" />
+        </g>
 
       </svg>
       </div>
@@ -564,6 +590,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=10"></script>
+  <script src="script.js?v=13"></script>
 </body>
 </html>
