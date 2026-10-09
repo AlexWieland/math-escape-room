@@ -33,10 +33,10 @@
       icon: '🌙',
       name: 'Mond',
       category: 'Brüche addieren',
-      title: 'Die Sternenschrift am Mond',
+      title: 'Die Rechnung am Mond',
       clue: 'Schau aus dem Fenster: Am Nachthimmel leuchtet etwas Rundes, das nur halb zu sehen ist.',
       question: `
-        <p>Neben dem Mond formen die Sterne eine Rechnung:</p>
+        <p>Wer genau hinsieht, entdeckt am Mond eine Rechnung:</p>
         <p class="calc">(−5/6) + (+1/3) = ?</p>
         <p>Gib das Ergebnis gekürzt als Bruch oder als Dezimalzahl an.</p>`,
       hint: 'Zuerst gleichnamig machen: 1/3 = 2/6. Dann −5/6 + 2/6: verschiedene Vorzeichen → Beträge subtrahieren (5 − 2) und das Vorzeichen der Zahl mit dem größeren Betrag nehmen. Am Ende kürzen!',
@@ -140,6 +140,10 @@
   const ROOM = window.ROOM_CONFIG || {};
   Object.entries(ROOM.clues || {}).forEach(([id, clue]) => {
     if (PUZZLES[id]) PUZZLES[id].clue = clue;
+  });
+  // Weitere Felder pro Seite überschreiben (z. B. Titel und Symbol, wenn das Versteck anders aussieht)
+  Object.entries(ROOM.puzzles || {}).forEach(([id, fields]) => {
+    if (PUZZLES[id]) Object.assign(PUZZLES[id], fields);
   });
 
   const STORAGE_KEY = 'mathe-zimmer-rational-v4' + (ROOM.id ? `-${ROOM.id}` : '');
@@ -667,6 +671,8 @@
   // ---------------------------------------------------------------
   const FUN = {
     hamster:    { anim: 'shake',  sound: 'squeak', texts: ['Fiep!', 'Fiep fiep!', '*knabber*'] },
+    pens:       { anim: 'shake',  sound: 'tick',   texts: ['Klapper!'] },
+    bin:        { anim: 'wiggle', sound: 'rustle', texts: ['Nur alte Schmierzettel …', 'Ein zerknüllter Test?'] },
     board:      { sound: 'chalk',  texts: ['Iiiieh!', '*quietsch*'] },
     chair:      { anim: 'wiggle', sound: 'creak',  texts: ['Knarz!'] },
     bag:        { anim: 'wiggle', sound: 'rustle', texts: ['Hausaufgaben?'] },
