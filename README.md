@@ -9,9 +9,9 @@ Im großen, vollgestellten Zimmer (SVG) sind 8 Rätsel zwischen vielen Gegenstä
 | Seite | Adresse | Bild |
 |-------|---------|------|
 | Mathe-Zimmer | `/` (Startseite) | gezeichnetes, vollgestelltes Zimmer |
-| Klassenzimmer | `/klassenzimmer/` | möglichst fotorealistisch gezeichnetes Klassenzimmer am Abend (Zentralperspektive, Licht und Schatten, Holz- und Putzstruktur, Filmkorn) |
+| Klassenzimmer | `/klassenzimmer/` | möglichst fotorealistisch gezeichnetes Klassenzimmer an einem sonnigen Nachmittag (exakte Zentralperspektive, Licht und Schatten, Holz- und Putzstruktur, Filmkorn) |
 
-Beide Seiten verwenden dieselben 8 Rätsel sowie dieselbe `style.css` und `script.js`. Jede Seite hat ihren eigenen Spielstand. Das Klassenzimmer legt über `window.ROOM_CONFIG` in `klassenzimmer/index.html` eigene Hinweistexte fest, die zu den Verstecken im Klassenzimmer passen. Später kann das gezeichnete Klassenzimmer durch ein echtes Foto ersetzt werden; die Verstecke werden dann auf passende Details im Foto gelegt.
+Beide Seiten verwenden dieselben 8 Rätsel sowie dieselbe `style.css` und `script.js`. Jede Seite hat ihren eigenen Spielstand. Das Klassenzimmer legt über `window.ROOM_CONFIG` in `klassenzimmer/index.html` eigene Hinweistexte und Titel fest, die zu den Verstecken im Klassenzimmer passen (dort ist z. B. das letzte Schloss ein Vorhängeschloss an einem Spind statt einer Truhe). Später kann das gezeichnete Klassenzimmer durch ein echtes Foto ersetzt werden; die Verstecke werden dann auf passende Details im Foto gelegt.
 
 ## Dateien
 

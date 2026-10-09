@@ -33,10 +33,10 @@
       icon: '🌙',
       name: 'Mond',
       category: 'Brüche addieren',
-      title: 'Die Sternenschrift am Mond',
+      title: 'Die Rechnung am Mond',
       clue: 'Schau aus dem Fenster: Am Nachthimmel leuchtet etwas Rundes, das nur halb zu sehen ist.',
       question: `
-        <p>Neben dem Mond formen die Sterne eine Rechnung:</p>
+        <p>Wer genau hinsieht, entdeckt am Mond eine Rechnung:</p>
         <p class="calc">(−5/6) + (+1/3) = ?</p>
         <p>Gib das Ergebnis gekürzt als Bruch oder als Dezimalzahl an.</p>`,
       hint: 'Zuerst gleichnamig machen: 1/3 = 2/6. Dann −5/6 + 2/6: verschiedene Vorzeichen → Beträge subtrahieren (5 − 2) und das Vorzeichen der Zahl mit dem größeren Betrag nehmen. Am Ende kürzen!',
@@ -140,6 +140,10 @@
   const ROOM = window.ROOM_CONFIG || {};
   Object.entries(ROOM.clues || {}).forEach(([id, clue]) => {
     if (PUZZLES[id]) PUZZLES[id].clue = clue;
+  });
+  // Weitere Felder pro Seite überschreiben (z. B. Titel und Symbol, wenn das Versteck anders aussieht)
+  Object.entries(ROOM.puzzles || {}).forEach(([id, fields]) => {
+    if (PUZZLES[id]) Object.assign(PUZZLES[id], fields);
   });
 
   const STORAGE_KEY = 'mathe-zimmer-rational-v4' + (ROOM.id ? `-${ROOM.id}` : '');
@@ -563,76 +567,72 @@
   }
 
   const SOUNDS = {
-    // Miauen: Stimme (Sägezahn) durch zwei wandernde Formant-Filter – „m-i-a-u“
+    // Miauen als Lautfolge „m – i – a – u“: Stimme (Sägezahn) durch drei Formant-Filter,
+    // deren Frequenzen sich wie beim Sprechen von Vokal zu Vokal verschieben.
     meow() {
       const ac = ctx();
       if (!ac) return;
       const t = ac.currentTime;
-      const dur = 0.7 + Math.random() * 0.25;      // jedes Miau etwas anders
-      const k = 0.88 + Math.random() * 0.25;       // Tonhöhe (kleine/große Katze)
+      const dur = 0.85 + Math.random() * 0.2;      // jedes Miau etwas anders
+      const k = 0.9 + Math.random() * 0.2;         // Tonhöhe (kleine/große Katze)
       const at = (x) => t + x * dur;
 
-      // Stimmquelle mit typischer Tonhöhenkurve: hoch – höher – absinkend
+      // Laute mit Zeitpunkt (Anteil der Dauer) und Formanten F1/F2/F3 in Hz
+      const VOWELS = [
+        [0.00, [300, 1100, 2400]],   // m (geschlossener Mund, nasal)
+        [0.12, [330, 2500, 3300]],   // i
+        [0.22, [380, 2300, 3200]],
+        [0.38, [850, 1450, 2800]],   // a
+        [0.58, [800, 1300, 2700]],
+        [0.78, [420, 850, 2400]],    // u
+        [1.00, [350, 700, 2300]],
+      ];
+
+      // Stimmquelle: Tonhöhe steigt beim „i-a“ und fällt beim „u“
       const voice = ac.createOscillator();
       voice.type = 'sawtooth';
-      voice.frequency.setValueAtTime(430 * k, t);
-      voice.frequency.linearRampToValueAtTime(690 * k, at(0.2));
-      voice.frequency.linearRampToValueAtTime(760 * k, at(0.45));
-      voice.frequency.exponentialRampToValueAtTime(360 * k, at(1));
+      voice.frequency.setValueAtTime(520 * k, t);
+      voice.frequency.linearRampToValueAtTime(640 * k, at(0.15));
+      voice.frequency.linearRampToValueAtTime(700 * k, at(0.45));
+      voice.frequency.linearRampToValueAtTime(560 * k, at(0.75));
+      voice.frequency.linearRampToValueAtTime(430 * k, at(1));
       const vib = ac.createOscillator();           // leichtes Vibrato
-      vib.frequency.value = 5.5;
+      vib.frequency.value = 6;
       const vibAmt = ac.createGain();
-      vibAmt.gain.value = 10 * k;
+      vibAmt.gain.value = 8 * k;
       vib.connect(vibAmt).connect(voice.frequency);
 
-      // Etwas Hauch (Rauschen) für einen natürlicheren Klang
-      const len = Math.ceil(ac.sampleRate * dur);
-      const buf = ac.createBuffer(1, len, ac.sampleRate);
-      const d = buf.getChannelData(0);
-      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
-      const breath = ac.createBufferSource();
-      breath.buffer = buf;
-      const breathAmt = ac.createGain();
-      breathAmt.gain.value = 0.25;
-
-      // Zwei Formanten wandern von „m/i“ über „a“ zu „u“
-      const formant = (q, points, level) => {
+      const mix = ac.createGain();
+      [[0, 1.0, 9], [1, 0.7, 11], [2, 0.3, 12]].forEach(([n, level, q]) => {
         const f = ac.createBiquadFilter();
         f.type = 'bandpass';
         f.Q.value = q;
-        points.forEach(([x, hz], i) => (i === 0 ? f.frequency.setValueAtTime(hz, at(x)) : f.frequency.linearRampToValueAtTime(hz, at(x))));
+        VOWELS.forEach(([x, fs], i) =>
+          (i === 0 ? f.frequency.setValueAtTime(fs[n], at(x)) : f.frequency.linearRampToValueAtTime(fs[n], at(x))));
         const g = ac.createGain();
-        g.gain.value = level;
-        f.connect(g);
-        return [f, g];
-      };
-      const [f1, g1] = formant(5, [[0, 350], [0.25, 850], [0.55, 1050], [1, 520]], 1.0);
-      const [f2, g2] = formant(7, [[0, 2300], [0.3, 1900], [0.55, 1500], [1, 850]], 0.55);
+        g.gain.value = level * 1.8;
+        voice.connect(f).connect(g).connect(mix);
+      });
 
-      // „m“-Anfang: Klang öffnet sich, am Ende schließt er sich wieder („u“)
+      // „m“: Mund erst geschlossen (dumpf), dann offen; am Ende wieder etwas geschlossen („u“)
       const mouth = ac.createBiquadFilter();
       mouth.type = 'lowpass';
-      mouth.frequency.setValueAtTime(450, t);
-      mouth.frequency.exponentialRampToValueAtTime(4200, at(0.18));
-      mouth.frequency.exponentialRampToValueAtTime(1300, at(1));
+      mouth.frequency.setValueAtTime(400, t);
+      mouth.frequency.linearRampToValueAtTime(400, at(0.08));
+      mouth.frequency.exponentialRampToValueAtTime(5000, at(0.16));
+      mouth.frequency.exponentialRampToValueAtTime(1800, at(1));
 
       const out = ac.createGain();
       out.gain.setValueAtTime(0.0001, t);
-      out.gain.exponentialRampToValueAtTime(0.55, at(0.1));
-      out.gain.setValueAtTime(0.55, at(0.6));
+      out.gain.exponentialRampToValueAtTime(0.18, at(0.08));    // leises „m“
+      out.gain.exponentialRampToValueAtTime(0.5, at(0.2));      // offenes „i-a“
+      out.gain.setValueAtTime(0.5, at(0.6));
+      out.gain.exponentialRampToValueAtTime(0.25, at(0.85));    // „u“ wird leiser
       out.gain.exponentialRampToValueAtTime(0.0001, at(1));
 
-      [voice, breath].forEach((src) => {
-        const into = src === breath ? src.connect(breathAmt) : src;
-        into.connect(f1);
-        into.connect(f2);
-      });
-      g1.connect(mouth);
-      g2.connect(mouth);
-      mouth.connect(out).connect(ac.destination);
-
-      voice.start(t); vib.start(t); breath.start(t);
-      voice.stop(at(1) + 0.05); vib.stop(at(1) + 0.05); breath.stop(at(1) + 0.05);
+      mix.connect(mouth).connect(out).connect(ac.destination);
+      voice.start(t); vib.start(t);
+      voice.stop(at(1) + 0.05); vib.stop(at(1) + 0.05);
     },
     boing() {
       tone({ type: 'sine', vol: 0.25, dur: 0.5, freqs: [[0, 330], [0.08, 520], [0.5, 140]] });
@@ -671,6 +671,8 @@
   // ---------------------------------------------------------------
   const FUN = {
     hamster:    { anim: 'shake',  sound: 'squeak', texts: ['Fiep!', 'Fiep fiep!', '*knabber*'] },
+    pens:       { anim: 'shake',  sound: 'tick',   texts: ['Klapper!'] },
+    bin:        { anim: 'wiggle', sound: 'rustle', texts: ['Nur alte Schmierzettel …', 'Ein zerknüllter Test?'] },
     board:      { sound: 'chalk',  texts: ['Iiiieh!', '*quietsch*'] },
     chair:      { anim: 'wiggle', sound: 'creak',  texts: ['Knarz!'] },
     bag:        { anim: 'wiggle', sound: 'rustle', texts: ['Hausaufgaben?'] },
